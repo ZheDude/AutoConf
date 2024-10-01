@@ -19,7 +19,7 @@
 			<a class={url.startsWith('/Routerconfig') ? 'aSelected' : 'aDefault'} href="/Routerconfig">Routerconfig</a>
 		</div>
 	</div>
-	<div class="statisticDiv">
+	<div class="mainDiv">
 		<slot />
 	</div>
 </div>
