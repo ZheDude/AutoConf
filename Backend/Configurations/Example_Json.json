@@ -1,0 +1,41 @@
+{
+  "OSPF": {
+    "process_id": 10,
+    "network": {
+      "network": "10.0.0.0",
+      "area_id": 10
+    },
+    "router_id": "10.0.0.1",
+    "timer_dead": 30,
+    "timer_hello": 10
+  },
+  "Key-Chain": {
+    "number": 12,
+    "name": "NAME",
+    "password": "PASSWORD",
+    "ALGO": "hmac-sha-512"
+  },
+  "RIP": {
+    "version": 2,
+    "auto-summary": true,
+    "network": "10.0.0.1",
+    "neighbor": "10.0.0.3",
+    "timer_update": 30,
+    "passive_interface": ["GigabitEthernet0/1"],
+    "redistribute" : ["bgp"]
+  },
+
+  "BGP": {
+    "neighbor": [{
+      "ip_of_neighbor": "192.168.0.1",
+      "as": 100,
+      "update_source": "Loopback1",
+      "next_hop_self": true,
+      "route_reflector": true,
+      "default_originate": true
+    }],
+    "network": {"network": "10.0.0.0", "subnetmask":  "255.255.255.0"},
+    "timer_bgp": 30
+
+  }
+}
