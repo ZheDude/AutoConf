@@ -1,0 +1,13 @@
+router bgp ${local_as}
+neighbor ${ip_of_neighbor} remote-as ${neighbor_as}
+neighbor ${ip_of_neighbor} update-source ${update_source}
+
+${next_hop_self}
+${route_reflector}
+${default_originate}
+
+${network_statements}
+
+
+timers bgp ${timer_bgp} ${hold_time}
+
