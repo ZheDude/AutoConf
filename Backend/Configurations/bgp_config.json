@@ -22,6 +22,6 @@
     ],
     "timer_bgp": 30,
     "hold_time": 180,
-    "local_as": 100
+    "as": 100
   }
 }
