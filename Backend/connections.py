@@ -7,7 +7,7 @@ import socket
 from quopri import decodestring
 
 import paramiko
-import asyncio_telnet as Telnet
+# import asyncio_telnet as Telnet
 
 class SSHConnection:
     def __init__(self, ip, username, password):
@@ -40,16 +40,16 @@ class SSHConnection:
         self.client.close()
         
     
-class TelnetConnection:
-    def __init__(self, ip, port):
-        self.ip = ip
-        self.port = port
-        self.tn = Telnet.Telnet()
-    
-    async def send_command(self, command):
-        await self.tn.open(self.ip, self.port)
-        await self.tn.write(decodestring(command))
-        response = await self.tn.read_until_eof()
-        await self.tn.close()
-        return response
+# class TelnetConnection:
+#     def __init__(self, ip, port):
+#         self.ip = ip
+#         self.port = port
+#         self.tn = Telnet.Telnet()
+#     
+#     async def send_command(self, command):
+#         await self.tn.open(self.ip, self.port)
+#         await self.tn.write(decodestring(command))
+#         response = await self.tn.read_until_eof()
+#         await self.tn.close()
+#         return response
             
