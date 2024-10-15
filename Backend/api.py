@@ -9,7 +9,7 @@ def process_data(data: dict):
     return {"processed_data": data}
 
 
-@app.post("/process/")
+@app.post("/configuration/")
 async def receive_json(request: Request):
     json_data = await request.json()
     result = process_data(json_data)

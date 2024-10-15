@@ -1,3 +1,17 @@
+### GET request to example server
+@API_HOST = http://127.0.0.1:8000
+
+
+
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=PyCharm
+
+###
+
+
+POST {{API_HOST}}/configuration/
+Content-Type: application/json
+
 [
   {
     "OSPF": [
@@ -234,3 +248,5 @@
     ]
   }
 ]
+
+

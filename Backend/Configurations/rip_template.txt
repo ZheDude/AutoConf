@@ -1,0 +1,8 @@
+router rip
+version ${version}
+${auto_summary}
+network ${network}
+neighbor ${neighbor}
+timers basic ${timer_update}
+${passive_interface}
+${redistribute}

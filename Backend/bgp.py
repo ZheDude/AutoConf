@@ -86,9 +86,6 @@ bgp_data = {
 
 if __name__ == "__main__":
 
-    # Instantiate the BGPgenerator class with the bgp_data
     bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
-
-    # Generate and display the BGP configuration script based on the template
     bgp_script = bgp_gen.generate_script()
     print(bgp_script)
