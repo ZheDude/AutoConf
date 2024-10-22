@@ -230,6 +230,17 @@
           "1.1.1.1"
         ],
         "lease": 10
+      },
+      {
+        "pool": "POOL123123",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
       }
     ]
   }
