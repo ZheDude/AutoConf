@@ -17,21 +17,13 @@ class Etherchannelgenerator:
         print(self.group['mode'])
         print(self.group['interfaces'])
 
-
     def generate_script(self):
-        try:
-            with open(self.template_file, 'r') as file:
-                template = file.read()
+        interface_range_string = " ".join(self.group['interfaces'])
 
-            interface_range_string = " ".join(self.group['interfaces'])
-
-            fin_str = template.replace("${interface}", interface_range_string) \
-                .replace("${number}", str(self.group['number'])) \
-                .replace("${mode}", self.group['mode'])
-            return fin_str
-    
-        except FileNotFoundError:
-            return f"Template file '{self.template_file}' not found."
+        fin_str = (f"interface range {interface_range_string}\n"+
+                   f"port-channel group {self.group['number']}\n"+
+                   f"port-channel mode {self.group['mode']}")
+        return fin_str
 
 
 etherchannel_data = {
