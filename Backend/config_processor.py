@@ -26,14 +26,29 @@ def read_file(file_path):
         return f"An error occurred: {str(e)}"
 
 
+def get_element_names(config_data: list) -> list[str]:
+    top_level_names: list = list()
+    for entry in config_data:
+        top_level_names.append(list(entry.keys())[0])
+
+    return top_level_names
+
+
+
+
+
 
 if __name__ == "__main__":
     config_data = read_file("Configurations/Example_Json.json")
     config_data = json.loads(config_data)
     processor = ConfigProcessor(config_data)
     json_outputs = processor.process_config()
-
+    top_level_names: list = get_element_names(config_data)
 
     for json_output in json_outputs:
-        print("-------------------------")
-        print(json_output)
+        print("----------------")
+        json_list: list = json.loads(json_output)
+        print(json_list)
+
+
+
