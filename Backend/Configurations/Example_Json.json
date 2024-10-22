@@ -209,7 +209,8 @@
   {
     "Etherchannel": [
       {
-        "number": {
+        "group": {
+          "number": 1,
           "interface": [
             "GigabitEthernet0/0",
             "GigabitEthernet0/1"
