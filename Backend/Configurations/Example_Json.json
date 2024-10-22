@@ -209,12 +209,13 @@
   {
     "Etherchannel": [
       {
-        "number": 1,
-        "interface": [
-          "GigabitEthernet0/0",
-          "GigabitEthernet0/1"
-        ],
-        "mode": "active"
+        "number": {
+          "interface": [
+            "GigabitEthernet0/0",
+            "GigabitEthernet0/1"
+          ],
+          "mode": "active"
+        }
       }
     ]
   },
