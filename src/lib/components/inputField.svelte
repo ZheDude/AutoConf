@@ -2,6 +2,11 @@
 <script>
     export let type = "text";
     export let fieldName;
+    export let placeholder;
 </script>
-<h2>{fieldName}</h2>
-<input type="{type}">
+
+<div class="inputFieldDiv">
+<label for="{fieldName}">{fieldName}</label>
+<input placeholder="{placeholder}" id="{fieldName}" type="{type}">
+
+</div>
