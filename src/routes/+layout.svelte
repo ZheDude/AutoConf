@@ -1,5 +1,5 @@
 <script>
-	import '$lib/stylesheet.scss';
+	import '$lib/stylesheet.css';
 	/*
 	import IconContainer from '$lib/Icons/Navbar/iconContainer.svelte';
     */
