@@ -158,6 +158,12 @@ General Layout Style
     
 }
 
+#textAreaDiv h1{
+    color: #FFFF;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 2%;
+}
 
 
 /* Components*/

@@ -5,6 +5,7 @@
 	import Checkbox from '../lib/components/checkbox.svelte';
 	import VtyDiv from '../lib/components/checkbox.svelte';
 	import VtyRange from '../lib/components/vtyRange.svelte';
+	import { get } from 'svelte/store';
 
 	let inputParams = {
 		hostname: '',
@@ -29,6 +30,7 @@
 
 
 
+
 	function removeVtyRange() {
 		if (count !== 1) {
 			count -= 1;
@@ -50,7 +52,6 @@
 
 	function generateSkript() {
 		generate = true;
-		console.log(inputParams)
 	}
 </script>
 
@@ -122,7 +123,8 @@
 
 {#if generate}
 	<div id="textAreaDiv">
-		<p>en</p>
+		<h1>Folgendes Skript muss vom User selbst in das Netzwerkgeräte eingefügt werden!</h1>
+		<p>enable</p>
 		<p>configure terminal</p>
 		<p>hostname {inputParams.hostname}</p>
 		<p>no ip domain-lookup</p>
