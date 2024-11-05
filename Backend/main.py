@@ -9,7 +9,7 @@ def main():
     print(result)
     result = dev1.send_command("do-exec show version\n    ")
     print(result)
-    result = dev1.send_command("do-exec ip interface brief\n    ")
+    result = dev1.send_command("do-exec show ip interface brief\n    ")
     print(result)
 
 if __name__ == '__main__':
