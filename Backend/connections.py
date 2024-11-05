@@ -16,7 +16,7 @@ class SSHConnection:
         try:
             self.client.connect(self.ip, username=self.username, password=self.password)
             self.channel = self.client.invoke_shell()
-            time.sleep(1)
+            time.sleep(5)
         except paramiko.ssh_exception.AuthenticationException:
             raise Exception("Authentication failed")
         except socket.gaierror:
@@ -38,7 +38,9 @@ class SSHConnection:
 
         while not self.channel.recv_ready():
             pass  # Wait until data is ready to be read
-
+        
+        time.sleep(5)
+        
         while self.channel.recv_ready():
             output += self.channel.recv(2048).decode("utf-8")
 
