@@ -19,11 +19,11 @@ class SSHConnection:
         except socket.gaierror:
             raise Exception("Invalid IP address")
         except paramiko.ssh_exception.NoValidConnectionsError:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed NoValidConnectionsError")
         except paramiko.ssh_exception.BadHostKeyException:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed BadHostKeyException")
         except paramiko.ssh_exception.SSHException:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed SSHException")
 
     def send_command(self, command):
         stdin, stdout, stderr = self.client.exec_command(command)
