@@ -20,7 +20,6 @@
 	$: attributes.execTimeout = execTimeout;
 	$: attributes.loggingSyn = loggingSyn;
 	$: attributes.loginLocal = loginLocal;
-	
 </script>
 
 <div class="vtyDiv">
@@ -34,11 +33,7 @@
 		fieldName="Execution Timeout VTY {count}"
 		bind:value={execTimeout}
 	></InputField>
-	<Checkbox
-		name="syn VTY {count}"
-		Heading="Logging Synchronos"
-		bind:isChecked={loggingSyn}
+	<Checkbox name="syn VTY {count}" Heading="Logging Synchronous" bind:isChecked={loggingSyn}
 	></Checkbox>
-	<Checkbox name="local {count}" Heading="Login Local" bind:isChecked={loginLocal}
-	></Checkbox>
+	<Checkbox name="local {count}" Heading="Login Local" bind:isChecked={loginLocal}></Checkbox>
 </div>

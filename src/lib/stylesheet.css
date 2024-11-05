@@ -2,28 +2,26 @@
 General Style
 */
 * {
-    padding: 0px;
-    margin: 0px;
-
+	padding: 0px;
+	margin: 0px;
 }
-
-
 
 body {
-    background-color: #30313A;
+	background-color: #30313a;
 }
 
-
-.subHeading{
-    font-size: 25px;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 2%;
+.subHeading {
+	font-size: 25px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 12%;
+	margin-left: 8%;
 }
 
-.subSubHeading{
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 2%;
+.subSubHeading {
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+	margin-left: 15%;
 }
 
 /*
@@ -31,263 +29,196 @@ Navbar Style
 */
 
 .navbarTextDiv {
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 54px;
-    width: 150px;
-    height: 350px;
-    display: flex;
-    gap: 54px;
-    flex-direction: column;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 54px;
+	width: 150px;
+	height: 350px;
+	display: flex;
+	gap: 54px;
+	flex-direction: column;
 
-
-    padding-left: 50px;
-
+	padding-left: 50px;
 }
 
 .navbarIcon {
-
-    margin-left: 35px;
-
+	margin-left: 35px;
 }
 
 #iconDiv {
-    padding-top: 15%;
-    display: flex;
-    flex-direction: column;
-    gap: 3%;
+	padding-top: 15%;
+	display: flex;
+	flex-direction: column;
+	gap: 3%;
 }
 
 a {
-
-    text-decoration: none;
-
+	text-decoration: none;
 }
 
 .aDefault {
-    color: #87888C;
+	color: #87888c;
 }
 
 .aSelected {
-    color: #A9DFD8;
+	color: #a9dfd8;
 }
 
 a:hover {
-    color: #A9DFD8;
+	color: #a9dfd8;
 }
-
-
-
 
 #navbar {
-    display: flex;
-    flex-direction: row;
-    background-color: #171821;
-    border-radius: 14px;
-    min-height: 1250px;
-    width: 20%;
-    margin-top: 4%;
-    margin-bottom: 4%;
-
+	display: flex;
+	flex-direction: row;
+	background-color: #171821;
+	border-radius: 14px;
+	min-height: 1250px;
+	width: 20%;
+	margin-top: 4%;
+	margin-bottom: 4%;
 }
-
-
 
 /*
 General Layout Style
 
 */
 .mainDiv {
-    display: flex;
-    flex-direction: row;
-    background-color: #171821;
-    margin-top: 4%;
-    min-height: 1250px;
-    width: 75%;
-    border-radius: 14px;
-    margin-bottom: 4%;
-
+	display: flex;
+	flex-direction: row;
+	background-color: #171821;
+	margin-top: 4%;
+	min-height: 1250px;
+	width: 75%;
+	border-radius: 14px;
+	margin-bottom: 4%;
 }
-
 
 .pageDiv {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	width: 100%;
 }
 
-
-.mainHeading{
-    font-size: 16px;
-    color: #FFFF;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 2%;
-    margin-left: 2%;
+.mainHeading {
+	font-size: 16px;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+	margin-left: 2%;
 }
-
 
 /* Grundkonfig Style */
 
-#parameterDivGrundkonfig{
-    color: white;
-    margin-top: 2%;
-    margin-left: 2%;
-    width: 50%;
-
-
-    
+#parameterDivGrundkonfig {
+	color: white;
+	margin-top: 2%;
+	margin-left: 2%;
+	width: 50%;
 }
 
-#textAreaDiv{
-    height: 95%;
-    width: 40%;
-    background-color: #30313A;
-    border-radius: 14px;
-    margin-top: 2%;
-    padding-left: 2%;
+#textAreaDiv {
+	height: 95%;
+	width: 40%;
+	background-color: #30313a;
+	border-radius: 14px;
+	margin-top: 2%;
+	padding-left: 2%;
 }
 
-#textAreaDiv p{
-    margin-top: 5%;
-    border-radius: 14px;
-    color: white;
-    margin: 2%; 
-    font-size: 16px;
-    font-family: 'consolas';
-    
+#textAreaDiv p {
+	margin-top: 5%;
+	border-radius: 14px;
+	color: white;
+	margin: 2%;
+	font-size: 16px;
+	font-family: 'consolas';
 }
 
-#textAreaDiv h1{
-    color: #FFFF;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    margin-top: 2%;
+#textAreaDiv h1 {
+	color: #ffff;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
 }
-
 
 /* Components*/
 
-.inputFieldDiv{
-    margin-top: 2%;
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    color: #FFFF;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-
+.inputFieldDiv {
+	margin-top: 8%;
+	margin-left: 15%;
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
-
-.inputFieldDiv label{
-    margin-top: 2%;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    color: #FFFF;
-    font-family: Arial, Helvetica, sans-serif;
+.inputFieldDiv label {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-.inputFieldDiv input{
-    font-size: 20px;
+.inputFieldDiv input {
+	font-size: 15px;
+	margin-top: 3%;
 }
 
-
-.dropdownDiv{
-    display: flex;
-    flex-direction: row;
-    margin-top: 2%;
+.dropdownDiv {
+	display: flex;
+	flex-direction: row;
+	margin-top: 2%;
+	margin-left: 15%;
 }
 
-.dropdownDiv p{
-    margin-right: 1%;
-    color: #FFFF;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+.dropdownDiv p {
+	margin-right: 1%;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
-.dropdownDiv option{
-    margin-right: 1%;
-    color: #FFFF;
-    font-family: Arial, Helvetica, sans-serif;
-
+.dropdownDiv option {
+	margin-right: 1%;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
-
-
-
-.checkboxDiv{
-    display: flex;
-    flex-direction: row;
-    gap: 2%;
-    margin-top: 2%;
-
+.checkboxDiv {
+	display: flex;
+	flex-direction: row;
+	gap: 2%;
+	margin-top: 2%;
+	margin-left: 15%;
 }
 
-.checkboxDiv label{
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+.checkboxDiv label {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
-.checkboxDiv input{
-    width: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+.checkboxDiv input {
+	width: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
-
-.vtyDiv{
-    display: flex;
-    flex-direction: column;
+.vtyDiv {
+	display: flex;
+	flex-direction: column;
 }
 
-
-.vtyDiv h2{
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+.vtyDiv h2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
 }
 
-
-#vtyMainDiv{
-    display: flex;
-    flex-direction: column;
-    
+#vtyMainDiv {
+	display: flex;
+	flex-direction: column;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
