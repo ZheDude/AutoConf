@@ -1,13 +1,15 @@
 import json
 
 class BGPgenerator:
-    def __init__(self, bgp_data, template_file):
-        self.bgp_data = bgp_data
-        self.local_as = bgp_data['local_as']
-        self.neighbor = bgp_data["neighbor"]
-        self.networks = bgp_data["networks"]
-        self.timer_bgp = bgp_data["timer_bgp"]
-        self.hold_time = bgp_data["hold_time"]
+    def __init__(self, bgp_data_inside, template_file):
+        self.bgp_data = bgp_data_inside
+        print(bgp_data_inside, "HLKDJÖFDLKJ")
+
+        self.neighbor = bgp_data_inside["neighbor"]
+        self.local_as = bgp_data_inside['local_as']
+        self.networks = bgp_data_inside["networks"]
+        self.timer_bgp = bgp_data_inside["timer_bgp"]
+        self.hold_time = bgp_data_inside["hold_time"]
         self.template_file = template_file
 
     def generate_network_statements(self):
