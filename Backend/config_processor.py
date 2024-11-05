@@ -4,7 +4,13 @@ from Backend.bgp import BGPgenerator
 from Backend.ospf import OSPFgenerator
 from Backend.rip import RIPGenerator
 
-
+# TODO SAI the following things have to be done
+# key-chain
+# gre
+# interface
+# static routes
+# hsrp
+# dhcp
 class ConfigProcessor:
     def __init__(self, config_data):
         self.config_data = config_data
