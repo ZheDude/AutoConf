@@ -1,7 +1,3 @@
-# this class is used to connect to a singular network device via SSH
-# every object of this class represents a connection to a singular network device
-# the class is used to send commands to the device and receive the output
-# the class is also used to close the connection to the device
 
 import socket
 from quopri import decodestring
@@ -23,11 +19,11 @@ class SSHConnection:
         except socket.gaierror:
             raise Exception("Invalid IP address")
         except paramiko.ssh_exception.NoValidConnectionsError:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed NoValidConnectionsError")
         except paramiko.ssh_exception.BadHostKeyException:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed BadHostKeyException")
         except paramiko.ssh_exception.SSHException:
-            raise Exception("Connection failed")
+            raise Exception("Connection failed SSHException")
 
     def send_command(self, command):
         stdin, stdout, stderr = self.client.exec_command(command)
