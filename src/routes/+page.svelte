@@ -55,13 +55,22 @@
 
 	function checkUserInputs() {
 		let missingInputs = [];
-		let params = Object.entries(inputParams);
-		console.log(params);
+		let missingVTYParams = {};
 		for (let [key, value] of Object.entries(inputParams)) {
-			if (value.trim() === ""){
-				missingInputs.push(key)
-			} 
+			if (key.startsWith('vtyRange')) {
+				missingInputs[key] = []
+				for (let [vtykey, vtyvalue] of Object.entries(value)){
+						if (vtyvalue === "" || vtyvalue === undefined){
+							missingInputs[key].push(vtykey)
+						}
+				}
+			} else {
+				if (value === '') {
+					missingInputs.push(key);
+				}
+			}
 		}
+		console.log(missingInputs["vtyRange1"])
 		return true;
 	}
 </script>
@@ -122,12 +131,10 @@
 		{/each}
 	</div>
 
-	<button on:click={addVtyRange}>Add VTY Range</button>
-	<button on:click={removeVtyRange}>Remove VTY Range</button>
+	<button id="addVtyButton" on:click={addVtyRange}>Add VTY Range</button>
+	<button id="removeVtyButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
-	<button on:click={generateSkript}>Generate Skript</button>
-
-	
+	<button id="generateSkriptButton" on:click={generateSkript}>Generate Skript</button>
 </div>
 
 {#if generate}
