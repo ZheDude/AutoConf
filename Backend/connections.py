@@ -1,7 +1,3 @@
-# this class is used to connect to a singular network device via SSH
-# every object of this class represents a connection to a singular network device
-# the class is used to send commands to the device and receive the output
-# the class is also used to close the connection to the device
 
 import socket
 from quopri import decodestring
