@@ -109,7 +109,7 @@
 		fieldName="Execution Timeout"
 		bind:value={inputParams.consoleExecTime}
 	></InputField>
-	<Checkbox name="syn" Heading="Logging Synchronos" bind:isChecked={inputParams.consoleLoggingSyn}
+	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}
 	></Checkbox>
 	<Checkbox name="login" Heading="Login Local" bind:isChecked={inputParams.consoleLoginLocal}
 	></Checkbox>
@@ -126,6 +126,8 @@
 	<button on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button on:click={generateSkript}>Generate Skript</button>
+
+	
 </div>
 
 {#if generate}
