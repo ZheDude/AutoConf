@@ -4,6 +4,15 @@ hostname R1
 no ip domain lookup
 ip domain name 5CN
 
+username cisco priv 15 algo scrypt secret cisco
+crypto key gen rsa mod 1024 usage
+ip ssh version 2
+
+line vty 0 15
+login local
+transport input ssh
+logging synch
+exec-timeout 0 0
 
 int gig0/0
 no shut

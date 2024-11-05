@@ -1,5 +1,6 @@
 
 import socket
+import time
 from quopri import decodestring
 
 import paramiko
@@ -14,6 +15,8 @@ class SSHConnection:
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
             self.client.connect(self.ip, username=self.username, password=self.password)
+            self.channel = self.client.invoke_shell()
+            time.sleep(5)
         except paramiko.ssh_exception.AuthenticationException:
             raise Exception("Authentication failed")
         except socket.gaierror:
@@ -26,8 +29,24 @@ class SSHConnection:
             raise Exception("Connection failed SSHException")
 
     def send_command(self, command):
-        stdin, stdout, stderr = self.client.exec_command(command)
-        return stdout.read().decode("utf-8")
+        if not self.channel:  # Ensure the channel is open
+            raise Exception("SSH session not active")
+
+        # Send command and read output
+        self.channel.send(command + '\n')
+        output = ""
+
+        while not self.channel.recv_ready():
+            pass  # Wait until data is ready to be read
+        
+        time.sleep(5)
+        
+        while self.channel.recv_ready():
+            output += self.channel.recv(2048).decode("utf-8")
+
+        return output
+        # stdin, stdout, stderr = self.client.exec_command(command)
+        # return stdout.read().decode("utf-8")
 
     def close(self):
         self.__del__()
