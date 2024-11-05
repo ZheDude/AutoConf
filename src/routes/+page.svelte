@@ -24,12 +24,9 @@
 	let count = 1;
 	function addVtyRange() {
 		count += 1;
-		let rangeName = 'vtyRange' + count
-		Object.assign(inputParams, {rangeName: {}})
+		let rangeName = 'vtyRange' + count;
+		Object.assign(inputParams, { rangeName: {} });
 	}
-
-
-
 
 	function removeVtyRange() {
 		if (count !== 1) {
@@ -38,9 +35,9 @@
 		}
 	}
 
-	function getVtyRanges(){
-		let range = []
-		for ( let i=1; i <= count; i++){
+	function getVtyRanges() {
+		let range = [];
+		for (let i = 1; i <= count; i++) {
 			range.push('vtyRange' + i);
 		}
 		return range;
@@ -51,11 +48,23 @@
 	}
 
 	function generateSkript() {
-		generate = true;
+		if (checkUserInputs()) {
+			generate = true;
+		}
+	}
+
+	function checkUserInputs() {
+		let missingInputs = [];
+		let params = Object.entries(inputParams);
+		console.log(params);
+		for (let [key, value] of Object.entries(inputParams)) {
+			if (value.trim() === ""){
+				missingInputs.push(key)
+			} 
+		}
+		return true;
 	}
 </script>
-
-
 
 <div id="parameterDivGrundkonfig">
 	<div class="mainHeading">
@@ -117,8 +126,6 @@
 	<button on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button on:click={generateSkript}>Generate Skript</button>
-
-	
 </div>
 
 {#if generate}
@@ -133,19 +140,18 @@
 		<p>username {inputParams.adminUser} algorithm-type scrypt secret {inputParams.password}</p>
 		<p>crypto key generate rsa usage-keys modulus 1024</p>
 		<p>ip ssh version {inputParams.sshVersion}</p>
-		
+
 		<p>line con 0</p>
 		<p>exec-timeout {inputParams.consoleExecTime}</p>
-		<p>{inputParams.consoleLoggingSyn ? "logging syn" : ''}</p>
-		<p>{inputParams.consoleLoginLocal ? "login local" : ''}</p>
+		<p>{inputParams.consoleLoggingSyn ? 'logging syn' : ''}</p>
+		<p>{inputParams.consoleLoginLocal ? 'login local' : ''}</p>
 
 		{#each getVtyRanges() as range}
-		<p>line vty {inputParams[range].startLine} {inputParams[range].endLine}</p>
-		<p>exec-timeout {inputParams[range].execTimeout}</p>
-		<p>{inputParams[range].loggingSyn ? "logging syn" : ''}</p>
-		<p>{inputParams[range].loginLocal ? "login local" : ''}</p>
-		<br>
+			<p>line vty {inputParams[range].startLine} {inputParams[range].endLine}</p>
+			<p>exec-timeout {inputParams[range].execTimeout}</p>
+			<p>{inputParams[range].loggingSyn ? 'logging syn' : ''}</p>
+			<p>{inputParams[range].loginLocal ? 'login local' : ''}</p>
+			<br />
 		{/each}
-		
 	</div>
-	{/if}
+{/if}
