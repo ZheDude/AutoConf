@@ -4,6 +4,7 @@ from Backend.bgp import BGPgenerator
 from Backend.ospf import OSPFgenerator
 from Backend.rip import RIPGenerator
 
+
 # TODO SAI the following things have to be done
 # key-chain
 # gre
@@ -25,6 +26,7 @@ class ConfigProcessor:
 
         return json_outputs
 
+
 def read_file(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -42,10 +44,6 @@ def get_element_names(config_data: list) -> list[str]:
         top_level_names.append(list(entry.keys())[0])
 
     return top_level_names
-
-
-
-
 
 
 if __name__ == "__main__":
@@ -91,6 +89,3 @@ if __name__ == "__main__":
     for element in konfigurations_liste:
         print("-----------")
         print(element)
-
-
-

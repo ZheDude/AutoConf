@@ -1,15 +1,7 @@
-### GET request to example server
-@API_HOST = http://127.0.0.1:8000
+### POST Request with json body to the API endpoint /configuration
 
 
-
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=PyCharm
-
-###
-
-
-POST {{API_HOST}}/configuration/
+POST http://127.0.0.1:8000/configuration/
 Content-Type: application/json
 
 [

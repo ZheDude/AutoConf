@@ -1,12 +1,14 @@
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 import uvicorn
 import os
 
 app = FastAPI()
 
+
 def process_data(data: dict):
     print("Processing data:", data)
+
     return {"processed_data": data}
 
 
@@ -18,6 +20,6 @@ async def receive_json(request: Request):
 
 
 if __name__ == "__main__":
-    load_dotenv()
+    # load_dotenv()
     API_KEY = os.getenv("API_KEY")
     uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
