@@ -70,7 +70,7 @@
 				}
 			}
 		}
-		console.log(missingInputs["vtyRange1"])
+		
 		return true;
 	}
 </script>
@@ -83,24 +83,28 @@
 		placeholder="cisco"
 		type="text"
 		fieldName="Hostname"
+		id  =  "Hostname"
 		bind:value={inputParams.hostname}
 	/>
 	<InputField
 		placeholder="corp.at"
 		type="text"
 		fieldName="IP-Domainname"
+		id = "IP-Domainname"
 		bind:value={inputParams.domain}
 	/>
 	<InputField
 		placeholder="cisco"
 		type="text"
 		fieldName="Adminusername"
+		id = "Adminusername"
 		bind:value={inputParams.adminUser}
 	/>
 	<InputField
 		placeholder=""
 		type="password"
 		fieldName="Adminpasswort"
+		id = "Adminpasswort"
 		bind:value={inputParams.password}
 	/>
 
@@ -116,6 +120,7 @@
 		type="text"
 		placeholder="3600"
 		fieldName="Execution Timeout"
+		id = "ExecTimeout Console"
 		bind:value={inputParams.consoleExecTime}
 	></InputField>
 	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}

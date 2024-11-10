@@ -4,14 +4,15 @@
     export let fieldName;
     export let placeholder;
     export let value = ''; 
+    export let id = '';
 </script>
 
 <div class="inputFieldDiv">
-<label for="{fieldName}">{fieldName}</label>
+<label for="{id}">{fieldName}</label>
 
 {#if type=== "text"}
-<input  bind:value={value} placeholder="{placeholder}" id="{fieldName}" type="text" >
+<input  bind:value={value} placeholder="{placeholder}" id="{id}" type="text" >
 {:else}
-<input  bind:value={value} placeholder="{placeholder}" id="{fieldName}" type="password" >
+<input  bind:value={value} placeholder="{placeholder}" id="{id}" type="password" >
 {/if}
 </div>
