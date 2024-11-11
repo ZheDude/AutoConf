@@ -222,3 +222,118 @@ General Layout Style
 	display: flex;
 	flex-direction: column;
 }
+
+#addVtyButton {
+	margin-left: 15%;
+	margin-top: 5%;
+}
+
+.generateSkriptButton {
+	margin-top: 10%;
+	margin-left: 15%;
+	margin-bottom: 5%;
+	align-items: center;
+	background-color: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 0.25rem;
+	box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+	box-sizing: border-box;
+	color: rgba(0, 0, 0, 0.85);
+	cursor: pointer;
+	display: inline-flex;
+	font-family:
+		system-ui,
+		-apple-system,
+		system-ui,
+		'Helvetica Neue',
+		Helvetica,
+		Arial,
+		sans-serif;
+	font-size: 16px;
+	font-weight: 600;
+	justify-content: center;
+	line-height: 1.25;
+	min-height: 3rem;
+	padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
+	position: relative;
+	text-decoration: none;
+	transition: all 250ms;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: baseline;
+	width: auto;
+}
+
+.generateSkriptButton:hover,
+.generateSkriptButton:focus {
+	border-color: rgba(0, 0, 0, 0.15);
+	box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+	color: rgba(0, 0, 0, 0.65);
+}
+
+.generateSkriptButton:hover {
+	transform: translateY(-1px);
+}
+
+.generateSkriptButton:active {
+	background-color: #f0f0f1;
+	border-color: rgba(0, 0, 0, 0.15);
+	box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+	color: rgba(0, 0, 0, 0.65);
+	transform: translateY(0);
+}
+
+.VtyButton {
+	margin-top: 5%;
+	margin-left: 15%;
+	appearance: none;
+	background-color: #8e918f;
+	border: 1px solid rgba(27, 31, 35, 0.15);
+	border-radius: 6px;
+	box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+	box-sizing: border-box;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji';
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	padding: 6px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.VtyButton:focus:not(:focus-visible):not(.focus-visible) {
+	box-shadow: none;
+	outline: none;
+}
+
+.VtyButton:hover {
+	background-color: #9ca09d;
+}
+
+.VtyButton:focus {
+	box-shadow: rgba(224, 232, 226, 0.4) 0 0 0 3px;
+	outline: none;
+}
+
+.VtyButton:disabled {
+	background-color: #8e918f;
+	border-color: rgba(27, 31, 35, 0.1);
+	color: rgba(255, 255, 255, 0.8);
+	cursor: default;
+}
+
+.VtyButton:active {
+	background-color: #8e918f;
+	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}

@@ -58,11 +58,11 @@
 		let missingVTYParams = {};
 		for (let [key, value] of Object.entries(inputParams)) {
 			if (key.startsWith('vtyRange')) {
-				missingInputs[key] = []
-				for (let [vtykey, vtyvalue] of Object.entries(value)){
-						if (vtyvalue === "" || vtyvalue === undefined){
-							missingInputs[key].push(vtykey)
-						}
+				missingInputs[key] = [];
+				for (let [vtykey, vtyvalue] of Object.entries(value)) {
+					if (vtyvalue === '' || vtyvalue === undefined) {
+						missingInputs[key].push(vtykey);
+					}
 				}
 			} else {
 				if (value === '') {
@@ -70,7 +70,7 @@
 				}
 			}
 		}
-		
+
 		return true;
 	}
 </script>
@@ -83,28 +83,28 @@
 		placeholder="cisco"
 		type="text"
 		fieldName="Hostname"
-		id  =  "Hostname"
+		id="Hostname"
 		bind:value={inputParams.hostname}
 	/>
 	<InputField
 		placeholder="corp.at"
 		type="text"
 		fieldName="IP-Domainname"
-		id = "IP-Domainname"
+		id="IP-Domainname"
 		bind:value={inputParams.domain}
 	/>
 	<InputField
 		placeholder="cisco"
 		type="text"
 		fieldName="Adminusername"
-		id = "Adminusername"
+		id="Adminusername"
 		bind:value={inputParams.adminUser}
 	/>
 	<InputField
 		placeholder=""
 		type="password"
 		fieldName="Adminpasswort"
-		id = "Adminpasswort"
+		id="Adminpasswort"
 		bind:value={inputParams.password}
 	/>
 
@@ -120,7 +120,7 @@
 		type="text"
 		placeholder="3600"
 		fieldName="Execution Timeout"
-		id = "ExecTimeout Console"
+		id="ExecTimeout Console"
 		bind:value={inputParams.consoleExecTime}
 	></InputField>
 	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}
@@ -136,10 +136,10 @@
 		{/each}
 	</div>
 
-	<button id="addVtyButton" on:click={addVtyRange}>Add VTY Range</button>
-	<button id="removeVtyButton" on:click={removeVtyRange}>Remove VTY Range</button>
+	<button class="VtyButton" on:click={addVtyRange}>Add VTY Range</button>
+	<button class="VtyButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
-	<button id="generateSkriptButton" on:click={generateSkript}>Generate Skript</button>
+	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>
 </div>
 
 {#if generate}
