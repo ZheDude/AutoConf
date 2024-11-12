@@ -146,27 +146,45 @@ General Layout Style
 /* Components*/
 
 .inputFieldDiv {
-	margin-top: 8%;
 	margin-left: 15%;
-	display: flex;
-	flex-direction: column;
-	width: 50%;
-	color: #ffff;
+	margin-top: 3%;
+	width: 40%;
+	background-color: #30313a;
+	padding: 1.5rem;
+	padding-right: 7%;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	color: #fff;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 20px;
+	font-size: 1.1rem;
 }
 
 .inputFieldDiv label {
-	display: flex;
-	flex-direction: column;
 	width: 100%;
-	color: #ffff;
-	font-family: Arial, Helvetica, sans-serif;
+	color: #ccc;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
 }
 
 .inputFieldDiv input {
-	font-size: 15px;
-	margin-top: 3%;
+	font-size: 1rem;
+	padding: 0.5rem;
+	border: 1px solid #c6c6c6;
+	border-radius: 4px;
+	background-color: #171821;
+	color: #fff;
+	width: 100%;
+	margin-bottom: 3%;
+	margin-top: 2%;
+	padding-right: 0%;
+	transition: all 0.3s ease;
+}
+
+.inputFieldDiv input:hover,
+.inputFieldDiv input:focus {
+	border-color: #171821;
+	outline: none;
+	box-shadow: 0 0 5px rgba(23, 24, 33, 0.5);
 }
 
 .dropdownDiv {
@@ -336,4 +354,8 @@ General Layout Style
 .VtyButton:active {
 	background-color: #8e918f;
 	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+#rightButton.VtyButton {
+	margin-right: 8%;
 }
