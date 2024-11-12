@@ -4,6 +4,7 @@ from Backend.bgp import BGPgenerator
 from Backend.key_chain import KEYCHAINgenerator
 from Backend.ospf import OSPFgenerator
 from Backend.rip import RIPGenerator
+from Backend.static_routes import StaticRoutesGenerator
 
 
 # TODO SAI the following things have to be done
@@ -89,9 +90,16 @@ def get_list_of_konfigurations(json_content: str) -> []:
             konfigurations_liste.append(bgp_script)
         elif name == "Key-Chain":
             key_chain_data = json_list.get("Key-Chain")
+            print(key_chain_data)
             key_chain_gen = KEYCHAINgenerator(key_chain_data)
             key_chain_script = key_chain_gen.generate_script()
             konfigurations_liste.append(key_chain_script)
+        elif name == "Static-Routes":
+            static_route_data = json_list.get("Static-Routes")
+            print(static_route_data)
+            static_route_gen = StaticRoutesGenerator(static_route_data)
+            static_route_script = static_route_gen.generate_script()
+            konfigurations_liste.append(static_route_script)
 
     return konfigurations_liste
 

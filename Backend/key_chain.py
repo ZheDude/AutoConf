@@ -3,16 +3,14 @@ import json
 
 class KEYCHAINgenerator:
     def __init__(self, key_chain_data):
+        self.data = key_chain_data
 
-        if type(key_chain_data) is type(list):
-            self.data = key_chain_data.get("Key-Chain")
-        else:
-            self.key_chain_data = key_chain_data
+
 
     def generate_script(self):
         commands = []
 
-        for key in self.key_chain_data:
+        for key in self.data:
             name = key.get("name")
             number = key.get("number")
             password = key.get("password")
@@ -48,6 +46,6 @@ if __name__ == "__main__":
             }
         ]
     }
-    keychain_gen = KEYCHAINgenerator(data)
+    keychain_gen = KEYCHAINgenerator(data.get("Key-Chain"))
     script = keychain_gen.generate_script()
     print(script)
