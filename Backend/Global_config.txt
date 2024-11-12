@@ -5,7 +5,7 @@ no ip domain lookup
 ip domain name 5CN
 
 username cisco priv 15 algo scrypt secret cisco
-crypto key gen rsa mod 1024 usage
+crypto key gen rsa mod 4096 usage
 ip ssh version 2
 
 line vty 0 15
@@ -16,7 +16,7 @@ exec-timeout 0 0
 
 int gig0/0
 no shut
-ip add 172.16.0.2 255.255.255.0
+ip add 172.16.2.127 255.255.255.0
 exit
 
 int lo 0
