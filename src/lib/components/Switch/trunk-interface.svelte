@@ -1,6 +1,7 @@
 <script>
 	import InputField from '../inputField.svelte';
     import Dropdown from '../dropdown.svelte';
+    import Checkbox from '../checkbox.svelte';
 	export let id;
 	export let interfaceRange;
 </script>
@@ -57,6 +58,11 @@ options={["Dynamic-Auto", "Dynamic-Desirable", "Static"]}
 fieldName="Mode{id}"
 Heading="Trunk-Mode:"
 ></Dropdown>
+
+<Checkbox name="Shutdown{id}" Heading="Shutdown" 
+></Checkbox>
+
+
 
 
 

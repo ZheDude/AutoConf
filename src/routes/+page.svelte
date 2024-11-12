@@ -136,7 +136,7 @@
 		{/each}
 	</div>
 
-	<button class="VtyButton" on:click={addVtyRange}>Add VTY Range</button>
+	<button id="rightButton" class="VtyButton" on:click={addVtyRange}>Add VTY Range</button>
 	<button class="VtyButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>

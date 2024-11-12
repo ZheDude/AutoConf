@@ -5,6 +5,7 @@
 	import Checkbox from '../../lib/components/checkbox.svelte';
 	import VLAN from '../../lib/components/Switch/vlan.svelte'
 	import TrunkInterface  from '../../lib/components/Switch/trunk-interface.svelte';
+	import Etherchannel from "../../lib/components/Switch/etherchannel.svelte"
 </script>
 
 <div id="parameterDivGrundkonfig">
@@ -18,7 +19,7 @@
 
 	<h2 class="subHeading">Interfaces</h2>
 	<h2 class="subHeading">Trunks</h2>
-	<TrunkInterface id=1 interfaceRange=false></TrunkInterface>
+	<TrunkInterface id=1 interfaceRange=true></TrunkInterface>
 	
 	<br />
 	<button class="VtyButton">Add Interface</button>
@@ -39,16 +40,13 @@
 	<button class="VtyButton">Add Interface Range</button>
 
 	<h2 class="subHeading">Etherchannels</h2>
-	<InputField placeholder="1" type="text" fieldName="Channel-Group:" id="Etherchannel 1" />
+	<Etherchannel></Etherchannel>
 
-	<InputField
-		placeholder="Gig0/2"
-		type="text"
-		fieldName="Interface"
-		id="Etherchannel-Interface 1 "
-	/>
+
 
 	<br />
 	<button class="VtyButton">Add Interface</button>
 	<button class="VtyButton" id="uniqueRight">Add Interface Range</button>
+
+
 </div>
