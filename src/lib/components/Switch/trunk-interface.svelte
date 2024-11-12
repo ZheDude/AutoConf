@@ -59,7 +59,7 @@ fieldName="Mode{id}"
 Heading="Trunk-Mode:"
 ></Dropdown>
 
-<Checkbox name="Shutdown{id}" Heading="Shutdown" 
+<Checkbox name="ShutdownTrunk{id}" Heading="Shutdown" 
 ></Checkbox>
 
 

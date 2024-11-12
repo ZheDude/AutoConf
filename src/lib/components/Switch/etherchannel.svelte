@@ -18,5 +18,18 @@ fieldName="EtherChannelMode{id}"
 Heading="Mode:"
 ></Dropdown>
 
+<InputField
+placeholder="Gig0/0"
+type="text"
+fieldName="Interface:"
+id="Etherchannel-Interface {id}"
+/>
+
+
+
+<button class="VtyButton">Add Interface</button>
+<button class="VtyButton" id="uniqueRight">Add Interface Range</button>
+
+
 
 

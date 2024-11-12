@@ -77,6 +77,7 @@ a:hover {
 	width: 20%;
 	margin-top: 4%;
 	margin-bottom: 4%;
+	padding-bottom: 5%;
 }
 
 /*
@@ -92,6 +93,7 @@ General Layout Style
 	width: 75%;
 	border-radius: 14px;
 	margin-bottom: 4%;
+	padding-bottom: 5%;
 }
 
 .pageDiv {
