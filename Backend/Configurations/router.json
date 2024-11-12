@@ -1,9 +1,3 @@
-### POST Request with json body to the API endpoint /configuration
-
-
-POST http://127.0.0.1:8000/configuration/
-Content-Type: application/json
-
 [
   {
     "OSPF": [
@@ -52,7 +46,7 @@ Content-Type: application/json
     "Key-Chain": [
       {
         "number": 12,
-        "name": "NAM1234123E",
+        "name": "NAME",
         "password": "PASSWORD",
         "ALGO": "hmac-sha-512"
       },
@@ -126,8 +120,8 @@ Content-Type: application/json
   {
     "Interface": [
       {
-        "type": "GigabitEthernet0",
-        "number": 0,
+        "type": "GigabitEthernet",
+        "number": "0/0",
         "ip_address": "0.0.0.0",
         "subnetmask": "255.255.255.255",
         "description": "This is a description",
@@ -146,14 +140,6 @@ Content-Type: application/json
     ]
   },
   {
-    "VLAN": [
-      {
-        "number": 10,
-        "name": "VLAN_NAME"
-      }
-    ]
-  },
-  {
     "Static-Routes": [
       {
         "source": "0.0.0.0",
@@ -161,50 +147,6 @@ Content-Type: application/json
         "destination": "1.1.1.1",
         "interface": "GigabitEthernet0/0",
         "distance": 1
-      }
-    ]
-  },
-  {
-    "VTP": {
-      "version": 3,
-      "mode": "server",
-      "domain": "DOMAIN",
-      "password": "PASSWORD",
-      "pruning": true,
-      "is_primary": true
-    }
-  },
-  {
-    "STP": {
-      "mode": "rapid-pvst",
-      "priority": 4096,
-      "hello_timer": 10,
-      "forward_delay": 10,
-      "max_age": 10,
-      "interface": [
-        {
-          "type": "GigabitEthernet0",
-          "number": 0,
-          "portfast": true,
-          "bpduguard": true
-        }
-      ],
-      "vlan": [
-        {
-          "number": 10,
-          "name": "VLAN_NAME",
-          "priority": 10
-        }
-      ]
-    }
-  },
-  {
-    "Portsecurity": [
-      {
-        "interface": "GigabitEthernet0/0",
-        "maximum": 10,
-        "violation": "shutdown",
-        "mac_address": "mac_address"
       }
     ]
   },
@@ -227,43 +169,13 @@ Content-Type: application/json
       {
         "group": 10,
         "version": 2,
-        "interface": "GigabitEthernet0/0",
-        "ip": "1.1.1.1",
+        "interface": "GigabitEthernet0/0.1",
+        "standbyip": "1.1.1.1",
         "priority": 10,
         "preempt": true,
         "timers": {
           "hello": 10,
           "hold": 30
-        }
-      }
-    ]
-  },
-  {
-    "TRUNK": [
-      {
-        "interface": "GigabitEthernet0/0",
-        "allowed_vlan": [
-          10,
-          20
-        ],
-        "native_vlan": 10,
-        "encapsulation": "dot1q",
-        "mode": "on",
-        "description": "This is a description",
-        "shutdown": false
-      }
-    ]
-  },
-  {
-    "Etherchannel": [
-      {
-        "group": {
-          "number": 1,
-          "interface": [
-            "GigabitEthernet0/0",
-            "GigabitEthernet0/1"
-          ],
-          "mode": "active"
         }
       }
     ]
@@ -295,5 +207,3 @@ Content-Type: application/json
     ]
   }
 ]
-
-

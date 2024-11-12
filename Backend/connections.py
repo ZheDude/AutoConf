@@ -53,18 +53,32 @@ class SSHConnection:
     
     def __del__(self):
         self.client.close()
-        
-    
-# class TelnetConnection:
-#     def __init__(self, ip, port):
-#         self.ip = ip
-#         self.port = port
-#         self.tn = Telnet.Telnet()
-#     
-#     async def send_command(self, command):
-#         await self.tn.open(self.ip, self.port)
-#         await self.tn.write(decodestring(command))
-#         response = await self.tn.read_until_eof()
-#         await self.tn.close()
-#         return response
-            
+
+    def send_command_imprvd(self, command, timeout=10, prompt="(config)#"):
+        if not self.channel:  # Ensure the channel is open
+            raise Exception("SSH session not active")
+
+        # Clear any existing output in the channel
+        if self.channel.recv_ready():
+            self.channel.recv(2048)
+
+        # Send the command
+        self.channel.send(command + '\n')
+
+        output = ""
+        start_time = time.time()
+
+        while True:
+            if self.channel.recv_ready():
+                output += self.channel.recv(2048).decode("utf-8")
+
+                # Check if the command prompt has returned in the output
+                if output.strip().endswith(prompt):
+                    break  # Break out if we see the prompt indicating the command is complete
+
+            # Check for timeout to avoid infinite loop
+            if time.time() - start_time > timeout:
+                print("Timeout reached while waiting for command output.")
+                break
+
+        return output
