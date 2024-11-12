@@ -1,8 +1,10 @@
 import json
 
 from Backend.bgp import BGPgenerator
+from Backend.key_chain import KEYCHAINgenerator
 from Backend.ospf import OSPFgenerator
 from Backend.rip import RIPGenerator
+
 
 # TODO SAI the following things have to be done
 # key-chain
@@ -25,6 +27,7 @@ class ConfigProcessor:
 
         return json_outputs
 
+
 def read_file(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -44,24 +47,22 @@ def get_element_names(config_data: list) -> list[str]:
     return top_level_names
 
 
-
-
-
-
-if __name__ == "__main__":
-    config_data = read_file("Configurations/Example_Json.json")
-    config_data = json.loads(config_data)
+def get_list_of_konfigurations(json_content: str) -> []:
+    config_data = json.loads(json_content)
     processor = ConfigProcessor(config_data)
     json_outputs = processor.process_config()
     top_level_names: list = get_element_names(config_data)
-    print(top_level_names)
     konfigurations_liste = list()
-    for json_output in json_outputs:
-        print("----------------")
+    print(json_outputs)
+    print(type(json_outputs))
+    print(len(json_outputs))
+
+    for index, json_output in enumerate(json_outputs):
+
         json_list: dict = json.loads(json_output)
-        print(json_list)
+
         name = list(json_list.keys())[0]
-        json_string = str(json_list)
+        print(name)
 
         if name == "DHCP":
             ...
@@ -86,11 +87,18 @@ if __name__ == "__main__":
             bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
             bgp_script = bgp_gen.generate_script()
             konfigurations_liste.append(bgp_script)
+        elif name == "Key-Chain":
+            key_chain_data = json_list.get("Key-Chain")
+            key_chain_gen = KEYCHAINgenerator(key_chain_data)
+            key_chain_script = key_chain_gen.generate_script()
+            konfigurations_liste.append(key_chain_script)
 
-        print(name)
-    for element in konfigurations_liste:
-        print("-----------")
+    return konfigurations_liste
+
+
+if __name__ == '__main__':
+    data = read_file("Configurations/Example_Json.json")
+    konfig_liste = get_list_of_konfigurations(data)
+    print(konfig_liste)
+    for element in konfig_liste:
         print(element)
-
-
-
