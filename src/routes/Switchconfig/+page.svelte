@@ -7,6 +7,8 @@
 	import TrunkInterface from '../../lib/components/Switch/trunk-interface.svelte';
 	import Etherchannel from '../../lib/components/Switch/etherchannel.svelte';
 	import AccessInterface from '../../lib/components/Switch/access-interface.svelte';
+	import StpProcess from '../../lib/components/Switch/stp-process.svelte';
+	import PortSecurityInterface from '../../lib/components/Switch/Port-Security-Interface.svelte';
 </script>
 
 <div id="parameterDivGrundkonfig">
@@ -35,6 +37,11 @@
 
 	<button class="VtyButton">Add VLAN</button>
 
+
+	<h2 class="subHeading">STP</h2>
+	<StpProcess id =1></StpProcess>
+	
+
 	<h2 class="subHeading">Interfaces</h2>
 	<h2 class="subHeading">Trunks</h2>
 	<TrunkInterface id="1" interfaceRange="true"></TrunkInterface>
@@ -49,9 +56,14 @@
 	<button class="VtyButton">Add Interface</button>
 	<button class="VtyButton">Add Interface Range</button>
 
+	<h2 class="subHeading">Port-Security</h2>
+	<PortSecurityInterface id="1"></PortSecurityInterface>
+	<button class="VtyButton">Add Interface</button>
+
 
 	<h2 class="subHeading">Etherchannels</h2>
 	<Etherchannel id={1} interfaceRange=false></Etherchannel>
+	<button class="VtyButton">Add Etherchannel</button>
 
 	<br />
 </div>
