@@ -1,5 +1,6 @@
 import json
 
+from Backend.dhcp import DHCPGenerator
 from Backend.hsrp import HSRPGenerator
 from interface import InterfaceGenerator
 from gre import GRETunnelGenerator
@@ -68,9 +69,8 @@ def get_list_of_konfigurations(json_content: str) -> []:
         name = list(json_list.keys())[0]
         print(name)
 
-        if name == "DHCP":
-            ...
-        elif name == "OSPF":
+
+        if name == "OSPF":
             list_ospf = json_list.get(name)
             for element in list_ospf:
                 # print(element, "hello")
@@ -121,6 +121,12 @@ def get_list_of_konfigurations(json_content: str) -> []:
             hsrp_gen = HSRPGenerator(hsrp_data)
             hsrp_script = hsrp_gen.generate_script()
             konfigurations_liste.append(hsrp_script)
+        elif name == "DHCP":
+            dhcp_data = json_list.get("DHCP")
+            print(dhcp_data)
+            dhcp_gen = DHCPGenerator(dhcp_data)
+            dhcp_script = dhcp_gen.generate_script()
+            konfigurations_liste.append(dhcp_script)
 
 
     return konfigurations_liste
