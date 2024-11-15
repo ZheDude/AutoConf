@@ -1,5 +1,6 @@
 import json
 
+from Backend.hsrp import HSRPGenerator
 from interface import InterfaceGenerator
 from gre import GRETunnelGenerator
 from bgp import BGPgenerator
@@ -114,6 +115,12 @@ def get_list_of_konfigurations(json_content: str) -> []:
             interface_gen = InterfaceGenerator(interface_data)
             interface_script = interface_gen.generate_script()
             konfigurations_liste.append(interface_script)
+        elif name == "HSRP":
+            hsrp_data = json_list.get("HSRP")
+            print(hsrp_data)
+            hsrp_gen = HSRPGenerator(hsrp_data)
+            hsrp_script = hsrp_gen.generate_script()
+            konfigurations_liste.append(hsrp_script)
 
 
     return konfigurations_liste
