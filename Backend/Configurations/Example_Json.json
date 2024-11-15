@@ -120,8 +120,7 @@
   {
     "Interface": [
       {
-        "type": "GigabitEthernet0",
-        "number": 0,
+        "interface": "GigabitEthernet0/123",
         "ip_address": "0.0.0.0",
         "subnetmask": "255.255.255.255",
         "description": "This is a description",
@@ -136,6 +135,13 @@
             "message_digest": true
           }
         }
+      },
+      {
+        "interface": "GigabitEthernet0/1",
+        "ip_address": "0.0.0.0",
+        "subnetmask": "255.255.255.255",
+        "description": "This is a description",
+        "shutdown": false
       }
     ]
   },
@@ -207,12 +213,20 @@
       {
         "tunnel": "Tunnel0",
         "source": "GigabitEthernet0/0",
+        "source_ip": "",
         "destination": "1.1.1.1",
-        "key": 10,
-        "ipadd": {
-          "ip": "1.1.1.1",
-          "subnetmask": "255.255.255.0"
-        }
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
+
+      },
+      {
+        "tunnel": "Tunnel123",
+        "source": "",
+        "source_ip": "192.168.1.1",
+        "destination": "212.12.1.1",
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
+
       }
     ]
   },

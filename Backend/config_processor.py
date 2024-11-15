@@ -1,10 +1,12 @@
 import json
 
-from Backend.bgp import BGPgenerator
-from Backend.key_chain import KEYCHAINgenerator
-from Backend.ospf import OSPFgenerator
-from Backend.rip import RIPGenerator
-from Backend.static_routes import StaticRoutesGenerator
+from interface import InterfaceGenerator
+from gre import GRETunnelGenerator
+from bgp import BGPgenerator
+from key_chain import KEYCHAINgenerator
+from ospf import OSPFgenerator
+from rip import RIPGenerator
+from static_routes import StaticRoutesGenerator
 
 
 # TODO SAI the following things have to be done
@@ -100,6 +102,19 @@ def get_list_of_konfigurations(json_content: str) -> []:
             static_route_gen = StaticRoutesGenerator(static_route_data)
             static_route_script = static_route_gen.generate_script()
             konfigurations_liste.append(static_route_script)
+        elif name == "GRE":
+            gre_data = json_list.get("GRE")
+            print(gre_data)
+            gre_gen = GRETunnelGenerator(gre_data)
+            gre_script = gre_gen.generate_script()
+            konfigurations_liste.append(gre_script)
+        elif name == "Interface":
+            interface_data = json_list.get("Interface")
+            print(interface_data)
+            interface_gen = InterfaceGenerator(interface_data)
+            interface_script = interface_gen.generate_script()
+            konfigurations_liste.append(interface_script)
+
 
     return konfigurations_liste
 
