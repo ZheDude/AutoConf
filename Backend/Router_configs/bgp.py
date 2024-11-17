@@ -86,6 +86,6 @@ bgp_data = {
 }
 
 if __name__ == "__main__":
-    bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
+    bgp_gen = BGPgenerator(bgp_data, "../Configurations/bgp_template.txt")
     bgp_script = bgp_gen.generate_script()
     print(bgp_script)

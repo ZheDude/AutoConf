@@ -70,7 +70,7 @@ rip_data = {
 
 if __name__ == "__main__":
     # Instantiate the RIPGenerator class with the rip_data
-    rip_gen = RIPGenerator(rip_data, "Configurations/rip_template.txt")
+    rip_gen = RIPGenerator(rip_data, "../Configurations/rip_template.txt")
 
     # Call the method to display the configuration in JSON structure
     rip_gen.display_config()

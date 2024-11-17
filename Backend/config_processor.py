@@ -1,14 +1,14 @@
 import json
 
-from bgp import BGPgenerator
-from dhcp import DHCPGenerator
-from gre import GRETunnelGenerator
-from hsrp import HSRPGenerator
-from interface import InterfaceGenerator
-from key_chain import KEYCHAINgenerator
-from ospf import OSPFgenerator
-from rip import RIPGenerator
-from static_routes import StaticRoutesGenerator
+from Backend.Router_configs.bgp import BGPgenerator
+from Backend.Router_configs.dhcp import DHCPGenerator
+from Backend.Router_configs.gre import GRETunnelGenerator
+from Backend.Router_configs.hsrp import HSRPGenerator
+from Backend.Router_configs.interface import InterfaceGenerator
+from Backend.Router_configs.key_chain import KEYCHAINgenerator
+from Backend.Router_configs.ospf import OSPFgenerator
+from Backend.Router_configs.rip import RIPGenerator
+from Backend.Router_configs.static_routes import StaticRoutesGenerator
 
 
 # TODO SAI default console mode soll configuration mode sein (end, conf t)

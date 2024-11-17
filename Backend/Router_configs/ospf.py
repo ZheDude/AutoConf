@@ -76,7 +76,7 @@ ospf_data = {
     ]
 }
 if __name__ == "__main__":
-    ospf_gen = OSPFgenerator(ospf_data, "Configurations/ospf_template.txt")
+    ospf_gen = OSPFgenerator(ospf_data, "../Configurations/ospf_template.txt")
     # ospf_gen.display_config()
     ospf_script = ospf_gen.generate_script()
     print(ospf_script)
