@@ -11,13 +11,8 @@ from rip import RIPGenerator
 from static_routes import StaticRoutesGenerator
 
 
-# TODO SAI the following things have to be done
-# key-chain
-# gre
-# interface
-# static routes
-# hsrp
-# dhcp
+# TODO SAI default console mode soll configuration mode sein (end, conf t)
+
 class ConfigProcessor:
     def __init__(self, config_data):
         self.config_data = config_data

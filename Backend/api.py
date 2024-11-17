@@ -16,7 +16,7 @@ def process_data(data: dict):
     print(json_string)
 
     konfig_liste = get_list_of_konfigurations(json_string)
-    
+
     for element in konfig_liste:
         print(element)
     return konfig_liste
