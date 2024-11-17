@@ -1,10 +1,7 @@
 
 import socket
 import time
-from quopri import decodestring
-
 import paramiko
-# import asyncio_telnet as Telnet
 
 class SSHConnection:
     def __init__(self, ip, username, password):
@@ -16,7 +13,6 @@ class SSHConnection:
         try:
             self.client.connect(self.ip, username=self.username, password=self.password)
             self.channel = self.client.invoke_shell()
-            time.sleep(5)
         except paramiko.ssh_exception.AuthenticationException:
             raise Exception("Authentication failed")
         except socket.gaierror:
