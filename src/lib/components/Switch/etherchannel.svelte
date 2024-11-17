@@ -4,8 +4,8 @@
 	import AccessInterface from "./access-interface.svelte";
     export let id;
     export let parameters = {
-				Interfaces: [{name: ""}],
-				InterfaceRanges: [{startInterface: "", endInterface: ""}],
+				Interfaces: [],
+				InterfaceRanges: [],
 				mode: "",
 				number: ""
 			}
@@ -19,7 +19,7 @@
 	}
 
 	function removeInterface() {
-		if (parameters.Interfaces.length != 1) {
+		if (parameters.Interfaces.length != 0) {
             parameters = {
             ...parameters,
             Interfaces: parameters.Interfaces.slice(0, -1)
@@ -36,7 +36,7 @@
 	}
 
 	function removeInterfaceRange() {
-		if (parameters.InterfaceRanges.length != 1) {
+		if (parameters.InterfaceRanges.length != 0) {
             parameters = {
             ...parameters,
             InterfaceRanges: parameters.InterfaceRanges.slice(0, -1)
@@ -51,6 +51,8 @@
 
 <h2 class="subHeading">Etherchannel {id + 1}</h2>
 
+
+
 {#each range(0, parameters.Interfaces.length-1) as count}
 <InputField bind:value={parameters.Interfaces[count].name}
 placeholder="Gig0/0"
@@ -58,7 +60,9 @@ type="text"
 fieldName="Interface:"
 id="Etherchannel-Interface {id}"
 />
+
 {/each}
+
 
 
 

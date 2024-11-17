@@ -28,7 +28,7 @@
 	}
 
 	function removeInterface() {
-		if (accessInterfaces.Interfaces.length != 1) {
+		if (accessInterfaces.Interfaces.length != 0) {
 			accessInterfaces.Interfaces = accessInterfaces.Interfaces.slice(0, -1);
 		}
 	}
@@ -45,7 +45,7 @@
 	}
 
 	function removeInterfaceRange() {
-		if (accessInterfaces.InterfaceRanges.length != 1) {
+		if (accessInterfaces.InterfaceRanges.length != 0) {
 			accessInterfaces.InterfaceRanges = accessInterfaces.InterfaceRanges.slice(0, -1);
 		}
 	}

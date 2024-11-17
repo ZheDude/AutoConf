@@ -31,7 +31,7 @@
 	}
 
 	function removeInterface() {
-		if (trunks.Interfaces.length != 1) {
+		if (trunks.Interfaces.length != 0) {
 			trunks.Interfaces = trunks.Interfaces.slice(0, -1);
 		}
 	}
@@ -51,10 +51,11 @@
 	}
 
 	function removeInterfaceRange() {
-		if (trunks.InterfaceRanges.length != 1) {
+		if (trunks.InterfaceRanges.length != 0) {
 			trunks.InterfaceRanges = trunks.InterfaceRanges.slice(0, -1);
 		}
 	}
+
 </script>
 
 <h2 class="subHeading">Single Interfaces</h2>
