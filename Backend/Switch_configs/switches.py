@@ -1,6 +1,3 @@
-import json
-
-
 class VlanGenerator:
     def __init__(self, vlan_data, template_file):
         self.template_file = template_file

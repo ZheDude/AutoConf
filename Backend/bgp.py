@@ -1,6 +1,3 @@
-import json
-
-
 class BGPgenerator:
     def __init__(self, bgp_data_inside, template_file):
         self.bgp_data = bgp_data_inside

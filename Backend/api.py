@@ -1,9 +1,8 @@
 import json
 
+import uvicorn
 # from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-import uvicorn
-import os
 
 from config_processor import get_list_of_konfigurations
 

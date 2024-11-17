@@ -1,6 +1,3 @@
-import json
-
-
 class StaticRoutesGenerator:
     def __init__(self, static_route_data):
         self.static_route_data = static_route_data

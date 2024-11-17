@@ -1,10 +1,10 @@
 import json
 
+from bgp import BGPgenerator
 from dhcp import DHCPGenerator
+from gre import GRETunnelGenerator
 from hsrp import HSRPGenerator
 from interface import InterfaceGenerator
-from gre import GRETunnelGenerator
-from bgp import BGPgenerator
 from key_chain import KEYCHAINgenerator
 from ospf import OSPFgenerator
 from rip import RIPGenerator

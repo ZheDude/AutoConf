@@ -1,6 +1,3 @@
-import json
-
-
 class Etherchannelgenerator:
     def __init__(self, etherchannel_data, template_file):
         self.template_file = template_file
@@ -20,8 +17,8 @@ class Etherchannelgenerator:
     def generate_script(self):
         interface_range_string = " ".join(self.group['interfaces'])
 
-        fin_str = (f"interface range {interface_range_string}\n"+
-                   f"port-channel group {self.group['number']}\n"+
+        fin_str = (f"interface range {interface_range_string}\n" +
+                   f"port-channel group {self.group['number']}\n" +
                    f"port-channel mode {self.group['mode']}")
         return fin_str
 

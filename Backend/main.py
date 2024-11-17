@@ -1,6 +1,3 @@
-import asyncio
-
-
 def main():
     from connections import SSHConnection
     # from connections import TelnetConnection

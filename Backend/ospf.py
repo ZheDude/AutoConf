@@ -1,6 +1,3 @@
-import json
-
-
 class OSPFgenerator:
     def __init__(self, ospf_data, template_file):
         self.ospf_data = ospf_data
