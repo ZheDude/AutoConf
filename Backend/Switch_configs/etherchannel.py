@@ -39,7 +39,7 @@ etherchannel_data = {
     ]
 }
 if __name__ == "__main__":
-    etherchannel_gen = Etherchannelgenerator(etherchannel_data, "Configurations/etherchannel_template.txt")
+    etherchannel_gen = Etherchannelgenerator(etherchannel_data, "../Configurations/etherchannel_template.txt")
     # etherchannel_gen.display_config()
     etherchannel_script = etherchannel_gen.generate_script()
     print(etherchannel_script)

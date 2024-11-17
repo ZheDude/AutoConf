@@ -165,14 +165,25 @@
     ]
   },
   {
-    "VTP": {
-      "version": 3,
-      "mode": "server",
-      "domain": "DOMAIN",
-      "password": "PASSWORD",
-      "pruning": true,
-      "is_primary": true
-    }
+    "VTP": [
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true,
+        "vlan": 10
+      },
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true
+      }
+    ]
   },
   {
     "STP": {
