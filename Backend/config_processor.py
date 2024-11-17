@@ -128,6 +128,8 @@ def get_list_of_konfigurations(json_content: str) -> []:
             dhcp_script = dhcp_gen.generate_script()
             konfigurations_liste.append(dhcp_script)
 
+        ### MEHMET TUST DU HIER DEINE COD
+
 
     return konfigurations_liste
 
