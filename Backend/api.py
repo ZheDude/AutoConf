@@ -12,7 +12,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["POST"],
-    allow_headers=["Content-Type"],  
+    allow_headers=["Content-Type"],
 )
 
 
@@ -26,6 +26,8 @@ def process_data(data: dict):
 
     for element in konfig_liste:
         print(element)
+    if len(konfig_liste) == 0:
+        raise HTTPException(status_code=404, detail="No Valid Configuration")
     return konfig_liste
 
 
