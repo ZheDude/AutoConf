@@ -9,6 +9,7 @@ from config_processor import get_list_of_konfigurations
 
 app = FastAPI()
 
+
 def process_data(data: dict):
     # print("Processing data:", data)
     print("HELLO THIS IS WHERE DAFUQ I AM :LSDKJF:SLDKFJS:DLKFJS:DLKFJS:DLKFJSD:LKFJSD:LFKJSD:LFKJSD")

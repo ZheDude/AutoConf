@@ -5,8 +5,6 @@ class KEYCHAINgenerator:
     def __init__(self, key_chain_data):
         self.data = key_chain_data
 
-
-
     def generate_script(self):
         commands = []
 

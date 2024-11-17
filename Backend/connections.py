@@ -1,7 +1,7 @@
-
 import socket
 import time
 import paramiko
+
 
 class SSHConnection:
     def __init__(self, ip, username, password):
@@ -34,9 +34,9 @@ class SSHConnection:
 
         while not self.channel.recv_ready():
             pass  # Wait until data is ready to be read
-        
+
         time.sleep(5)
-        
+
         while self.channel.recv_ready():
             output += self.channel.recv(2048).decode("utf-8")
 
@@ -46,7 +46,7 @@ class SSHConnection:
 
     def close(self):
         self.__del__()
-    
+
     def __del__(self):
         self.client.close()
 

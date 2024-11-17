@@ -21,7 +21,6 @@ class DHCPGenerator:
             for ip in exclude:
                 commands.append(f"ip dhcp excluded-address {ip}")
 
-
             commands.append(f"ip dhcp pool {pool}")
             commands.append(f"network {network} {subnetmask}")
             commands.append(f"default-router {default_router}")

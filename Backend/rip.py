@@ -1,5 +1,6 @@
 import json
 
+
 class RIPGenerator:
     def __init__(self, rip_data, template_file):
         self.rip_data = rip_data
@@ -11,7 +12,6 @@ class RIPGenerator:
         self.timer_update = rip_data["RIP"]["timer_update"]
         self.passive_interface = rip_data["RIP"]["passive_interface"]
         self.redistribute = rip_data["RIP"]["redistribute"]
-
 
         self.template_file = template_file
 
@@ -30,12 +30,12 @@ class RIPGenerator:
             networks_str = "\n".join([f"network {network['network']}" for network in self.networks])
 
             rip_script = template.replace("${version}", str(self.version)) \
-                                 .replace("${auto_summary}", "no auto-summary" if not self.auto_summary else "auto-summary") \
-                                 .replace("network ${network}", networks_str) \
-                                 .replace("${neighbor}", self.neighbor) \
-                                 .replace("${timer_update}", str(self.timer_update)) \
-                                 .replace("${passive_interface}", passive_if_str) \
-                                 .replace("${redistribute}", redistribute_str)
+                .replace("${auto_summary}", "no auto-summary" if not self.auto_summary else "auto-summary") \
+                .replace("network ${network}", networks_str) \
+                .replace("${neighbor}", self.neighbor) \
+                .replace("${timer_update}", str(self.timer_update)) \
+                .replace("${passive_interface}", passive_if_str) \
+                .replace("${redistribute}", redistribute_str)
 
             return rip_script
 
@@ -69,7 +69,6 @@ rip_data = {
 }
 
 if __name__ == "__main__":
-
     # Instantiate the RIPGenerator class with the rip_data
     rip_gen = RIPGenerator(rip_data, "Configurations/rip_template.txt")
 

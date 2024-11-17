@@ -53,17 +53,16 @@ def get_list_of_konfigurations(json_content: str) -> []:
     json_outputs = processor.process_config()
     top_level_names: list = get_element_names(config_data)
     konfigurations_liste = list()
-    #print(json_outputs)
-    #print(type(json_outputs))
-    #print(len(json_outputs))
+    # print(json_outputs)
+    # print(type(json_outputs))
+    # print(len(json_outputs))
 
     for index, json_output in enumerate(json_outputs):
 
         json_list: dict = json.loads(json_output)
 
         name = list(json_list.keys())[0]
-        #print(name)
-
+        # print(name)
 
         if name == "OSPF":
             list_ospf = json_list.get(name)
@@ -88,43 +87,42 @@ def get_list_of_konfigurations(json_content: str) -> []:
             konfigurations_liste.append(bgp_script)
         elif name == "Key-Chain":
             key_chain_data = json_list.get("Key-Chain")
-            #print(key_chain_data)
+            # print(key_chain_data)
             key_chain_gen = KEYCHAINgenerator(key_chain_data)
             key_chain_script = key_chain_gen.generate_script()
             konfigurations_liste.append(key_chain_script)
         elif name == "Static-Routes":
             static_route_data = json_list.get("Static-Routes")
-            #print(static_route_data)
+            # print(static_route_data)
             static_route_gen = StaticRoutesGenerator(static_route_data)
             static_route_script = static_route_gen.generate_script()
             konfigurations_liste.append(static_route_script)
         elif name == "GRE":
             gre_data = json_list.get("GRE")
-            #print(gre_data)
+            # print(gre_data)
             gre_gen = GRETunnelGenerator(gre_data)
             gre_script = gre_gen.generate_script()
             konfigurations_liste.append(gre_script)
         elif name == "Interface":
             interface_data = json_list.get("Interface")
-            #print(interface_data)
+            # print(interface_data)
             interface_gen = InterfaceGenerator(interface_data)
             interface_script = interface_gen.generate_script()
             konfigurations_liste.append(interface_script)
         elif name == "HSRP":
             hsrp_data = json_list.get("HSRP")
-            #print(hsrp_data)
+            # print(hsrp_data)
             hsrp_gen = HSRPGenerator(hsrp_data)
             hsrp_script = hsrp_gen.generate_script()
             konfigurations_liste.append(hsrp_script)
         elif name == "DHCP":
             dhcp_data = json_list.get("DHCP")
-            #print(dhcp_data)
+            # print(dhcp_data)
             dhcp_gen = DHCPGenerator(dhcp_data)
             dhcp_script = dhcp_gen.generate_script()
             konfigurations_liste.append(dhcp_script)
 
         ### MEHMET TUST DU HIER DEINE COD
-
 
     return konfigurations_liste
 
@@ -132,7 +130,7 @@ def get_list_of_konfigurations(json_content: str) -> []:
 if __name__ == '__main__':
     data = read_file("Configurations/Example_Json.json")
     konfig_liste = get_list_of_konfigurations(data)
-    #print(konfig_liste)
+    # print(konfig_liste)
     for element in konfig_liste:
         ...
-        #print(element)
+        # print(element)

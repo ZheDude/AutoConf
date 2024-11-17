@@ -12,5 +12,6 @@ def main():
     result = dev1.send_command_imprvd("do-exec show ip interface brief\n    ")
     print(result)
 
+
 if __name__ == '__main__':
     main()

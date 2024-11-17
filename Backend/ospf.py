@@ -1,5 +1,6 @@
 import json
 
+
 class OSPFgenerator:
     def __init__(self, ospf_data, template_file):
         self.ospf_data = ospf_data
@@ -33,14 +34,16 @@ class OSPFgenerator:
 
             passive_if_str = "\n".join([f"passive-interface {iface}" for iface in self.passive_interfaces])
 
-            networks_str = "\n".join([f"network {network['network']} {network['wildcard']} area {network['area_id']}" for network in self.networks])
+            networks_str = "\n".join(
+                [f"network {network['network']} {network['wildcard']} area {network['area_id']}" for network in
+                 self.networks])
 
             ospf_script = template.replace("${process_id}", str(self.process_id)) \
-                                  .replace("${router_id}", self.router_id) \
-                                  .replace("${passive_interfaces}", passive_if_str) \
-                                  .replace("network ${network} ${wildcard} area ${area_id}", networks_str) \
-                                  .replace("${timer_hello}", str(self.timer_hello)) \
-                                  .replace("${timer_dead}", str(self.timer_dead))
+                .replace("${router_id}", self.router_id) \
+                .replace("${passive_interfaces}", passive_if_str) \
+                .replace("network ${network} ${wildcard} area ${area_id}", networks_str) \
+                .replace("${timer_hello}", str(self.timer_hello)) \
+                .replace("${timer_dead}", str(self.timer_dead))
 
             return ospf_script
 

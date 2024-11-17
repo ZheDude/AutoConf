@@ -1,5 +1,6 @@
 import json
 
+
 class BGPgenerator:
     def __init__(self, bgp_data_inside, template_file):
         self.bgp_data = bgp_data_inside
@@ -12,7 +13,9 @@ class BGPgenerator:
         self.template_file = template_file
 
     def generate_network_statements(self):
-        network_statements = "\n".join([f"network {network['network']} mask {network.get('subnetmask', network.get('submask', ''))}" for network in self.networks])
+        network_statements = "\n".join(
+            [f"network {network['network']} mask {network.get('subnetmask', network.get('submask', ''))}" for network in
+             self.networks])
         return network_statements
 
     def generate_neighbor_config(self, neighbor):
@@ -39,10 +42,10 @@ class BGPgenerator:
 
             # Replace placeholders in the template
             bgp_script = template.replace("${local_as}", str(self.local_as)) \
-                                 .replace("${neighbour_configurations}", neighbor_configs) \
-                                 .replace("${network_statements}", network_statements) \
-                                 .replace("${timer_bgp}", str(self.timer_bgp)) \
-                                 .replace("${hold_time}", str(self.hold_time))
+                .replace("${neighbour_configurations}", neighbor_configs) \
+                .replace("${network_statements}", network_statements) \
+                .replace("${timer_bgp}", str(self.timer_bgp)) \
+                .replace("${hold_time}", str(self.hold_time))
 
             return bgp_script
 
@@ -70,7 +73,7 @@ bgp_data = {
             "default_originate": False
         }
     ],
-    "networks":[
+    "networks": [
         {
             "network": "10.0.0.0",
             "subnetmask": "0.0.0.255"
@@ -86,7 +89,6 @@ bgp_data = {
 }
 
 if __name__ == "__main__":
-
     bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
     bgp_script = bgp_gen.generate_script()
     print(bgp_script)

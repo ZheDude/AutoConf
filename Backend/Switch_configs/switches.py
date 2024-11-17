@@ -14,9 +14,10 @@ class VlanGenerator:
         print(self.vlan['name'])
 
     def generate_script(self):
-        fin_str = (f"vlan {self.vlan['number']}\n"+
+        fin_str = (f"vlan {self.vlan['number']}\n" +
                    f"name {self.vlan['name']}")
         return fin_str
+
 
 class VTPGenerator:
     def __init__(self, vtp_data, template_file):
@@ -40,9 +41,9 @@ class VTPGenerator:
         print(self.vtp['is_primary'])
 
     def generate_script(self):
-        fin_str = (f"vtp version {self.vtp['version']}\n"+
-                   f"vtp mode {self.vtp['mode']}\n"+
-                   f"vtp domain {self.vtp['domain']}\n"+
+        fin_str = (f"vtp version {self.vtp['version']}\n" +
+                   f"vtp mode {self.vtp['mode']}\n" +
+                   f"vtp domain {self.vtp['domain']}\n" +
                    f"vtp password {self.vtp['password']}\n")
         if self.vtp['pruning']:
             fin_str += "vtp pruning\n"
@@ -52,6 +53,7 @@ class VTPGenerator:
             else:
                 fin_str += "do-exec vtp primary\n"
         return fin_str
+
 
 class STPGenerator:
     def __init__(self, stp_data, template_file):
@@ -78,22 +80,23 @@ class STPGenerator:
     def generate_script(self):
         interface_string = ""
         for interface in self.stp['interface']:
-            interface_string += (f"interface {interface['type']} {interface['number']}\n"+
-                                 f"spanning-tree portfast\n"+
+            interface_string += (f"interface {interface['type']} {interface['number']}\n" +
+                                 f"spanning-tree portfast\n" +
                                  f"spanning-tree bpduguard\n")
 
         vlan_string = ""
         for vlan in self.stp['vlan']:
             vlan_string += (f"spanning-tree vlan {vlan['number']} priority {vlan['priority']}\n")
 
-        fin_str = (f"spanning-tree mode {self.stp['mode']}\n"+
-                   f"spanning-tree priority {self.stp['priority']}\n"+
-                   f"spanning-tree hello-time {self.stp['hello_timer']}\n"+
-                   f"spanning-tree forward-time {self.stp['forward_delay']}\n"+
-                   f"spanning-tree max-age {self.stp['max_age']}\n"+
-                   f"{interface_string}"+
+        fin_str = (f"spanning-tree mode {self.stp['mode']}\n" +
+                   f"spanning-tree priority {self.stp['priority']}\n" +
+                   f"spanning-tree hello-time {self.stp['hello_timer']}\n" +
+                   f"spanning-tree forward-time {self.stp['forward_delay']}\n" +
+                   f"spanning-tree max-age {self.stp['max_age']}\n" +
+                   f"{interface_string}" +
                    f"{vlan_string}")
         return fin_str
+
 
 class PortsecurityGenerator:
     def __init__(self, portsecurity_data, template_file):
@@ -112,11 +115,12 @@ class PortsecurityGenerator:
         print(self.portsecurity['mac_address'])
 
     def generate_script(self):
-        fin_str = (f"interface {self.portsecurity['interface']}\n"+
-                   f"switchport port-security maximum {self.portsecurity['maximum']}\n"+
-                   f"switchport port-security violation {self.portsecurity['violation']}\n"+
+        fin_str = (f"interface {self.portsecurity['interface']}\n" +
+                   f"switchport port-security maximum {self.portsecurity['maximum']}\n" +
+                   f"switchport port-security violation {self.portsecurity['violation']}\n" +
                    f"switchport port-security mac-address {self.portsecurity['mac_address']}")
         return fin_str
+
 
 class TrunkGenerator:
     def __init__(self, trunk_data, template_file):
@@ -145,14 +149,15 @@ class TrunkGenerator:
         for vlan in self.trunk['allowed_vlan']:
             vlan_string += f"switchport trunk allowed vlan {vlan}\n"
 
-        fin_str = (f"interface {self.trunk['interface']}\n"+
-                   f"switchport trunk allowed vlan {vlan_string}\n"+
-                   f"switchport trunk native vlan {self.trunk['native_vlan']}\n"+
-                   f"switchport trunk encapsulation {self.trunk['encapsulation']}\n"+
-                   f"switchport mode {self.trunk['mode']}\n"+
-                   f"switchport description {self.trunk['description']}\n"+
+        fin_str = (f"interface {self.trunk['interface']}\n" +
+                   f"switchport trunk allowed vlan {vlan_string}\n" +
+                   f"switchport trunk native vlan {self.trunk['native_vlan']}\n" +
+                   f"switchport trunk encapsulation {self.trunk['encapsulation']}\n" +
+                   f"switchport mode {self.trunk['mode']}\n" +
+                   f"switchport description {self.trunk['description']}\n" +
                    f"shutdown {self.trunk['shutdown']}")
         return fin_str
+
 
 class Etherchannelgenerator:
     def __init__(self, etherchannel_data, template_file):
@@ -173,8 +178,8 @@ class Etherchannelgenerator:
     def generate_script(self):
         interface_range_string = " ".join(self.group['interfaces'])
 
-        fin_str = (f"interface range {interface_range_string}\n"+
-                   f"port-channel group {self.group['number']}\n"+
+        fin_str = (f"interface range {interface_range_string}\n" +
+                   f"port-channel group {self.group['number']}\n" +
                    f"port-channel mode {self.group['mode']}")
         return fin_str
 
@@ -278,7 +283,6 @@ etherchannel_data = {
     ]
 }
 
-
 # [
 #   
 #   
@@ -306,10 +310,6 @@ etherchannel_data = {
 #   },
 
 # ]
-
-
-
-
 
 
 if __name__ == "__main__":
