@@ -9,25 +9,42 @@ Content-Type: application/json
     "OSPF": [
       {
         "process_id": 10,
-        "network": {
-          "network": "10.0.0.0",
-          "area_id": 10,
-          "wildcard": "0.0.0.255"
-        },
+        "networks": [
+          {
+            "network": "192.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          }
+        ],
         "router_id": "10.0.0.1",
         "timer_dead": 30,
-        "timer_hello": 10
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/2"
+        ]
       },
       {
         "process_id": 1234,
-        "network": {
-          "network": "192.0.0.0",
-          "area_id": 1234,
-          "wildcard": "123.0.0.255"
-        },
+        "networks": [
+          {
+            "network": "10.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          },
+          {
+            "network": "172.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.3"
+          }
+        ],
         "router_id": "172.0.0.1",
         "timer_dead": 30,
-        "timer_hello": 10
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/123"
+        ]
       }
     ]
   },
@@ -35,7 +52,7 @@ Content-Type: application/json
     "Key-Chain": [
       {
         "number": 12,
-        "name": "NAME",
+        "name": "NAM1234123E",
         "password": "PASSWORD",
         "ALGO": "hmac-sha-512"
       },
@@ -51,14 +68,23 @@ Content-Type: application/json
     "RIP": {
       "version": 2,
       "auto-summary": true,
-      "network": "10.0.0.1",
+      "networks": [
+        {
+          "network": "10.0.0.0"
+        },
+        {
+          "network": "172.0.0.0"
+        }
+      ],
       "neighbor": "10.0.0.3",
       "timer_update": 30,
       "passive_interface": [
-        "GigabitEthernet0/1"
+        "GigabitEthernet0/1",
+        "GigabitEthernet0/2"
       ],
       "redistribute": [
-        "bgp"
+        "bgp",
+        "ospf"
       ]
     }
   },
@@ -72,14 +98,30 @@ Content-Type: application/json
           "next_hop_self": true,
           "route_reflector": true,
           "default_originate": true
+        },
+        {
+          "ip_of_neighbor": "6.6.6.6",
+          "as": 1234,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
         }
-      ]
-    },
-    "network": {
-      "network": "10.0.0.0",
-      "subnetmask": "255.255.255.0"
-    },
-    "timer_bgp": 30
+      ],
+      "networks": [
+        {
+          "network": "10.0.0.0",
+          "subnetmask": "0.0.0.255"
+        },
+        {
+          "network": "172.0.0.0",
+          "submask": "0.0.0.3"
+        }
+      ],
+      "timer_bgp": 30,
+      "hold_time": 180,
+      "local_as": 696969
+    }
   },
   {
     "Interface": [
@@ -215,12 +257,14 @@ Content-Type: application/json
   {
     "Etherchannel": [
       {
-        "number": 1,
-        "interface": [
-          "GigabitEthernet0/0",
-          "GigabitEthernet0/1"
-        ],
-        "mode": "active"
+        "group": {
+          "number": 1,
+          "interface": [
+            "GigabitEthernet0/0",
+            "GigabitEthernet0/1"
+          ],
+          "mode": "active"
+        }
       }
     ]
   },
@@ -228,6 +272,17 @@ Content-Type: application/json
     "DHCP": [
       {
         "pool": "POOL",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      },
+      {
+        "pool": "POOL123123",
         "network": "1.1.1.0",
         "subnetmask": "255.255.255.0",
         "default_router": "1.1.1.1",

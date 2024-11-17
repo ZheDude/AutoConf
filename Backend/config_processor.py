@@ -1,8 +1,14 @@
 import json
 
-from Backend.bgp import BGPgenerator
-from Backend.ospf import OSPFgenerator
-from Backend.rip import RIPGenerator
+from Backend.dhcp import DHCPGenerator
+from Backend.hsrp import HSRPGenerator
+from interface import InterfaceGenerator
+from gre import GRETunnelGenerator
+from bgp import BGPgenerator
+from key_chain import KEYCHAINgenerator
+from ospf import OSPFgenerator
+from rip import RIPGenerator
+from static_routes import StaticRoutesGenerator
 
 
 # TODO SAI the following things have to be done
@@ -46,24 +52,25 @@ def get_element_names(config_data: list) -> list[str]:
     return top_level_names
 
 
-if __name__ == "__main__":
-    config_data = read_file("Configurations/Example_Json.json")
-    config_data = json.loads(config_data)
+def get_list_of_konfigurations(json_content: str) -> []:
+    config_data = json.loads(json_content)
     processor = ConfigProcessor(config_data)
     json_outputs = processor.process_config()
     top_level_names: list = get_element_names(config_data)
-    print(top_level_names)
     konfigurations_liste = list()
-    for json_output in json_outputs:
-        print("----------------")
-        json_list: dict = json.loads(json_output)
-        print(json_list)
-        name = list(json_list.keys())[0]
-        json_string = str(json_list)
+    print(json_outputs)
+    print(type(json_outputs))
+    print(len(json_outputs))
 
-        if name == "DHCP":
-            ...
-        elif name == "OSPF":
+    for index, json_output in enumerate(json_outputs):
+
+        json_list: dict = json.loads(json_output)
+
+        name = list(json_list.keys())[0]
+        print(name)
+
+
+        if name == "OSPF":
             list_ospf = json_list.get(name)
             for element in list_ospf:
                 # print(element, "hello")
@@ -84,8 +91,50 @@ if __name__ == "__main__":
             bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
             bgp_script = bgp_gen.generate_script()
             konfigurations_liste.append(bgp_script)
+        elif name == "Key-Chain":
+            key_chain_data = json_list.get("Key-Chain")
+            print(key_chain_data)
+            key_chain_gen = KEYCHAINgenerator(key_chain_data)
+            key_chain_script = key_chain_gen.generate_script()
+            konfigurations_liste.append(key_chain_script)
+        elif name == "Static-Routes":
+            static_route_data = json_list.get("Static-Routes")
+            print(static_route_data)
+            static_route_gen = StaticRoutesGenerator(static_route_data)
+            static_route_script = static_route_gen.generate_script()
+            konfigurations_liste.append(static_route_script)
+        elif name == "GRE":
+            gre_data = json_list.get("GRE")
+            print(gre_data)
+            gre_gen = GRETunnelGenerator(gre_data)
+            gre_script = gre_gen.generate_script()
+            konfigurations_liste.append(gre_script)
+        elif name == "Interface":
+            interface_data = json_list.get("Interface")
+            print(interface_data)
+            interface_gen = InterfaceGenerator(interface_data)
+            interface_script = interface_gen.generate_script()
+            konfigurations_liste.append(interface_script)
+        elif name == "HSRP":
+            hsrp_data = json_list.get("HSRP")
+            print(hsrp_data)
+            hsrp_gen = HSRPGenerator(hsrp_data)
+            hsrp_script = hsrp_gen.generate_script()
+            konfigurations_liste.append(hsrp_script)
+        elif name == "DHCP":
+            dhcp_data = json_list.get("DHCP")
+            print(dhcp_data)
+            dhcp_gen = DHCPGenerator(dhcp_data)
+            dhcp_script = dhcp_gen.generate_script()
+            konfigurations_liste.append(dhcp_script)
 
-        print(name)
-    for element in konfigurations_liste:
-        print("-----------")
+
+    return konfigurations_liste
+
+
+if __name__ == '__main__':
+    data = read_file("Configurations/Example_Json.json")
+    konfig_liste = get_list_of_konfigurations(data)
+    print(konfig_liste)
+    for element in konfig_liste:
         print(element)

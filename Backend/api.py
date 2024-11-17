@@ -1,15 +1,23 @@
-# from dotenv import load_dotenv
+import json
+
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 import uvicorn
 import os
 
-app = FastAPI()
+from Backend.config_processor import get_list_of_konfigurations
 
+app = FastAPI()
 
 def process_data(data: dict):
     print("Processing data:", data)
-
-    return {"processed_data": data}
+    json_string = json.dumps(data)
+    print(json_string)
+    konfig_liste = get_list_of_konfigurations(json_string)
+    #später an mehmet weitergeben (damit es an die einzelne geräte eingespielt werden kann)
+    for element in konfig_liste:
+        print(element)
+    return konfig_liste
 
 
 @app.post("/configuration/")
@@ -20,6 +28,6 @@ async def receive_json(request: Request):
 
 
 if __name__ == "__main__":
-    # load_dotenv()
+    load_dotenv()
     API_KEY = os.getenv("API_KEY")
     uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)

@@ -3,7 +3,6 @@ import json
 class BGPgenerator:
     def __init__(self, bgp_data_inside, template_file):
         self.bgp_data = bgp_data_inside
-        print(bgp_data_inside, "HLKDJÖFDLKJ")
 
         self.neighbor = bgp_data_inside["neighbor"]
         self.local_as = bgp_data_inside['local_as']
