@@ -1,9 +1,3 @@
-### POST Request with json body to the API endpoint /configuration
-
-### POST Request with Json body to test the configuration of a Router
-POST http://127.0.0.1:8000/configuration/
-Content-Type: application/json
-
 [
   {
     "OSPF": [
@@ -237,6 +231,3 @@ Content-Type: application/json
     ]
   }
 ]
-
-
-
