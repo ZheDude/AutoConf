@@ -2,11 +2,18 @@ import json
 
 import uvicorn
 # from dotenv import load_dotenv
-from fastapi import FastAPI, Request
-
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from config_processor import get_list_of_konfigurations
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
+)
 
 
 def process_data(data: dict):
@@ -19,11 +26,17 @@ def process_data(data: dict):
 
     for element in konfig_liste:
         print(element)
+    if len(konfig_liste) == 0:
+        raise HTTPException(status_code=404, detail="No Valid Configuration")
     return konfig_liste
 
 
 @app.post("/configuration/")
 async def receive_json(request: Request):
+    if request.headers.get("Content-Type") != "application/json":
+        raise HTTPException(
+            status_code=400, detail="Content-Type must be application/json"
+        )
     json_data = await request.json()
     result = process_data(json_data)
     return result
