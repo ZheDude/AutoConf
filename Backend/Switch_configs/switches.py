@@ -36,10 +36,11 @@ class VTPGenerator:
         print(self.vtp['is_primary'])
 
     def generate_script(self):
-        fin_str = (f"vtp version {self.vtp['version']}\n" +
-                   f"vtp mode {self.vtp['mode']}\n" +
+        fin_str = (f"vtp mode {self.vtp['mode']}\n" +
                    f"vtp domain {self.vtp['domain']}\n" +
-                   f"vtp password {self.vtp['password']}\n")
+                   f"vtp password {self.vtp['password']}\n" +
+                   f"vtp version {self.vtp['version']}\n")
+
         if self.vtp['pruning']:
             fin_str += "vtp pruning\n"
         if self.vtp['is_primary']:
@@ -70,17 +71,17 @@ class STPGenerator:
         print(self.stp['vlan'])
 
     def generate_script(self):
-        fin_str = (f"spanning-tree mode {self.stp['mode']}\n" +
-                   f"spanning-tree priority {self.stp['priority']}\n" +
-                   f"spanning-tree hello-time {self.stp['hello_timer']}\n" +
-                   f"spanning-tree forward-time {self.stp['forward_timer']}\n" +
-                   f"spanning-tree max-age {self.stp['max_age']}\n")
+        fin_str = (f"spanning-tree mode {self.stp['mode']}\n")
         for vlan in self.stp['vlan']:
             fin_str += f"spanning-tree vlan {vlan} priority {self.stp['priority']}\n"
+            fin_str += f"spanning-tree vlan {vlan} hello-time {self.stp['hello_timer']}\n"
+            fin_str += f"spanning-tree vlan {vlan} forward-time {self.stp['forward_timer']}\n"
+            fin_str += f"spanning-tree vlan {vlan} max-age {self.stp['max_age']}\n"
         return fin_str
 
 
 class PortsecurityGenerator:
+    # WARNING: port has to be static (not dtp)
     def __init__(self, portsecurity_data):
         self.portsecurity = {}
         for enumerate in portsecurity_data['Portsecurity']:
@@ -114,7 +115,6 @@ class TrunkGenerator:
             for interface_range in trunk_data['Trunks']['InterfaceRanges']:
                 self.trunk['interface_ranges'].append(interface_range)
 
-
     def display_config(self):
         print(self.trunk['interfaces'])
         print(self.trunk['interface_ranges'])
@@ -127,15 +127,17 @@ class TrunkGenerator:
                         f"switchport trunk native vlan {interface['native_vlan']}\n" +
                         f"switchport trunk encapsulation {interface['encapsulation']}\n" +
                         f"switchport mode {interface['mode']}\n" +
-                        f"shutdown {interface['shutdown']}\n")
+                        f"no shutdown\n")
         for interface_range in self.trunk['interface_ranges']:
-            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+            fin_str += (
+                        f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
                         f"switchport trunk allowed vlan {interface_range['allowed_vlan']}\n" +
                         f"switchport trunk native vlan {interface_range['native_vlan']}\n" +
                         f"switchport trunk encapsulation {interface_range['encapsulation']}\n" +
                         f"switchport mode {interface_range['mode']}\n" +
-                        f"shutdown {interface_range['shutdown']}\n")
+                        f"no shutdown\n")
         return fin_str
+
 
 class Etherchannelgenerator:
     def __init__(self, etherchannel_data):
@@ -163,62 +165,77 @@ class Etherchannelgenerator:
                         f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
                         f"no  shutdown\n")
         for interface_range in self.etherchannel['interface_ranges']:
-            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+            fin_str += (
+                        f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
                         f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
                         f"no shutdown\n")
         return fin_str
 
+
 class EdgePortGenerator:
     def __init__(self, edgeport_data):
-        self.interfaces = []
-        for interface in edgeport_data['Interfaces']:
-            self.interfaces.append(interface)
-        self.interface_ranges = []
-        for interface_range in edgeport_data['InterfaceRanges']:
-            self.interface_ranges.append(interface_range)
+        self.edgeport = {}
+        for enumerate in edgeport_data['EdgePorts']:
+            self.edgeport['interfaces'] = []
+            for interface in edgeport_data['EdgePorts']['Interfaces']:
+                self.edgeport['interfaces'].append(interface)
+            self.edgeport['interface_ranges'] = []
+            for interface_range in edgeport_data['EdgePorts']['InterfaceRanges']:
+                self.edgeport['interface_ranges'].append(interface_range)
 
     def display_config(self):
-        print(self.interfaces)
-        print(self.interface_ranges)
+        print(self.edgeport['interfaces'])
+        print(self.edgeport['interface_ranges'])
 
     def generate_script(self):
         fin_str = ""
-        for interface in self.interfaces:
-            fin_str += (f"interface {interface['name']}\n" +
-                        f"spanning-tree portfast\n" +
-                        f"spanning-tree bpduguard\n")
-        for interface_range in self.interface_ranges:
-            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
-                        f"spanning-tree portfast\n" +
-                        f"spanning-tree bpduguard\n")
+        for interface in self.edgeport['interfaces']:
+            fin_str += (f"interface {interface['name']}\n")
+            if interface['portfast']:
+                fin_str += "spanning-tree portfast edge\n"
+            if interface['bpduguard']:
+                fin_str += "spanning-tree bpduguard enable\n"
+        for interface_range in self.edgeport['interface_ranges']:
+            fin_str += (
+                f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n")
+            if interface['portfast']:
+                fin_str += "spanning-tree portfast edge\n"
+            if interface['bpduguard']:
+                fin_str += "spanning-tree bpduguard enable\n"
+
         return fin_str
+
 
 class AccessInterfacesGenerator:
     def __init__(self, access_interfaces_data):
-        self.interfaces = []
-        for interface in access_interfaces_data['Interfaces']:
-            self.interfaces.append(interface)
-        self.interface_ranges = []
-        for interface_range in access_interfaces_data['InterfaceRanges']:
-            self.interface_ranges.append(interface_range)
+        self.access_interfaces = {}
+        for enumerate in access_interfaces_data['AccessInterfaces']:
+            self.access_interfaces['interfaces'] = []
+            for interface in access_interfaces_data['AccessInterfaces']['Interfaces']:
+                self.access_interfaces['interfaces'].append(interface)
+            self.access_interfaces['interface_ranges'] = []
+            for interface_range in access_interfaces_data['AccessInterfaces']['InterfaceRanges']:
+                self.access_interfaces['interface_ranges'].append(interface_range)
 
     def display_config(self):
-        print(self.interfaces)
-        print(self.interface_ranges)
+        print(self.access_interfaces['interfaces'])
+        print(self.access_interfaces['interface_ranges'])
 
     def generate_script(self):
         fin_str = ""
-        for interface in self.interfaces:
+        for interface in self.access_interfaces['interfaces']:
             fin_str += (f"interface {interface['name']}\n" +
                         f"switchport mode access\n" +
                         f"switchport access vlan {interface['vlan']}\n" +
-                        f"shutdown {interface['shutdown']}\n")
-        for interface_range in self.interface_ranges:
-            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+                        f"no shutdown\n")
+        for interface_range in self.access_interfaces['interface_ranges']:
+            fin_str += (
+                        f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
                         f"switchport mode access\n" +
                         f"switchport access vlan {interface_range['vlan']}\n" +
-                        f"shutdown {interface_range['shutdown']}\n")
+                        f"no shutdown\n")
         return fin_str
+
 
 vlan_data = {
     "VLAN": [
@@ -342,8 +359,8 @@ etherchannel_data = {
             ],
             "InterfaceRanges": [
                 {
-                    "startInterface": "Gig0/3",
-                    "endInterface": "Gig1/3"
+                    "startInterface": "Gig3/2",
+                    "endInterface": "Gig3/3"
                 }
             ],
             "mode": "Passive",
@@ -360,7 +377,7 @@ trunk_data = {
                 "allowed_vlan": "10,30,40",
                 "native_vlan": "20",
                 "encapsulation": "Dot1q",
-                "mode": "Dynamic-Desirable",
+                "mode": "Dynamic Desirable",
                 "shutdown": True
             },
             {
@@ -368,7 +385,7 @@ trunk_data = {
                 "allowed_vlan": "10,30,40",
                 "native_vlan": "20",
                 "encapsulation": "Dot1q",
-                "mode": "Dynamic-Desirable",
+                "mode": "Dynamic Desirable",
                 "shutdown": True
             }
         ],
@@ -379,7 +396,7 @@ trunk_data = {
                 "allowed_vlan": "10,20",
                 "native_vlan": "10",
                 "encapsulation": "Dot1q",
-                "mode": "Dynamic-Desirable",
+                "mode": "Dynamic Desirable",
                 "shutdown": True
             },
             {
@@ -388,7 +405,7 @@ trunk_data = {
                 "allowed_vlan": "10,20",
                 "native_vlan": "10",
                 "encapsulation": "Dot1q",
-                "mode": "Dynamic-Desirable",
+                "mode": "Dynamic Desirable",
                 "shutdown": True
             }
         ]
@@ -474,13 +491,13 @@ if __name__ == "__main__":
     stp_script = stp_gen.generate_script()
     print(stp_script, "\n")
 
-    portsecurity_gen = PortsecurityGenerator(portsecurity_data)
-    portsecurity_script = portsecurity_gen.generate_script()
-    print(portsecurity_script, "\n")
-
     trunk_gen = TrunkGenerator(trunk_data)
     trunk_script = trunk_gen.generate_script()
     print(trunk_script, "\n")
+
+    portsecurity_gen = PortsecurityGenerator(portsecurity_data)
+    portsecurity_script = portsecurity_gen.generate_script()
+    print(portsecurity_script, "\n")
 
     etherchannel_gen = Etherchannelgenerator(etherchannel_data)
     etherchannel_script = etherchannel_gen.generate_script()
@@ -493,4 +510,3 @@ if __name__ == "__main__":
     access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
     access_interfaces_script = access_interfaces_gen.generate_script()
     print(access_interfaces_script, "\n")
-
