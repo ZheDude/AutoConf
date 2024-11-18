@@ -1,6 +1,5 @@
 class VlanGenerator:
-    def __init__(self, vlan_data, template_file):
-        self.template_file = template_file
+    def __init__(self, vlan_data):
         self.vlan = {}
         for enumerate in vlan_data['VLAN']:
             self.vlan['number'] = enumerate['number']
@@ -17,8 +16,7 @@ class VlanGenerator:
 
 
 class VTPGenerator:
-    def __init__(self, vtp_data, template_file):
-        self.template_file = template_file
+    def __init__(self, vtp_data):
         self.vtp = {}
         for enumerate in vtp_data['VTP']:
             self.vtp['version'] = enumerate['version']
@@ -53,51 +51,37 @@ class VTPGenerator:
 
 
 class STPGenerator:
-    def __init__(self, stp_data, template_file):
-        self.template_file = template_file
+    def __init__(self, stp_data):
         self.stp = {}
         for enumerate in stp_data['STP']:
             self.stp['mode'] = enumerate['mode']
             self.stp['priority'] = enumerate['priority']
             self.stp['hello_timer'] = enumerate['hello_timer']
-            self.stp['forward_delay'] = enumerate['forward_delay']
+            self.stp['forward_timer'] = enumerate['forward_timer']
             self.stp['max_age'] = enumerate['max_age']
-            self.stp['interface'] = enumerate['interface']
             self.stp['vlan'] = enumerate['vlan']
 
     def display_config(self):
         print(self.stp['mode'])
         print(self.stp['priority'])
         print(self.stp['hello_timer'])
-        print(self.stp['forward_delay'])
+        print(self.stp['forward_timer'])
         print(self.stp['max_age'])
-        print(self.stp['interface'])
         print(self.stp['vlan'])
 
     def generate_script(self):
-        interface_string = ""
-        for interface in self.stp['interface']:
-            interface_string += (f"interface {interface['type']} {interface['number']}\n" +
-                                 f"spanning-tree portfast\n" +
-                                 f"spanning-tree bpduguard\n")
-
-        vlan_string = ""
-        for vlan in self.stp['vlan']:
-            vlan_string += (f"spanning-tree vlan {vlan['number']} priority {vlan['priority']}\n")
-
         fin_str = (f"spanning-tree mode {self.stp['mode']}\n" +
                    f"spanning-tree priority {self.stp['priority']}\n" +
                    f"spanning-tree hello-time {self.stp['hello_timer']}\n" +
-                   f"spanning-tree forward-time {self.stp['forward_delay']}\n" +
-                   f"spanning-tree max-age {self.stp['max_age']}\n" +
-                   f"{interface_string}" +
-                   f"{vlan_string}")
+                   f"spanning-tree forward-time {self.stp['forward_timer']}\n" +
+                   f"spanning-tree max-age {self.stp['max_age']}\n")
+        for vlan in self.stp['vlan']:
+            fin_str += f"spanning-tree vlan {vlan} priority {self.stp['priority']}\n"
         return fin_str
 
 
 class PortsecurityGenerator:
-    def __init__(self, portsecurity_data, template_file):
-        self.template_file = template_file
+    def __init__(self, portsecurity_data):
         self.portsecurity = {}
         for enumerate in portsecurity_data['Portsecurity']:
             self.portsecurity['interface'] = enumerate['interface']
@@ -120,66 +104,121 @@ class PortsecurityGenerator:
 
 
 class TrunkGenerator:
-    def __init__(self, trunk_data, template_file):
-        self.template_file = template_file
+    def __init__(self, trunk_data):
         self.trunk = {}
-        for enumerate in trunk_data['TRUNK']:
-            self.trunk['interface'] = enumerate['interface']
-            self.trunk['allowed_vlan'] = enumerate['allowed_vlan']
-            self.trunk['native_vlan'] = enumerate['native_vlan']
-            self.trunk['encapsulation'] = enumerate['encapsulation']
-            self.trunk['mode'] = enumerate['mode']
-            self.trunk['description'] = enumerate['description']
-            self.trunk['shutdown'] = enumerate['shutdown']
+        for enumerate in trunk_data['Trunks']:
+            self.trunk['interfaces'] = []
+            for interface in trunk_data['Trunks']['Interfaces']:
+                self.trunk['interfaces'].append(interface)
+            self.trunk['interface_ranges'] = []
+            for interface_range in trunk_data['Trunks']['InterfaceRanges']:
+                self.trunk['interface_ranges'].append(interface_range)
+
 
     def display_config(self):
-        print(self.trunk['interface'])
-        print(self.trunk['allowed_vlan'])
-        print(self.trunk['native_vlan'])
-        print(self.trunk['encapsulation'])
-        print(self.trunk['mode'])
-        print(self.trunk['description'])
-        print(self.trunk['shutdown'])
+        print(self.trunk['interfaces'])
+        print(self.trunk['interface_ranges'])
 
     def generate_script(self):
-        vlan_string = ""
-        for vlan in self.trunk['allowed_vlan']:
-            vlan_string += f"switchport trunk allowed vlan {vlan}\n"
-
-        fin_str = (f"interface {self.trunk['interface']}\n" +
-                   f"switchport trunk allowed vlan {vlan_string}\n" +
-                   f"switchport trunk native vlan {self.trunk['native_vlan']}\n" +
-                   f"switchport trunk encapsulation {self.trunk['encapsulation']}\n" +
-                   f"switchport mode {self.trunk['mode']}\n" +
-                   f"switchport description {self.trunk['description']}\n" +
-                   f"shutdown {self.trunk['shutdown']}")
+        fin_str = ""
+        for interface in self.trunk['interfaces']:
+            fin_str += (f"interface {interface['name']}\n" +
+                        f"switchport trunk allowed vlan {interface['allowed_vlan']}\n" +
+                        f"switchport trunk native vlan {interface['native_vlan']}\n" +
+                        f"switchport trunk encapsulation {interface['encapsulation']}\n" +
+                        f"switchport mode {interface['mode']}\n" +
+                        f"shutdown {interface['shutdown']}\n")
+        for interface_range in self.trunk['interface_ranges']:
+            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+                        f"switchport trunk allowed vlan {interface_range['allowed_vlan']}\n" +
+                        f"switchport trunk native vlan {interface_range['native_vlan']}\n" +
+                        f"switchport trunk encapsulation {interface_range['encapsulation']}\n" +
+                        f"switchport mode {interface_range['mode']}\n" +
+                        f"shutdown {interface_range['shutdown']}\n")
         return fin_str
-
 
 class Etherchannelgenerator:
-    def __init__(self, etherchannel_data, template_file):
-        self.template_file = template_file
-        self.group = {}
-        for enumerate in etherchannel_data['Etherchannel']:
-            self.group['number'] = enumerate['number']
-            self.group['mode'] = enumerate['mode']
-            self.group['interfaces'] = []
-            for x in enumerate['interface']:
-                self.group['interfaces'].append(x)
+    def __init__(self, etherchannel_data):
+        self.etherchannel = {}
+        for enumerate in etherchannel_data['EtherChannels']:
+            self.etherchannel['interfaces'] = []
+            for interface in enumerate['Interfaces']:
+                self.etherchannel['interfaces'].append(interface)
+            self.etherchannel['interface_ranges'] = []
+            for interface_range in enumerate['InterfaceRanges']:
+                self.etherchannel['interface_ranges'].append(interface_range)
+            self.etherchannel['mode'] = enumerate['mode']
+            self.etherchannel['number'] = enumerate['number']
 
     def display_config(self):
-        print(self.group['number'])
-        print(self.group['mode'])
-        print(self.group['interfaces'])
+        print(self.etherchannel['interfaces'])
+        print(self.etherchannel['interface_ranges'])
+        print(self.etherchannel['mode'])
+        print(self.etherchannel['number'])
 
     def generate_script(self):
-        interface_range_string = " ".join(self.group['interfaces'])
-
-        fin_str = (f"interface range {interface_range_string}\n" +
-                   f"port-channel group {self.group['number']}\n" +
-                   f"port-channel mode {self.group['mode']}")
+        fin_str = ""
+        for interface in self.etherchannel['interfaces']:
+            fin_str += (f"interface {interface['name']}\n" +
+                        f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
+                        f"no  shutdown\n")
+        for interface_range in self.etherchannel['interface_ranges']:
+            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+                        f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
+                        f"no shutdown\n")
         return fin_str
 
+class EdgePortGenerator:
+    def __init__(self, edgeport_data):
+        self.interfaces = []
+        for interface in edgeport_data['Interfaces']:
+            self.interfaces.append(interface)
+        self.interface_ranges = []
+        for interface_range in edgeport_data['InterfaceRanges']:
+            self.interface_ranges.append(interface_range)
+
+    def display_config(self):
+        print(self.interfaces)
+        print(self.interface_ranges)
+
+    def generate_script(self):
+        fin_str = ""
+        for interface in self.interfaces:
+            fin_str += (f"interface {interface['name']}\n" +
+                        f"spanning-tree portfast\n" +
+                        f"spanning-tree bpduguard\n")
+        for interface_range in self.interface_ranges:
+            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+                        f"spanning-tree portfast\n" +
+                        f"spanning-tree bpduguard\n")
+        return fin_str
+
+class AccessInterfacesGenerator:
+    def __init__(self, access_interfaces_data):
+        self.interfaces = []
+        for interface in access_interfaces_data['Interfaces']:
+            self.interfaces.append(interface)
+        self.interface_ranges = []
+        for interface_range in access_interfaces_data['InterfaceRanges']:
+            self.interface_ranges.append(interface_range)
+
+    def display_config(self):
+        print(self.interfaces)
+        print(self.interface_ranges)
+
+    def generate_script(self):
+        fin_str = ""
+        for interface in self.interfaces:
+            fin_str += (f"interface {interface['name']}\n" +
+                        f"switchport mode access\n" +
+                        f"switchport access vlan {interface['vlan']}\n" +
+                        f"shutdown {interface['shutdown']}\n")
+        for interface_range in self.interface_ranges:
+            fin_str += (f"interface range {interface_range['startInterface']} - {interface_range['endInterface']}\n" +
+                        f"switchport mode access\n" +
+                        f"switchport access vlan {interface_range['vlan']}\n" +
+                        f"shutdown {interface_range['shutdown']}\n")
+        return fin_str
 
 vlan_data = {
     "VLAN": [
@@ -212,32 +251,32 @@ vtp_data = {
     ]
 }
 
-stp_data = {
-    "STP": [
-        {
-            "mode": "rapid-pvst",
-            "priority": 4096,
-            "hello_timer": 10,
-            "forward_delay": 10,
-            "max_age": 10,
-            "interface": [
-                {
-                    "type": "GigabitEthernet0",
-                    "number": 0,
-                    "portfast": True,
-                    "bpduguard": True
-                }
-            ],
-            "vlan": [
-                {
-                    "number": 10,
-                    "name": "VLAN_NAME",
-                    "priority": 10
-                }
-            ]
-        }
-    ]
-}
+# stp_data = {
+#     "STP": [
+#         {
+#             "mode": "rapid-pvst",
+#             "priority": 4096,
+#             "hello_timer": 10,
+#             "forward_delay": 10,
+#             "max_age": 10,
+#             "interface": [
+#                 {
+#                     "type": "GigabitEthernet0",
+#                     "number": 0,
+#                     "portfast": True,
+#                     "bpduguard": True
+#                 }
+#             ],
+#             "vlan": [
+#                 {
+#                     "number": 10,
+#                     "name": "VLAN_NAME",
+#                     "priority": 10
+#                 }
+#             ]
+#         }
+#     ]
+# }
 
 portsecurity_data = {
     "Portsecurity": [
@@ -245,86 +284,213 @@ portsecurity_data = {
             "interface": "GigabitEthernet0/0",
             "maximum": 10,
             "violation": "shutdown",
-            "mac_address": "mac_address"
+            "mac_address": "sticky"
+        }
+    ]
+}
+
+stp_data = {
+    "STP": [
+        {
+            "mode": "Rapid-PVST",
+            "priority": "4096",
+            "hello_timer": "10",
+            "max_age": "10",
+            "vlan": ["10", "20", "30"],
+            "forward_timer": "10"
+        }
+    ]}
+
+edgeport_data = {
+    "EdgePorts": {
+        "Interfaces": [
+            {
+                "name": "Gig0/1",
+                "portfast": True,
+                "bpduguard": True
+            },
+            {
+                "name": "Gig0/0",
+                "portfast": True,
+                "bpduguard": True
+            }
+        ],
+        "InterfaceRanges": [
+            {
+                "startInterface": "Gig0/2",
+                "endInterface": "Gig0/3",
+                "portfaste": True,
+                "bpduguard": False
+            },
+            {
+                "startInterface": "Gig1/2",
+                "endInterface": "Gig1/3",
+                "portfaste": True,
+                "bpduguard": False
+            }
+        ]
+    }
+}
+
+etherchannel_data = {
+    "EtherChannels": [
+        {
+            "Interfaces": [
+                {
+                    "name": "Gig0/0"
+                }
+            ],
+            "InterfaceRanges": [
+                {
+                    "startInterface": "Gig0/3",
+                    "endInterface": "Gig1/3"
+                }
+            ],
+            "mode": "Passive",
+            "number": "1"
         }
     ]
 }
 
 trunk_data = {
-    "TRUNK": [
-        {
-            "interface": "GigabitEthernet0/0",
-            "allowed_vlan": [
-                10,
-                20
-            ],
-            "native_vlan": 10,
-            "encapsulation": "dot1q",
-            "mode": "on",
-            "description": "This is a description",
-            "shutdown": False
-        }
-    ]
+    "Trunks": {
+        "Interfaces": [
+            {
+                "name": "Gig0/1",
+                "allowed_vlan": "10,30,40",
+                "native_vlan": "20",
+                "encapsulation": "Dot1q",
+                "mode": "Dynamic-Desirable",
+                "shutdown": True
+            },
+            {
+                "name": "Gig3/1",
+                "allowed_vlan": "10,30,40",
+                "native_vlan": "20",
+                "encapsulation": "Dot1q",
+                "mode": "Dynamic-Desirable",
+                "shutdown": True
+            }
+        ],
+        "InterfaceRanges": [
+            {
+                "startInterface": "Gig0/2",
+                "endInterface": "Gig0/3",
+                "allowed_vlan": "10,20",
+                "native_vlan": "10",
+                "encapsulation": "Dot1q",
+                "mode": "Dynamic-Desirable",
+                "shutdown": True
+            },
+            {
+                "startInterface": "Gig2/2",
+                "endInterface": "Gig2/3",
+                "allowed_vlan": "10,20",
+                "native_vlan": "10",
+                "encapsulation": "Dot1q",
+                "mode": "Dynamic-Desirable",
+                "shutdown": True
+            }
+        ]
+    }}
+
+access_interfaces_data = {
+    "AccessInterfaces": {
+        "Interfaces": [
+            {
+                "name": "Gig0/2",
+                "allowed_vlan": "",
+                "native_vlan": "",
+                "encapsulation": "",
+                "mode": "",
+                "shutdown": True,
+                "vlan": "20"
+            },
+            {
+                "name": "Gig0/3",
+                "allowed_vlan": "",
+                "native_vlan": "",
+                "encapsulation": "",
+                "mode": "",
+                "shutdown": True,
+                "vlan": "20"
+            }
+        ],
+        "InterfaceRanges": [
+            {
+                "startInterface": "Gig0/2",
+                "endInterface": "Gig0/3",
+                "allowed_vlan": "",
+                "native_vlan": "",
+                "encapsulation": "",
+                "mode": "",
+                "shutdown": True,
+                "vlan": "20"
+            }
+        ]
+    }
 }
 
-etherchannel_data = {
-    "Etherchannel": [
-        {
-            "number": 1,
-            "interface": [
-                "GigabitEthernet0/0",
-                "GigabitEthernet0/1"
-            ],
-            "mode": "active"
-        }
-    ]
-}
-
-# [
-#   
-#   
-#   {
-#     "Interface": [
-#       {
-#         "type": "GigabitEthernet0",
-#         "number": 0,
-#         "ip_address": "0.0.0.0",
-#         "subnetmask": "255.255.255.255",
-#         "description": "This is a description",
-#         "shutdown": false,
-#         "ospf": {
-#           "area_id": 10,
-#           "cost": 10,
-#           "priority": 10,
-#           "network_type": "broadcast",
-#           "authentication": {
-#             "key_chain": "KEY_CHAIN",
-#             "message_digest": true
-#           }
+# trunk_data = {
+#     "TRUNK": [
+#         {
+#             "interface": "GigabitEthernet0/0",
+#             "allowed_vlan": [
+#                 10,
+#                 20
+#             ],
+#             "native_vlan": 10,
+#             "encapsulation": "dot1q",
+#             "mode": "on",
+#             "description": "This is a description",
+#             "shutdown": False
 #         }
-#       }
 #     ]
-#   },
+# }
 
-# ]
-
+# etherchannel_data = {
+#     "Etherchannel": [
+#         {
+#             "number": 1,
+#             "interface": [
+#                 "GigabitEthernet0/0",
+#                 "GigabitEthernet0/1"
+#             ],
+#             "mode": "active"
+#         }
+#     ]
+# }
 
 if __name__ == "__main__":
-    etherchannel_gen = Etherchannelgenerator(etherchannel_data, "../Configurations/etherchannel_template.txt")
-    etherchannel_script = etherchannel_gen.generate_script()
-    print(etherchannel_script, "\n")
-    vlan_gen = VlanGenerator(vlan_data, "../Configurations/vlan_template.txt")
+    vlan_gen = VlanGenerator(vlan_data)
     vlan_script = vlan_gen.generate_script()
     print(vlan_script, "\n")
-    vtp_gen = VTPGenerator(vtp_data, "../Configurations/vtp_template.txt")
+
+    vtp_gen = VTPGenerator(vtp_data)
     vtp_script = vtp_gen.generate_script()
     print(vtp_script, "\n")
-    stp_gen = STPGenerator(stp_data, "../Configurations/stp_template.txt")
+
+    stp_gen = STPGenerator(stp_data)
     stp_script = stp_gen.generate_script()
     print(stp_script, "\n")
-    portsecurity_gen = PortsecurityGenerator(portsecurity_data, "../Configurations/portsecurity_template.txt")
+
+    portsecurity_gen = PortsecurityGenerator(portsecurity_data)
     portsecurity_script = portsecurity_gen.generate_script()
     print(portsecurity_script, "\n")
-    trunk_gen = TrunkGenerator(trunk_data, "../Configurations/trunk_template.txt")
+
+    trunk_gen = TrunkGenerator(trunk_data)
     trunk_script = trunk_gen.generate_script()
     print(trunk_script, "\n")
+
+    etherchannel_gen = Etherchannelgenerator(etherchannel_data)
+    etherchannel_script = etherchannel_gen.generate_script()
+    print(etherchannel_script, "\n")
+
+    edgeport_gen = EdgePortGenerator(edgeport_data)
+    edgeport_script = edgeport_gen.generate_script()
+    print(edgeport_script, "\n")
+
+    access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
+    access_interfaces_script = access_interfaces_gen.generate_script()
+    print(access_interfaces_script, "\n")
+
