@@ -1,6 +1,6 @@
 en 
 conf t
-hostname R1
+hostname S1
 no ip domain lookup
 ip domain name 5CN
 
@@ -14,9 +14,9 @@ transport input ssh
 logging synch
 exec-timeout 0 0
 
-int gig0/0
+int vlan 1
 no shut
-ip add 172.16.2.127 255.255.255.0
+ip add 172.16.2.126 255.255.255.0
 exit
 
 int lo 0

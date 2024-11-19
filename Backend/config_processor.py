@@ -55,7 +55,7 @@ def get_element_names(config_data: list) -> list[str]:
     return top_level_names
 
 
-def get_list_of_konfigurations(json_content: str) -> []:
+def get_list_of_konfigurations(json_content: str) -> list:
     config_data = json.loads(json_content)
     processor = ConfigProcessor(config_data)
     json_outputs = processor.process_config()

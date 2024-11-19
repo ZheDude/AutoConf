@@ -53,13 +53,13 @@ class SSHConnection:
     def __del__(self):
         self.client.close()
 
-    def send_command_imprvd(self, command, timeout=10, prompt="(config)#"):
+    def send_command_imprvd(self, command, timeout=20, prompt="(config)#"):
         if not self.channel:  # Ensure the channel is open
             raise Exception("SSH session not active")
 
         # Clear any existing output in the channel
         if self.channel.recv_ready():
-            self.channel.recv(2048)
+            self.channel.recv(4096)
 
         # Send the command
         self.channel.send(command + '\n')
@@ -69,7 +69,7 @@ class SSHConnection:
 
         while True:
             if self.channel.recv_ready():
-                output += self.channel.recv(2048).decode("utf-8")
+                output += self.channel.recv(4096).decode("utf-8")
 
                 # Check if the command prompt has returned in the output
                 if output.strip().endswith(prompt):
@@ -84,3 +84,32 @@ class SSHConnection:
             time.sleep(0.1)
 
         return output
+    
+    def send_command_noreturn(self, command, timeout=20, prompt="(config)#"):
+        if not self.channel:
+            raise Exception("SSH session not active")
+        
+        if self.channel.recv_ready():
+            self.channel.recv(4096)
+        
+        self.channel.send(command + '\n')
+        output = ""
+        start_time = time.time()
+        while True:
+            if self.channel.recv_ready():
+                output += self.channel.recv(4096).decode("utf-8")
+
+                # Check if the command prompt has returned in the output
+                if output.strip().endswith(prompt):
+                    break  # Break out if we see the prompt indicating the command is complete
+
+            # Check for timeout to avoid infinite loop
+            if time.time() - start_time > timeout:
+                print("Timeout reached while waiting for command output.")
+                break
+
+            # Add a small delay to allow the buffer to fill up
+            time.sleep(0.1)
+
+        return
+    
