@@ -83,26 +83,7 @@ a:hover {
 	padding-top: 3%;
 }
 
-#GrundkonfigIconDiv{
-	display: flex;
-	flex-direction: row;
-	font-size: 20px;
-	font-family: Arial, Helvetica, sans-serif;
-	gap: 10%;
-	
-
-}
-
-#SwitchkonfigIconDiv{
-	display: flex;
-	flex-direction: row;
-	font-size: 20px;
-	font-family: Arial, Helvetica, sans-serif;
-	gap: 10%;
-
-}
-
-#RouterIconDiv{
+#GrundkonfigIconDiv {
 	display: flex;
 	flex-direction: row;
 	font-size: 20px;
@@ -110,6 +91,21 @@ a:hover {
 	gap: 10%;
 }
 
+#SwitchkonfigIconDiv {
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	gap: 10%;
+}
+
+#RouterIconDiv {
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	gap: 10%;
+}
 
 /*
 General Layout Style
@@ -253,11 +249,6 @@ General Layout Style
 	flex-direction: column;
 }
 
-#addVtyButton {
-	margin-left: 15%;
-	margin-top: 5%;
-}
-
 .generateSkriptButton {
 	margin-top: 10%;
 	margin-left: 15%;
@@ -314,11 +305,11 @@ General Layout Style
 	transform: translateY(0);
 }
 
-.VtyButton {
+.leftButton {
 	margin-top: 5%;
 	margin-left: 15%;
 	appearance: none;
-	background-color: #8e918f;
+	background-color: #30313a;
 	border: 1px solid rgba(27, 31, 35, 0.15);
 	border-radius: 6px;
 	box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
@@ -342,29 +333,83 @@ General Layout Style
 	white-space: nowrap;
 }
 
-.VtyButton:focus:not(:focus-visible):not(.focus-visible) {
+.leftButton:focus:not(:focus-visible):not(.focus-visible) {
 	box-shadow: none;
 	outline: none;
 }
 
-.VtyButton:hover {
-	background-color: #9ca09d;
+.leftButton:hover {
+	background-color: #767776;
 }
 
-.VtyButton:focus {
-	box-shadow: rgba(224, 232, 226, 0.4) 0 0 0 3px;
+.leftButton:focus {
+	box-shadow: #767776 0 0 0 3px;
 	outline: none;
 }
 
-.VtyButton:disabled {
-	background-color: #8e918f;
+.leftButton:disabled {
+	background-color: #30313a;
 	border-color: rgba(27, 31, 35, 0.1);
 	color: rgba(255, 255, 255, 0.8);
 	cursor: default;
 }
 
-.VtyButton:active {
-	background-color: #8e918f;
+.leftButton:active {
+	background-color: #30313a;
+	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+.rightButton {
+	margin-top: 5%;
+	margin-left: 3%;
+	appearance: none;
+	background-color: #30313a;
+	border: 1px solid rgba(27, 31, 35, 0.15);
+	border-radius: 6px;
+	box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+	box-sizing: border-box;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji';
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	padding: 6px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.rightButton:focus:not(:focus-visible):not(.focus-visible) {
+	box-shadow: none;
+	outline: none;
+}
+
+.rightButton:hover {
+	background-color: #767776;
+}
+
+.rightButton:focus {
+	box-shadow: #767776 0 0 0 3px;
+	outline: none;
+}
+
+.rightButton:disabled {
+	background-color: #30313a;
+	border-color: rgba(27, 31, 35, 0.1);
+	color: rgba(255, 255, 255, 0.8);
+	cursor: default;
+}
+
+.rightButton:active {
+	background-color: #30313a;
 	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
 }
 
@@ -373,8 +418,4 @@ General Layout Style
 .TrunkRangeDiv {
 	display: flex;
 	flex-direction: row;
-}
-
-#rightButton.VtyButton {
-	margin-right: 8%;
 }

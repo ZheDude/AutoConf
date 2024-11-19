@@ -77,7 +77,7 @@
 
 <div id="parameterDivGrundkonfig">
 	<div class="mainHeading">
-		<h1>Grundkonfig</h1>
+		<h1>Grundconfig</h1>
 	</div>
 	<InputField
 		placeholder="cisco"
@@ -136,15 +136,15 @@
 		{/each}
 	</div>
 
-	<button id="rightButton" class="VtyButton" on:click={addVtyRange}>Add VTY Range</button>
-	<button class="VtyButton" on:click={removeVtyRange}>Remove VTY Range</button>
+	<button class="leftButton" on:click={addVtyRange}>Add VTY Range</button>
+	<button class="rightButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>
 </div>
 
 {#if generate}
 	<div id="textAreaDiv">
-		<h1>Folgendes Skript muss vom User selbst in das Netzwerkgeräte eingefügt werden!</h1>
+		<h1>Folgendes Skript muss vom User selbst in das Netzwerkgerät eingefügt werden!</h1>
 		<p>enable</p>
 		<p>configure terminal</p>
 		<p>hostname {inputParams.hostname}</p>

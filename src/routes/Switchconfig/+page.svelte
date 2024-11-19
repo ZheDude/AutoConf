@@ -107,28 +107,23 @@
 	}
 	$: console.log(JSON.stringify(userParameter));
 
-
-
 	$: {
-    if (enableVTP ) {
-		userParameter.VTP= [
-			...userParameter.VTP,
-			{
-				enabled: false,
-				mode: 'Server',
-				domain: '',
-				password: '',
-				pruning: true,
-				is_primary: false
-			}
-		];
-    } 
-  }
+		if (enableVTP) {
+			userParameter.VTP = [
+				...userParameter.VTP,
+				{
+					enabled: false,
+					mode: 'Server',
+					domain: '',
+					password: '',
+					pruning: true,
+					is_primary: false
+				}
+			];
+		}
+	}
 
-  
 	async function sendData() {
-
-
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
@@ -146,11 +141,9 @@
 		<h1>Switchconfig</h1>
 	</div>
 	<h2 class="subHeading">VTP</h2>
-	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"
-	></Checkbox>
+	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
 	{#if enableVTP}
-
-		<Dropdown 
+		<Dropdown
 			options={['Server', 'Client', 'Transparent']}
 			bind:value={userParameter.VTP[0]['mode']}
 			fieldName="DropdownVTP"
@@ -187,7 +180,7 @@
 		{/if}
 	{/if}
 
-	{#if userParameter.VTP[0].mode  === "Server" || !enableVTP}
+	{#if userParameter.VTP[0].mode === 'Server' || !enableVTP}
 		<h2 class="subHeading">VLANs</h2>
 		{#each range(0, userParameter.VLAN.length - 1) as count}
 			<VLAN
@@ -197,16 +190,16 @@
 			></VLAN>
 		{/each}
 
-		<button class="VtyButton" on:click={addVLAN}>Add VLAN</button>
-		<button class="VtyButton" on:click={removeVLAN}>Remove VLAN</button>
+		<button class="leftButton" on:click={addVLAN}>Add VLAN</button>
+		<button class="rightButton" on:click={removeVLAN}>Remove VLAN</button>
 	{/if}
 
 	<h2 class="subHeading">STP</h2>
 	{#each range(0, userParameter.STP.length - 1) as count}
 		<StpProcess id={count + 1} parameters={userParameter.STP[count]}></StpProcess>
 	{/each}
-	<button class="VtyButton" on:click={addSTPProcess}>Add STP Process</button>
-	<button class="VtyButton" on:click={removeSTPProcess}>Remove STP Process </button>
+	<button class="leftButton" on:click={addSTPProcess}>Add STP Process</button>
+	<button class="rightButton" on:click={removeSTPProcess}>Remove STP Process </button>
 	<EdgeInterfaces edgeInterfaces={userParameter.EdgePorts}></EdgeInterfaces>
 
 	<h2 class="subHeading">Interfaces</h2>
@@ -222,17 +215,17 @@
 		<PortSecurityInterface bind:parameters={userParameter.Portsecurity[count]} id={count}
 		></PortSecurityInterface>
 	{/each}
-	<button on:click={addPortSecurityInterface} class="VtyButton">Add Interface</button>
-	<button on:click={removePortSecurityInterface} class="VtyButton">Remove Interface</button>
+	<button on:click={addPortSecurityInterface} class="leftButton">Add Interface</button>
+	<button on:click={removePortSecurityInterface} class="rightButton">Remove Interface</button>
 
 	<h2 class="subHeading">Etherchannels</h2>
 	{#each range(0, userParameter.EtherChannels.length - 1) as count}
 		<Etherchannel bind:parameters={userParameter.EtherChannels[count]} id={count}></Etherchannel>
 	{/each}
-	<button class="VtyButton" on:click={addEtherChannel}>Add Etherchannel</button>
-	<button class="VtyButton" on:click={removeEtherChannel}>Remove Etherchannel</button>
+	<button class="leftButton" on:click={addEtherChannel}>Add Etherchannel</button>
+	<button class="rightButton" on:click={removeEtherChannel}>Remove Etherchannel</button>
 
 	<br />
 
-	<button class="VtyButton" on:click={sendData}> Submit</button>
+	<button class="generateSkriptButton" on:click={sendData}> Submit</button>
 </div>

@@ -58,8 +58,8 @@
 		Heading="Enable BPDU-Guard"
 	></Checkbox>
 {/each}
-<button class="VtyButton" on:click={addEdgeInterface}>Add Interface</button>
-<button class="VtyButton" on:click={removeEdgeInterface}>Remove Interface</button>
+<button class="leftButton" on:click={addEdgeInterface}>Add Interface</button>
+<button class="rightButton" on:click={removeEdgeInterface}>Remove Interface</button>
 <h2 class="subHeading">Interface Ranges</h2>
 
 {#each range(0, edgeInterfaces.InterfaceRanges.length - 1) as count}
@@ -89,5 +89,5 @@
 	></Checkbox>
 {/each}
 
-<button class="VtyButton" on:click={addEdegInterfaceRange}>Add Interface Range</button>
-<button class="VtyButton" on:click={removeEdegInterfaceRange}>Remove Interface Range</button>
+<button class="leftButton" on:click={addEdegInterfaceRange}>Add Interface Range</button>
+<button class="rightButton" on:click={removeEdegInterfaceRange}>Remove Interface Range</button>
