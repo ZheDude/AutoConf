@@ -24,16 +24,16 @@ def main():
     stp_gen = STPGenerator(stp_data)
     stp_script = stp_gen.generate_script()
     #print("VTP SCRIPT ============\n",stp_script, "\n============\n")
-    print(dev1.send_command_imprvd(stp_script))
+    #print(dev1.send_command_imprvd(stp_script))
 
 
     access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
     access_interfaces_script = access_interfaces_gen.generate_script()
-    print(dev1.send_command_imprvd(access_interfaces_script))
+    #print(dev1.send_command_imprvd(access_interfaces_script))
 
     edge_port_gen = EdgePortGenerator(edgeport_data)
     edge_port_script = edge_port_gen.generate_script()
-    print(dev1.send_command_imprvd(edge_port_script))
+    #print(dev1.send_command_imprvd(edge_port_script))
 
     etherchannel_gen = Etherchannelgenerator(etherchannel_data)
     etherchannel_script = etherchannel_gen.generate_script()
@@ -41,7 +41,7 @@ def main():
 
     port_security_gen = PortsecurityGenerator(portsecurity_data)
     port_security_script = port_security_gen.generate_script()
-    print(dev1.send_command_imprvd(port_security_script))
+    #print(dev1.send_command_imprvd(port_security_script))
 
     trunk_gen = TrunkGenerator(trunk_data)
     trunk_script = trunk_gen.generate_script()
