@@ -165,7 +165,6 @@
         "destination": "1.1.1.1",
         "ip": "1.1.1.1",
         "subnetmask": "255.255.255.0"
-
       },
       {
         "tunnel": "Tunnel123",
@@ -174,7 +173,6 @@
         "destination": "212.12.1.1",
         "ip": "1.1.1.1",
         "subnetmask": "255.255.255.0"
-
       }
     ]
   },
@@ -233,160 +231,185 @@
     ]
   },
   {
-  "VTP":[
+    "VTP": [
       {
-         "enabled":false,
-         "mode":"Server",
-         "domain":"",
-         "password":"",
-         "pruning":true,
-         "is_primary":false
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true,
+        "vlan": 10
+      },
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true
       }
-   ]
+    ]
   },
   {
-   "VLAN":[
+    "VLAN": [
       {
-         "name":"Management",
-         "number":"10"
+        "name": "Management",
+        "number": "10"
       }
-   ]},{
-   "STP":[
+    ]
+  },
+  {
+    "STP": [
       {
-         "mode":"Rapid-PVST",
-         "priority":"4096",
-         "hello_timer":"10",
-         "max_age":"10",
-         "vlan":["10","20","30"],
-         "forward_timer":"10"
+        "mode": "Rapid-PVST",
+        "priority": "4096",
+        "hello_timer": "10",
+        "max_age": "10",
+        "vlan": [
+          "10",
+          "20",
+          "30"
+        ],
+        "forward_timer": "10"
       }
-   ]},{
-   "EdgePorts":{
-      "Interfaces":[
-         {
-            "name":"Gig0/1",
-            "portfast":true,
-            "bpduguard":true
-         },
-         {
-            "name":"Gig0/0",
-            "portfast":true,
-            "bpduguard":true
-         }
+    ]
+  },
+  {
+    "EdgePorts": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "portfast": true,
+          "bpduguard": true
+        },
+        {
+          "name": "Gig0/0",
+          "portfast": true,
+          "bpduguard": true
+        }
       ],
-      "InterfaceRanges":[
-         {
-            "startInterface":"Gig0/2",
-            "endInterface":"Gig0/3",
-            "portfaste":true,
-            "bpduguard":false
-         },
-         {
-            "startInterface":"Gig1/2",
-            "endInterface":"Gig1/3",
-            "portfaste":true,
-            "bpduguard":false
-         }
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "portfaste": true,
+          "bpduguard": false
+        },
+        {
+          "startInterface": "Gig1/2",
+          "endInterface": "Gig1/3",
+          "portfaste": true,
+          "bpduguard": false
+        }
       ]
-   }},{
-   "Trunks":{
-      "Interfaces":[
-         {
-            "name":"Gig0/1",
-            "allowed_vlan":"10,30,40",
-            "native_vlan":"20",
-            "encapsulation":"Dot1q",
-            "mode":"Dynamic Desirable",
-            "shutdown":true
-         },
-         {
-            "name":"Gig3/1",
-            "allowed_vlan":"10,30,40",
-            "native_vlan":"20",
-            "encapsulation":"Dot1q",
-            "mode":"Dynamic Desirable",
-            "shutdown":true
-         }
+    }
+  },
+  {
+    "Trunks": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "name": "Gig3/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
       ],
-      "InterfaceRanges":[
-         {
-            "startInterface":"Gig0/2",
-            "endInterface":"Gig0/3",
-            "allowed_vlan":"10,20",
-            "native_vlan":"10",
-            "encapsulation":"Dot1q",
-            "mode":"Dynamic Desirable",
-            "shutdown":true
-         },
-         {
-            "startInterface":"Gig2/2",
-            "endInterface":"Gig2/3",
-            "allowed_vlan":"10,20",
-            "native_vlan":"10",
-            "encapsulation":"Dot1q",
-            "mode":"Dynamic Desirable",
-            "shutdown":true
-         }
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "startInterface": "Gig2/2",
+          "endInterface": "Gig2/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
       ]
-   }},{
-   "AccessInterfaces":{
-      "Interfaces":[
-         {
-            "name":"Gig0/2",
-            "allowed_vlan":"",
-            "native_vlan":"",
-            "encapsulation":"",
-            "mode":"",
-            "shutdown":true,
-            "vlan":"20"
-         },
-         {
-            "name":"Gig0/3",
-            "allowed_vlan":"",
-            "native_vlan":"",
-            "encapsulation":"",
-            "mode":"",
-            "shutdown":true,
-            "vlan":"20"
-         }
+    }
+  },
+  {
+    "AccessInterfaces": {
+      "Interfaces": [
+        {
+          "name": "Gig0/2",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        },
+        {
+          "name": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
       ],
-      "InterfaceRanges":[
-         {
-            "startInterface":"Gig0/2",
-            "endInterface":"Gig0/3",
-            "allowed_vlan":"",
-            "native_vlan":"",
-            "encapsulation":"",
-            "mode":"",
-            "shutdown":true,
-            "vlan":"20"
-         }
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
       ]
-   }},{
-   "Portsecurity":[
+    }
+  },
+  {
+    "Portsecurity": [
       {
-         "interface":"Gig0/1",
-         "maximum":"20",
-         "violation":"Shutdown",
-         "mac_address":"sticky"
+        "interface": "Gig0/1",
+        "maximum": "20",
+        "violation": "Shutdown",
+        "mac_address": "sticky"
       }
-   ]},{
-   "EtherChannels":[
+    ]
+  },
+  {
+    "EtherChannels": [
       {
-         "Interfaces":[
-            {
-               "name":"Gig0/0"
-            }
-         ],
-         "InterfaceRanges":[
-            {
-               "startInterface":"Gig3/2",
-               "endInterface":"Gig3/3"
-            }
-         ],
-         "mode":"Passive",
-         "number":"1"
+        "Interfaces": [
+          {
+            "name": "Gig0/0"
+          }
+        ],
+        "InterfaceRanges": [
+          {
+            "startInterface": "Gig3/2",
+            "endInterface": "Gig3/3"
+          }
+        ],
+        "mode": "Passive",
+        "number": "1"
       }
-   ]
+    ]
   }
 ]

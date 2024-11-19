@@ -133,48 +133,55 @@ def get_list_of_konfigurations(json_content: str) -> list:
         elif name == "VLAN":
             vlan_data = json_list.get("VLAN")
             # print(vlan_data)
+            vlan_data = {"VLAN": vlan_data}
             vlan_gen = VlanGenerator(vlan_data)
             vlan_script = vlan_gen.generate_script()
             konfigurations_liste.append(vlan_script)
         elif name == "VTP":
             vtp_data = json_list.get("VTP")
-            # print(vtp_data)
+            vtp_data = {"VTP": vtp_data}
             vtp_gen = VTPGenerator(vtp_data)
             vtp_script = vtp_gen.generate_script()
             konfigurations_liste.append(vtp_script)
         elif name == "STP":
             stp_data = json_list.get("STP")
             # print(stp_data)
+            stp_data = {"STP": stp_data}
             stp_gen = STPGenerator(stp_data)
             stp_script = stp_gen.generate_script()
             konfigurations_liste.append(stp_script)
         elif name == "AccessInterfaces":
             access_interfaces_data = json_list.get("AccessInterfaces")
             # print(access_interfaces_data)
+            access_interfaces_data = {"AccessInterfaces": access_interfaces_data}
             access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
             access_interfaces_script = access_interfaces_gen.generate_script()
             konfigurations_liste.append(access_interfaces_script)
         elif name == "EdgePorts":
             edge_port_data = json_list.get("EdgePorts")
             # print(edge_port_data)
+            edge_port_data = {"EdgePorts": edge_port_data}
             edge_port_gen = EdgePortGenerator(edge_port_data)
             edge_port_script = edge_port_gen.generate_script()
             konfigurations_liste.append(edge_port_script)
         elif name == "EtherChannel":
             etherchannel_data = json_list.get("EtherChannel")
             # print(etherchannel_data)
+            etherchannel_data = {"EtherChannel": etherchannel_data}
             etherchannel_gen = Etherchannelgenerator(etherchannel_data)
             etherchannel_script = etherchannel_gen.generate_script()
             konfigurations_liste.append(etherchannel_script)
         elif name == "Portsecurity":
             port_security_data = json_list.get("Portsecurity")
             # print(port_security_data)
+            port_security_data = {"Portsecurity": port_security_data}
             port_security_gen = PortsecurityGenerator(port_security_data)
             port_security_script = port_security_gen.generate_script()
             konfigurations_liste.append(port_security_script)
         elif name == "Trunks":
             trunk_data = json_list.get("Trunks")
             # print(trunk_data)
+            trunk_data = {"Trunks": trunk_data}
             trunk_gen = TrunkGenerator(trunk_data)
             trunk_script = trunk_gen.generate_script()
             konfigurations_liste.append(trunk_script)
@@ -190,5 +197,4 @@ if __name__ == '__main__':
     konfig_liste = get_list_of_konfigurations(data)
     # print(konfig_liste)
     for element in konfig_liste:
-        ...
-        # print(element)
+        print(element)
