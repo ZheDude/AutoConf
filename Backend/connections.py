@@ -1,8 +1,10 @@
+
 import socket
 import time
 
-import paramiko
 
+import paramiko
+# import asyncio_telnet as Telnet
 
 class SSHConnection:
     def __init__(self, ip, username, password):
@@ -14,6 +16,7 @@ class SSHConnection:
         try:
             self.client.connect(self.ip, username=self.username, password=self.password)
             self.channel = self.client.invoke_shell()
+            time.sleep(0.1)
         except paramiko.ssh_exception.AuthenticationException:
             raise Exception("Authentication failed")
         except socket.gaierror:
@@ -25,25 +28,24 @@ class SSHConnection:
         except paramiko.ssh_exception.SSHException:
             raise Exception("Connection failed SSHException")
 
-    def send_command(self, command):
-        if not self.channel:  # Ensure the channel is open
+    def send_command(self, command, prompt="(config)#", timeout=10):
+        if not self.channel:
             raise Exception("SSH session not active")
 
-        # Send command and read output
         self.channel.send(command + '\n')
         output = ""
+        self.channel.settimeout(timeout)
 
-        while not self.channel.recv_ready():
-            pass  # Wait until data is ready to be read
+        # Continuously read until the prompt appears
+        while True:
+            if self.channel.recv_ready():
+                output += self.channel.recv(2048).decode("utf-8")
 
-        time.sleep(5)
-
-        while self.channel.recv_ready():
-            output += self.channel.recv(2048).decode("utf-8")
-
+                # Check if the prompt has appeared
+                if prompt in output:
+                    break
+        print("Output ", output)
         return output
-        # stdin, stdout, stderr = self.client.exec_command(command)
-        # return stdout.read().decode("utf-8")
 
     def close(self):
         self.__del__()
@@ -77,5 +79,8 @@ class SSHConnection:
             if time.time() - start_time > timeout:
                 print("Timeout reached while waiting for command output.")
                 break
+
+            # Add a small delay to allow the buffer to fill up
+            time.sleep(0.1)
 
         return output
