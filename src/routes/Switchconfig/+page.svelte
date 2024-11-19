@@ -107,9 +107,7 @@
 	}
 	$: console.log(JSON.stringify(userParameter));
 
-	function submit() {
-		console.log(JSON.stringify(userParameter));
-	}
+
 
 	$: {
     if (enableVTP ) {
@@ -126,6 +124,21 @@
 		];
     } 
   }
+
+  
+	async function sendData() {
+
+
+		const response = await fetch('/api/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(userParameter)
+		});
+		let ApiData = await response.json();
+		return true;
+	}
 </script>
 
 <div id="parameterDivGrundkonfig">
@@ -221,5 +234,5 @@
 
 	<br />
 
-	<button class="VtyButton" on:click={submit}> Submit</button>
+	<button class="VtyButton" on:click={sendData}> Submit</button>
 </div>
