@@ -22,7 +22,12 @@ def process_data(data: dict):
     json_string = json.dumps(data)
     print(json_string)
 
-    konfig_liste = get_list_of_konfigurations(json_string)
+    configuration_processer_tuple = get_list_of_konfigurations(json_string)
+    konfig_liste = configuration_processer_tuple[1]
+    ssh_ip = configuration_processer_tuple[0]
+    # TODO MEHMET SWITCH SACHEN LAUFEN LASSEN
+    print(ssh_ip)
+    print(konfig_liste)
 
     for element in konfig_liste:
         print(element)

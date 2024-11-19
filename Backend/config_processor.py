@@ -1,4 +1,5 @@
 import json
+from typing import Tuple, List, Any
 
 from Backend.Router_configs.bgp import BGPgenerator
 from Backend.Router_configs.dhcp import DHCPGenerator
@@ -55,7 +56,7 @@ def get_element_names(config_data: list) -> list[str]:
     return top_level_names
 
 
-def get_list_of_konfigurations(json_content: str) -> list:
+def get_list_of_konfigurations(json_content: str) -> tuple[str, list[Any]]:
     config_data = json.loads(json_content)
     processor = ConfigProcessor(config_data)
     json_outputs = processor.process_config()
@@ -64,6 +65,7 @@ def get_list_of_konfigurations(json_content: str) -> list:
     # print(json_outputs)
     # print(type(json_outputs))
     # print(len(json_outputs))
+    ssh_ip: str = ""
 
     for index, json_output in enumerate(json_outputs):
 
@@ -185,16 +187,17 @@ def get_list_of_konfigurations(json_content: str) -> list:
             trunk_gen = TrunkGenerator(trunk_data)
             trunk_script = trunk_gen.generate_script()
             konfigurations_liste.append(trunk_script)
+        elif name == "SSH":
+            ssh_data = json_list.get("SSH")
+            ssh_ip = ssh_data['ip']
 
-
-
-
-    return konfigurations_liste
+    return ssh_ip, konfigurations_liste
 
 
 if __name__ == '__main__':
     data = read_file("Configurations/Example_Json.json")
-    konfig_liste = get_list_of_konfigurations(data)
-    # print(konfig_liste)
+    ssh_and_config = get_list_of_konfigurations(data)
+    ip = ssh_and_config[0]
+    konfig_liste = ssh_and_config[1]
     for element in konfig_liste:
         print(element)

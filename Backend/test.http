@@ -7,6 +7,9 @@ Origin: http://example.com
 
 [
   {
+    "SSH": {
+      "ip": "192.168.10.1"
+    },
     "OSPF": [
       {
         "process_id": 10,
@@ -236,8 +239,191 @@ Origin: http://example.com
         "lease": 10
       }
     ]
+  },
+  {
+    "VTP": [
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true,
+        "vlan": 10
+      },
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "VLAN": [
+      {
+        "name": "Management",
+        "number": "10"
+      }
+    ]
+  },
+  {
+    "STP": [
+      {
+        "mode": "Rapid-PVST",
+        "priority": "4096",
+        "hello_timer": "10",
+        "max_age": "10",
+        "vlan": [
+          "10",
+          "20",
+          "30"
+        ],
+        "forward_timer": "10"
+      }
+    ]
+  },
+  {
+    "EdgePorts": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "portfast": true,
+          "bpduguard": true
+        },
+        {
+          "name": "Gig0/0",
+          "portfast": true,
+          "bpduguard": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "portfaste": true,
+          "bpduguard": false
+        },
+        {
+          "startInterface": "Gig1/2",
+          "endInterface": "Gig1/3",
+          "portfaste": true,
+          "bpduguard": false
+        }
+      ]
+    }
+  },
+  {
+    "Trunks": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "name": "Gig3/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "startInterface": "Gig2/2",
+          "endInterface": "Gig2/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ]
+    }
+  },
+  {
+    "AccessInterfaces": {
+      "Interfaces": [
+        {
+          "name": "Gig0/2",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        },
+        {
+          "name": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ]
+    }
+  },
+  {
+    "Portsecurity": [
+      {
+        "interface": "Gig0/1",
+        "maximum": "20",
+        "violation": "Shutdown",
+        "mac_address": "sticky"
+      }
+    ]
+  },
+  {
+    "EtherChannels": [
+      {
+        "Interfaces": [
+          {
+            "name": "Gig0/0"
+          }
+        ],
+        "InterfaceRanges": [
+          {
+            "startInterface": "Gig3/2",
+            "endInterface": "Gig3/3"
+          }
+        ],
+        "mode": "Passive",
+        "number": "1"
+      }
+    ]
   }
 ]
+
 
 
 
