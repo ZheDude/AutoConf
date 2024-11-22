@@ -26,7 +26,7 @@ def process_data(data: dict):
     konfig_liste = configuration_processer_tuple[1]
     ssh_ip = configuration_processer_tuple[0]
     # TODO MEHMET SWITCH SACHEN LAUFEN LASSEN
-    print(ssh_ip)
+    print(ssh_ip, " HELLO THIS IS THE IP ")
     print(konfig_liste)
 
     for element in konfig_liste:

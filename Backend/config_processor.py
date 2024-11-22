@@ -1,23 +1,23 @@
 import json
 from typing import Tuple, List, Any
 
-from Backend.Router_configs.bgp import BGPgenerator
-from Backend.Router_configs.dhcp import DHCPGenerator
-from Backend.Router_configs.gre import GRETunnelGenerator
-from Backend.Router_configs.hsrp import HSRPGenerator
-from Backend.Router_configs.interface import InterfaceGenerator
-from Backend.Router_configs.key_chain import KEYCHAINgenerator
-from Backend.Router_configs.ospf import OSPFgenerator
-from Backend.Router_configs.rip import RIPGenerator
-from Backend.Router_configs.static_routes import StaticRoutesGenerator
-from Backend.Switch_configs.switches import PortsecurityGenerator
-from Backend.Switch_configs.switches import AccessInterfacesGenerator
-from Backend.Switch_configs.switches import EdgePortGenerator
-from Backend.Switch_configs.switches import Etherchannelgenerator
-from Backend.Switch_configs.switches import STPGenerator
-from Backend.Switch_configs.switches import TrunkGenerator
-from Backend.Switch_configs.switches import VlanGenerator
-from Backend.Switch_configs.switches import VTPGenerator
+from Router_configs.bgp import BGPgenerator
+from Router_configs.dhcp import DHCPGenerator
+from Router_configs.gre import GRETunnelGenerator
+from Router_configs.hsrp import HSRPGenerator
+from Router_configs.interface import InterfaceGenerator
+from Router_configs.key_chain import KEYCHAINgenerator
+from Router_configs.ospf import OSPFgenerator
+from Router_configs.rip import RIPGenerator
+from Router_configs.static_routes import StaticRoutesGenerator
+from Switch_configs.switches import PortsecurityGenerator
+from Switch_configs.switches import AccessInterfacesGenerator
+from Switch_configs.switches import EdgePortGenerator
+from Switch_configs.switches import Etherchannelgenerator
+from Switch_configs.switches import STPGenerator
+from Switch_configs.switches import TrunkGenerator
+from Switch_configs.switches import VlanGenerator
+from Switch_configs.switches import VTPGenerator
 
 
 # TODO SAI default console mode soll configuration mode sein (end, conf t)
@@ -85,52 +85,82 @@ def get_list_of_konfigurations(json_content: str) -> tuple[str, list[Any]]:
                 # print(ospf_script)
 
         elif name == "RIP":
-            rip_gen = RIPGenerator(json_list, "Configurations/rip_template.txt")
-            # fertiges RIP script
-            rip_script = rip_gen.generate_script()
-            # print(rip_script)
-            konfigurations_liste.append(rip_script)
+            try:
+                rip_gen = RIPGenerator(json_list, "Configurations/rip_template.txt")
+                # fertiges RIP script
+                rip_script = rip_gen.generate_script()
+                # print(rip_script)
+                konfigurations_liste.append(rip_script)
+            except Exception as e:
+                ...
         elif name == "BGP":
-            bgp_data = json_list.get("BGP")
-            bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
-            bgp_script = bgp_gen.generate_script()
-            konfigurations_liste.append(bgp_script)
+            try:
+                bgp_data = json_list.get("BGP")
+                bgp_gen = BGPgenerator(bgp_data, "Configurations/bgp_template.txt")
+                bgp_script = bgp_gen.generate_script()
+                konfigurations_liste.append(bgp_script)
+            except Exception as e:
+                ...
+
+
+
+
+
         elif name == "Key-Chain":
-            key_chain_data = json_list.get("Key-Chain")
-            # print(key_chain_data)
-            key_chain_gen = KEYCHAINgenerator(key_chain_data)
-            key_chain_script = key_chain_gen.generate_script()
-            konfigurations_liste.append(key_chain_script)
+            try:
+                key_chain_data = json_list.get("Key-Chain")
+                # print(key_chain_data)
+                key_chain_gen = KEYCHAINgenerator(key_chain_data)
+                key_chain_script = key_chain_gen.generate_script()
+                konfigurations_liste.append(key_chain_script)
+            except Exception as e:
+                ...
         elif name == "Static-Routes":
-            static_route_data = json_list.get("Static-Routes")
-            # print(static_route_data)
-            static_route_gen = StaticRoutesGenerator(static_route_data)
-            static_route_script = static_route_gen.generate_script()
-            konfigurations_liste.append(static_route_script)
+            try:
+                static_route_data = json_list.get("Static-Routes")
+                # print(static_route_data)
+                static_route_gen = StaticRoutesGenerator(static_route_data)
+                static_route_script = static_route_gen.generate_script()
+                konfigurations_liste.append(static_route_script)
+            except Exception as e:
+                ...
         elif name == "GRE":
-            gre_data = json_list.get("GRE")
-            # print(gre_data)
-            gre_gen = GRETunnelGenerator(gre_data)
-            gre_script = gre_gen.generate_script()
-            konfigurations_liste.append(gre_script)
+            try:
+                gre_data = json_list.get("GRE")
+                # print(gre_data)
+                gre_gen = GRETunnelGenerator(gre_data)
+                gre_script = gre_gen.generate_script()
+                konfigurations_liste.append(gre_script)
+
+            except Exception as e:
+                ...
         elif name == "Interface":
-            interface_data = json_list.get("Interface")
-            # print(interface_data)
-            interface_gen = InterfaceGenerator(interface_data)
-            interface_script = interface_gen.generate_script()
-            konfigurations_liste.append(interface_script)
+            try:
+                interface_data = json_list.get("Interface")
+                # print(interface_data)
+                interface_gen = InterfaceGenerator(interface_data)
+                interface_script = interface_gen.generate_script()
+                konfigurations_liste.append(interface_script)
+            except Exception as e:
+                ...
         elif name == "HSRP":
-            hsrp_data = json_list.get("HSRP")
-            # print(hsrp_data)
-            hsrp_gen = HSRPGenerator(hsrp_data)
-            hsrp_script = hsrp_gen.generate_script()
-            konfigurations_liste.append(hsrp_script)
+            try:
+                hsrp_data = json_list.get("HSRP")
+                # print(hsrp_data)
+                hsrp_gen = HSRPGenerator(hsrp_data)
+                hsrp_script = hsrp_gen.generate_script()
+                konfigurations_liste.append(hsrp_script)
+            except Exception as e:
+                ...
         elif name == "DHCP":
-            dhcp_data = json_list.get("DHCP")
-            # print(dhcp_data)
-            dhcp_gen = DHCPGenerator(dhcp_data)
-            dhcp_script = dhcp_gen.generate_script()
-            konfigurations_liste.append(dhcp_script)
+            try:
+                dhcp_data = json_list.get("DHCP")
+                # print(dhcp_data)
+                dhcp_gen = DHCPGenerator(dhcp_data)
+                dhcp_script = dhcp_gen.generate_script()
+                konfigurations_liste.append(dhcp_script)
+            except Exception as e:
+                ...
         ### Switch Configurations
         elif name == "VLAN":
             vlan_data = json_list.get("VLAN")
