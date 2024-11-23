@@ -2,3 +2,4 @@
 Backend/.env
 __pychache__
 .venv
+node_modules/

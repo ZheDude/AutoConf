@@ -16,7 +16,7 @@
 	onMount(() => {});
 	let userParameter = {
 		SSH: {
-			ip: ""
+			ip: ''
 		},
 		VTP: [
 			{
@@ -44,6 +44,123 @@
 		Portsecurity: [],
 		EtherChannels: []
 	};
+
+	function formatAPIData(data) {
+		return [
+			{
+				SSH: {
+					ip: data.SSH.ip || ''
+				}
+			},
+			{
+				VTP: data.VTP.map((vtp) => ({
+					version: vtp.version || '',
+					mode: vtp.mode || '',
+					domain: vtp.domain || '',
+					password: vtp.password || '',
+					pruning: vtp.pruning || '',
+					is_primary: vtp.is_primary || '',
+					vlan: vtp.vlan || ''
+				}))
+			},
+			{
+				VLAN: data.VLAN.map((vlan) => ({
+					name: vlan.name || '',
+					number: vlan.number || ''
+				}))
+			},
+			{
+				STP: data.STP.map((stp) => ({
+					mode: stp.mode || '',
+					priority: stp.priority || '',
+					hello_timer: stp.hello_timer || '',
+					max_age: stp.max_age || '',
+					vlan: stp.vlan || [],
+					forward_timer: stp.forward_timer || ''
+				}))
+			},
+			{
+				EdgePorts: {
+					Interfaces: data.EdgePorts.Interfaces.map((interfaceItem) => ({
+						name: interfaceItem.name || '',
+						portfast: interfaceItem.portfast || '',
+						bpduguard: interfaceItem.bpduguard || ''
+					})),
+					InterfaceRanges: data.EdgePorts.InterfaceRanges.map((range) => ({
+						startInterface: range.startInterface || '',
+						endInterface: range.endInterface || '',
+						portfaste: range.portfaste || '',
+						bpduguard: range.bpduguard || ''
+					}))
+				}
+			},
+			{
+				Trunks: {
+					Interfaces: data.Trunks.Interfaces.map((interfaceItem) => ({
+						name: interfaceItem.name || '',
+						allowed_vlan: interfaceItem.allowed_vlan || '',
+						native_vlan: interfaceItem.native_vlan || '',
+						encapsulation: interfaceItem.encapsulation || '',
+						mode: interfaceItem.mode || '',
+						shutdown: interfaceItem.shutdown || ''
+					})),
+					InterfaceRanges: data.Trunks.InterfaceRanges.map((range) => ({
+						startInterface: range.startInterface || '',
+						endInterface: range.endInterface || '',
+						allowed_vlan: range.allowed_vlan || '',
+						native_vlan: range.native_vlan || '',
+						encapsulation: range.encapsulation || '',
+						mode: range.mode || '',
+						shutdown: range.shutdown || ''
+					}))
+				}
+			},
+			{
+				AccessInterfaces: {
+					Interfaces: data.AccessInterfaces.Interfaces.map((interfaceItem) => ({
+						name: interfaceItem.name || '',
+						allowed_vlan: interfaceItem.allowed_vlan || '',
+						native_vlan: interfaceItem.native_vlan || '',
+						encapsulation: interfaceItem.encapsulation || '',
+						mode: interfaceItem.mode || '',
+						shutdown: interfaceItem.shutdown || '',
+						vlan: interfaceItem.vlan || ''
+					})),
+					InterfaceRanges: data.AccessInterfaces.InterfaceRanges.map((range) => ({
+						startInterface: range.startInterface || '',
+						endInterface: range.endInterface || '',
+						allowed_vlan: range.allowed_vlan || '',
+						native_vlan: range.native_vlan || '',
+						encapsulation: range.encapsulation || '',
+						mode: range.mode || '',
+						shutdown: range.shutdown || '',
+						vlan: range.vlan || ''
+					}))
+				}
+			},
+			{
+				Portsecurity: data.Portsecurity.map((item) => ({
+					interface: item.interface || '',
+					maximum: item.maximum || '',
+					violation: item.violation || '',
+					mac_address: item.mac_address || ''
+				}))
+			},
+			{
+				EtherChannels: data.EtherChannels.map((channel) => ({
+					Interfaces: channel.Interfaces.map((interfaceItem) => ({
+						name: interfaceItem.name || ''
+					})),
+					InterfaceRanges: channel.InterfaceRanges.map((range) => ({
+						startInterface: range.startInterface || '',
+						endInterface: range.endInterface || ''
+					})),
+					mode: channel.mode || '',
+					number: channel.number || ''
+				}))
+			}
+		];
+	}
 
 	function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -100,7 +217,7 @@
 				number: ''
 			}
 		];
-		console.log(userParameter);
+
 	}
 
 	function removeEtherChannel() {
@@ -108,7 +225,8 @@
 			userParameter.EtherChannels = userParameter.EtherChannels.slice(0, -1);
 		}
 	}
-	$: console.log(JSON.stringify(userParameter));
+
+
 
 	$: {
 		if (enableVTP) {
@@ -127,12 +245,13 @@
 	}
 
 	async function sendData() {
+		let postData = JSON.stringify(formatAPIData(userParameter))
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(userParameter)
+			body: postData
 		});
 		let ApiData = await response.json();
 		return true;
@@ -230,12 +349,12 @@
 
 	<br />
 	<InputField
-	placeholder="192.168.10.10"
-	type="text"
-	bind:value={userParameter.SSH.ip}
-	fieldName="SSH-IP"
-	id="SSH-IP"
-/>
-	<br>
+		placeholder="192.168.10.10"
+		type="text"
+		bind:value={userParameter.SSH.ip}
+		fieldName="SSH-IP"
+		id="SSH-IP"
+	/>
+	<br />
 	<button class="generateSkriptButton" on:click={sendData}> Submit</button>
 </div>
