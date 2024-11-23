@@ -1,2 +1,0 @@
-# AutoConf
-Network Automation Tool

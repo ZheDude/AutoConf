@@ -1,0 +1,421 @@
+/*
+General Style
+*/
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+body {
+	background-color: #30313a;
+}
+
+.subHeading {
+	font-size: 25px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 12%;
+	margin-left: 8%;
+}
+
+.subSubHeading {
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+	margin-left: 15%;
+}
+
+/*
+Navbar Style
+*/
+
+.navbarTextDiv {
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 54px;
+	width: 150px;
+	height: 350px;
+	display: flex;
+	gap: 54px;
+	flex-direction: column;
+
+	padding-left: 50px;
+}
+
+.navbarIcon {
+	margin-left: 35px;
+}
+
+#iconDiv {
+	padding-top: 15%;
+	display: flex;
+	flex-direction: column;
+	gap: 3%;
+}
+
+a {
+	text-decoration: none;
+}
+
+.aDefault {
+	color: #87888c;
+}
+
+.aSelected {
+	color: #a9dfd8;
+}
+
+a:hover {
+	color: #a9dfd8;
+}
+
+#navbar {
+	display: flex;
+	flex-direction: column;
+	background-color: #171821;
+	border-radius: 14px;
+	min-height: 1250px;
+	width: 15%;
+	margin-top: 4%;
+	margin-bottom: 4%;
+	padding-bottom: 5%;
+	gap: 25px;
+	padding-left: 3%;
+	padding-top: 3%;
+}
+
+#GrundkonfigIconDiv {
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	gap: 10%;
+}
+
+#SwitchkonfigIconDiv {
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	gap: 10%;
+}
+
+#RouterIconDiv {
+	display: flex;
+	flex-direction: row;
+	font-size: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	gap: 10%;
+}
+
+/*
+General Layout Style
+
+*/
+.mainDiv {
+	display: flex;
+	flex-direction: row;
+	background-color: #171821;
+	margin-top: 4%;
+	min-height: 1250px;
+	width: 75%;
+	border-radius: 14px;
+	margin-bottom: 4%;
+	padding-bottom: 5%;
+}
+
+.pageDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	width: 100%;
+}
+
+.mainHeading {
+	font-size: 16px;
+	color: #ffff;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+	margin-left: 2%;
+}
+
+/* Grundkonfig Style */
+
+#parameterDivGrundkonfig {
+	color: white;
+	margin-top: 2%;
+	margin-left: 2%;
+	width: 50%;
+}
+
+#textAreaDiv {
+	height: 95%;
+	width: 40%;
+	background-color: #30313a;
+	border-radius: 14px;
+	margin-top: 2%;
+	padding-left: 2%;
+}
+
+#textAreaDiv p {
+	margin-top: 5%;
+	border-radius: 14px;
+	color: white;
+	margin: 2%;
+	font-size: 16px;
+	font-family: 'consolas';
+}
+
+#textAreaDiv h1 {
+	color: #ffff;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+}
+
+/* Components*/
+
+/* Einheitliches Layout für Container */
+.inputFieldDiv,
+.dropdownDiv,
+.checkboxDiv,
+.vtyDiv {
+	margin-left: 15%;
+	margin-top: 3%;
+	width: 40%;
+	background-color: #30313a;
+	padding: 1.5rem;
+	padding-right: 8.5%;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	color: #fff;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1.1rem;
+}
+
+/* Spezielle Anpassungen für Labels */
+.inputFieldDiv label,
+.checkboxDiv label {
+	width: 100%;
+	color: #ccc;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
+/* Eingabefeld-Stil */
+.inputFieldDiv input,
+.checkboxDiv input,
+.dropdownDiv input {
+	font-size: 1rem;
+	padding: 0.5rem;
+	border: 1px solid #c6c6c6;
+	border-radius: 4px;
+	background-color: #171821;
+	color: #fff;
+	width: 100%;
+	margin-bottom: 3%;
+	margin-top: 2%;
+	transition: all 0.3s ease;
+}
+
+/* Hover und Fokus für Eingabefelder */
+.inputFieldDiv input:hover,
+.inputFieldDiv input:focus,
+.checkboxDiv input:hover,
+.checkboxDiv input:focus,
+.dropdownDiv input:hover,
+.dropdownDiv input:focus {
+	border-color: #171821;
+	outline: none;
+	box-shadow: 0 0 5px rgba(23, 24, 33, 0.5);
+}
+
+/* Dropdown Textstil */
+.dropdownDiv p,
+.vtyDiv h2 {
+	margin-right: 1%;
+	color: #ffff;
+	font-size: 1.25rem;
+}
+
+/* Optionen im Dropdown */
+.dropdownDiv option {
+	margin-right: 1%;
+	color: #000;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#vtyMainDiv {
+	display: flex;
+	flex-direction: column;
+}
+
+.generateSkriptButton {
+	margin-top: 10%;
+	margin-left: 15%;
+	margin-bottom: 5%;
+	align-items: center;
+	background-color: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 0.25rem;
+	box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+	box-sizing: border-box;
+	color: rgba(0, 0, 0, 0.85);
+	cursor: pointer;
+	display: inline-flex;
+	font-family:
+		system-ui,
+		-apple-system,
+		system-ui,
+		'Helvetica Neue',
+		Helvetica,
+		Arial,
+		sans-serif;
+	font-size: 16px;
+	font-weight: 600;
+	justify-content: center;
+	line-height: 1.25;
+	min-height: 3rem;
+	padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
+	position: relative;
+	text-decoration: none;
+	transition: all 250ms;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: baseline;
+	width: auto;
+}
+
+.generateSkriptButton:hover,
+.generateSkriptButton:focus {
+	border-color: rgba(0, 0, 0, 0.15);
+	box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+	color: rgba(0, 0, 0, 0.65);
+}
+
+.generateSkriptButton:hover {
+	transform: translateY(-1px);
+}
+
+.generateSkriptButton:active {
+	background-color: #f0f0f1;
+	border-color: rgba(0, 0, 0, 0.15);
+	box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+	color: rgba(0, 0, 0, 0.65);
+	transform: translateY(0);
+}
+
+.leftButton {
+	margin-top: 5%;
+	margin-left: 15%;
+	appearance: none;
+	background-color: #30313a;
+	border: 1px solid rgba(27, 31, 35, 0.15);
+	border-radius: 6px;
+	box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+	box-sizing: border-box;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji';
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	padding: 6px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.leftButton:focus:not(:focus-visible):not(.focus-visible) {
+	box-shadow: none;
+	outline: none;
+}
+
+.leftButton:hover {
+	background-color: #767776;
+}
+
+.leftButton:focus {
+	box-shadow: #767776 0 0 0 3px;
+	outline: none;
+}
+
+.leftButton:disabled {
+	background-color: #30313a;
+	border-color: rgba(27, 31, 35, 0.1);
+	color: rgba(255, 255, 255, 0.8);
+	cursor: default;
+}
+
+.leftButton:active {
+	background-color: #30313a;
+	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+.rightButton {
+	margin-top: 5%;
+	margin-left: 3%;
+	appearance: none;
+	background-color: #30313a;
+	border: 1px solid rgba(27, 31, 35, 0.15);
+	border-radius: 6px;
+	box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+	box-sizing: border-box;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	font-family: -apple-system, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji';
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 20px;
+	padding: 6px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.rightButton:focus:not(:focus-visible):not(.focus-visible) {
+	box-shadow: none;
+	outline: none;
+}
+
+.rightButton:hover {
+	background-color: #767776;
+}
+
+.rightButton:focus {
+	box-shadow: #767776 0 0 0 3px;
+	outline: none;
+}
+
+.rightButton:disabled {
+	background-color: #30313a;
+	border-color: rgba(27, 31, 35, 0.1);
+	color: rgba(255, 255, 255, 0.8);
+	cursor: default;
+}
+
+.rightButton:active {
+	background-color: #30313a;
+	box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+/* SwitchComponents*/
+
+.TrunkRangeDiv {
+	display: flex;
+	flex-direction: row;
+}
