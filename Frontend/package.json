@@ -7,8 +7,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
-		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write .",
+		"lint": "prettier --check .. && eslint .",
+		"format": "prettier --write ..",
 		"test:integration": "playwright test",
 		"test:unit": "vitest"
 	},
