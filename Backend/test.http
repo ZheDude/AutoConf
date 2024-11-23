@@ -664,6 +664,30 @@ Origin: http: //example.com
   },
   {
     "Interface": {}
+  },
+  {
+    "VTP": []
+  },
+  {
+    "VLAN": []
+  },
+  {
+    "STP": []
+  },
+  {
+    "EdgePorts": {}
+  },
+  {
+    "Trunks": {}
+  },
+  {
+    "AccessInterfaces": {}
+  },
+  {
+    "Portsecurity": []
+  },
+  {
+    "EtherChannels": []
   }
 ]
 

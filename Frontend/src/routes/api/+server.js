@@ -1,7 +1,7 @@
 
 export async function POST({ request }) {
     const PostData = await request.json();
-    const response = await fetch('127.0.0.1/configuration:8000', {
+    const response = await fetch('127.0.0.1:8000/configuration/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
