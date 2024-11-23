@@ -1,0 +1,5 @@
+router bgp ${local_as}
+${neighbour_configurations}
+${network_statements}
+timers bgp ${timer_bgp} ${hold_time}
+

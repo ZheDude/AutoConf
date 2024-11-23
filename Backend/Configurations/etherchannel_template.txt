@@ -1,0 +1,3 @@
+interface range {interface}
+port-channel group {number}
+port-channel mode {mode}

@@ -1,0 +1,27 @@
+{
+  "BGP": {
+    "neighbor": [
+      {
+        "ip_of_neighbor": "192.168.0.1",
+        "as": 100,
+        "update_source": "Loopback1",
+        "next_hop_self": true,
+        "route_reflector": true,
+        "default_originate": true
+      }
+    ],
+    "networks":[
+      {
+        "network": "10.0.0.0",
+        "subnetmask": "0.0.0.255"
+      },
+      {
+        "network": "172.0.0.0",
+        "submask": "0.0.0.3"
+      }
+    ],
+    "timer_bgp": 30,
+    "hold_time": 180,
+    "as": 100
+  }
+}

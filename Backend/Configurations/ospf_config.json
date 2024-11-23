@@ -1,0 +1,26 @@
+{
+  "OSPF": {
+    "process_id": 10,
+    "networks":[
+      {
+        "network": "10.0.0.0",
+        "area_id": 10,
+        "wildcard": "0.0.0.255"
+      },
+
+      {
+        "network": "172.0.0.0",
+        "area_id": 10,
+        "wildcard": "0.0.0.3"
+      }
+    ]
+    ,
+    "router_id": "10.0.0.1",
+    "timer_dead": 30,
+    "timer_hello": 10,
+    "passive_interfaces": [
+      "GigabitEthernet0/1",
+      "GigabitEthernet0/2"
+    ]
+  }
+}
