@@ -181,7 +181,7 @@ General Layout Style
 .vtyDiv {
 	margin-left: 15%;
 	margin-top: 3%;
-	width: 40%;
+	width: 50%;
 	background-color: #30313a;
 	padding: 1.5rem;
 	padding-right: 8.5%;
@@ -190,6 +190,22 @@ General Layout Style
 	color: #fff;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1.1rem;
+}
+
+.vtyDiv .inputFieldDiv {
+	width: 60%;
+}
+
+.vtyDiv .dropdownDiv {
+	width: 60%;
+}
+
+.vtyDiv .checkboxDiv {
+	width: 60%;
+}
+
+.vtyDiv .inputFieldDiv input {
+	width: 87%;
 }
 
 /* Spezielle Anpassungen für Labels */
