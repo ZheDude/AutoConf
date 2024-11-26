@@ -267,5 +267,7 @@ if __name__ == '__main__':
     ssh_and_config = get_list_of_konfigurations(data)
     ip = ssh_and_config[0]
     konfig_liste = ssh_and_config[1]
-    for element in konfig_liste:
-        print(element)
+    #for element in konfig_liste:
+    #    print(element)
+
+    
