@@ -1,7 +1,6 @@
 import json
 
 import uvicorn
-# from dotenv import load_dotenv
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from config_processor import get_list_of_konfigurations
@@ -48,6 +47,4 @@ async def receive_json(request: Request):
 
 
 if __name__ == "__main__":
-    # load_dotenv()
-    # API_KEY = os.getenv("API_KEY")
-    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True, ssl_certfile=r"C:\Users\Sai\Documents\GitHub\AutoConf\Backend\server.crt", ssl_keyfile=r"C:\Users\Sai\Documents\GitHub\AutoConf\Backend\server.key")
