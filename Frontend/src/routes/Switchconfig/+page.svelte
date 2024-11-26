@@ -13,20 +13,14 @@
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
 
 	let enableVTP = false;
+
+
 	onMount(() => {});
 	let userParameter = {
 		SSH: {
 			ip: ''
 		},
-		VTP: [
-			{
-				mode: 'Server',
-				domain: '',
-				password: '',
-				pruning: true,
-				is_primary: false
-			}
-		],
+		VTP: [],
 		VLAN: [],
 		STP: [],
 		EdgePorts: {
@@ -231,7 +225,6 @@
 	$: {
 		if (enableVTP) {
 			userParameter.VTP = [
-				...userParameter.VTP,
 				{
 					enabled: false,
 					mode: 'Server',
@@ -240,9 +233,15 @@
 					pruning: true,
 					is_primary: false
 				}
-			];
+			]
+		}else{
+			userParameter.VTP = [];
 		}
+
+
 	}
+
+	$: console.log(userParameter)
 
 	async function sendData() {
 		let postData = JSON.stringify(formatAPIData(userParameter))
@@ -302,7 +301,7 @@
 		{/if}
 	{/if}
 
-	{#if userParameter.VTP[0].mode === 'Server' || !enableVTP}
+	{#if !enableVTP ||  userParameter.VTP[0].mode === 'Server' }
 		<h2 class="subHeading">VLANs</h2>
 		{#each range(0, userParameter.VLAN.length - 1) as count}
 			<VLAN
