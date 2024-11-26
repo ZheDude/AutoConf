@@ -39,6 +39,9 @@ def process_data(data: dict):
         print(result)
         result = dev1.send_command_imprvd("do-exec show running\n    ")
         print(result)
+        for element in konfig_liste:
+            result = dev1.send_command_imprvd(element)
+            print(result)
         print("Configurations applied successfully.")
     else:
         print("No SSH data found.")

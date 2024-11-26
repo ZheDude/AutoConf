@@ -8,7 +8,7 @@ from Switch_configs.switches import VlanGenerator
 from Switch_configs.switches import VTPGenerator
 def main():
     from connections import SSHConnection
-    dev1 = SSHConnection("172.16.2.127", "cisco", "cisco")
+    dev1 = SSHConnection("172.16.2.126", "cisco", "cisco")
     result = dev1.send_command_imprvd("configure terminal\n    ")
     print(result)
 
