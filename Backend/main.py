@@ -8,45 +8,45 @@ from Switch_configs.switches import VlanGenerator
 from Switch_configs.switches import VTPGenerator
 def main():
     from connections import SSHConnection
-    #dev1 = SSHConnection("172.16.2.126", "cisco", "cisco")
-    #result = dev1.send_command_imprvd("configure terminal\n    ")
-    #print(result)
+    dev1 = SSHConnection("172.16.2.127", "cisco", "cisco")
+    result = dev1.send_command_imprvd("configure terminal\n    ")
+    print(result)
 
-    vlan_gen = VlanGenerator(vlan_data)
-    vlan_script = vlan_gen.generate_script()
-    print(vlan_script)
+    #vlan_gen = VlanGenerator(vlan_data)
+    #vlan_script = vlan_gen.generate_script()
+    #print(vlan_script)
     #dev1.send_command_imprvd(vlan_script)
 
-    vtp_gen = VTPGenerator(vtp_data)
-    vtp_script = vtp_gen.generate_script()
+    #vtp_gen = VTPGenerator(vtp_data)
+    #vtp_script = vtp_gen.generate_script()
     #dev1.send_command_imprvd(vtp_script)
 
 
-    stp_gen = STPGenerator(stp_data)
-    stp_script = stp_gen.generate_script()
+    #stp_gen = STPGenerator(stp_data)
+    #stp_script = stp_gen.generate_script()
     #print("VTP SCRIPT ============\n",stp_script, "\n============\n")
     #print(dev1.send_command_imprvd(stp_script))
 
 
-    access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
-    access_interfaces_script = access_interfaces_gen.generate_script()
+    #access_interfaces_gen = AccessInterfacesGenerator(access_interfaces_data)
+    #access_interfaces_script = access_interfaces_gen.generate_script()
     #print(dev1.send_command_imprvd(access_interfaces_script))
 
-    edge_port_gen = EdgePortGenerator(edgeport_data)
-    edge_port_script = edge_port_gen.generate_script()
+    #edge_port_gen = EdgePortGenerator(edgeport_data)
+    #edge_port_script = edge_port_gen.generate_script()
     #print(dev1.send_command_imprvd(edge_port_script))
 
-    etherchannel_gen = Etherchannelgenerator(etherchannel_data)
-    etherchannel_script = etherchannel_gen.generate_script()
+    #etherchannel_gen = Etherchannelgenerator(etherchannel_data)
+    #etherchannel_script = etherchannel_gen.generate_script()
     #dev1.send_command_imprvd(etherchannel_script)
 
-    port_security_gen = PortsecurityGenerator(portsecurity_data)
-    port_security_script = port_security_gen.generate_script()
+    #port_security_gen = PortsecurityGenerator(portsecurity_data)
+    #port_security_script = port_security_gen.generate_script()
     #print(dev1.send_command_imprvd(port_security_script))
 
-    trunk_gen = TrunkGenerator(trunk_data)
-    trunk_script = trunk_gen.generate_script()
-    print(dev1.send_command_imprvd(trunk_script))
+    #trunk_gen = TrunkGenerator(trunk_data)
+    #trunk_script = trunk_gen.generate_script()
+    #print(dev1.send_command_imprvd(trunk_script))
 
     result = dev1.send_command_imprvd("do-exec show running\n    ")
     print(result)
