@@ -59,7 +59,7 @@ class SSHConnection:
 
         # Clear any existing output in the channel
         if self.channel.recv_ready():
-            self.channel.recv(8192)
+            print("Clearing this output", self.channel.recv(2048).decode("utf-8"))
 
         # Send the command
         self.channel.send(command + '\n')
@@ -69,7 +69,7 @@ class SSHConnection:
 
         while True:
             if self.channel.recv_ready():
-                output += self.channel.recv(8192).decode("utf-8")
+                output += self.channel.recv(2048).decode("utf-8")
 
                 # Check if the command prompt has returned in the output
                 if output.strip().endswith(prompt):
@@ -81,7 +81,7 @@ class SSHConnection:
                 break
 
             # Add a small delay to allow the buffer to fill up
-            time.sleep(0.1)
+            time.sleep(0.5)
 
         return output
     
