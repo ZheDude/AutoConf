@@ -5,17 +5,10 @@
     export let id;
     export let parameters = {"mode": '', "priority": '', "hello_timer": '', "forward_timer": '', "max_age": '', "vlan": "" }
 
+    $: console.log(parameters['vlan'])
+    
 
-    $: {
-        if (parameters.vlan != ""){    
-        parameters.vlan = getVlanArray(parameters.vlan)
-    }
-    }
 
-    function getVlanArray(inputString){
-        
-        return inputString.split(',');
-    }
 
 </script>
 

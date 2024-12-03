@@ -69,7 +69,7 @@
 					priority: stp.priority || '',
 					hello_timer: stp.hello_timer || '',
 					max_age: stp.max_age || '',
-					vlan: stp.vlan || [],
+					vlan: stp.vlan.split(',') || [],
 					forward_timer: stp.forward_timer || ''
 				}))
 			},
@@ -245,6 +245,7 @@
 
 	async function sendData() {
 		let postData = JSON.stringify(formatAPIData(userParameter))
+		console.log(postData)
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
