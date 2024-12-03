@@ -16,16 +16,37 @@
 		url = navigation.to.url.pathname.toString();
 		console.log(url);
 	});
-
 </script>
 
 <div class="pageDiv">
 	<div id="navbar">
-	<div id="NavbarContent">
-		<GrundkonfigIcon {url}></GrundkonfigIcon>
-		<SwitchIcon {url}></SwitchIcon>
-		<RouterIcon {url}></RouterIcon>
-	</div>
+		<div id="NavbarContent">
+			<GrundkonfigIcon {url}></GrundkonfigIcon>
+			{#if url == '/'}
+				<ui><a href="#section1">Console Interface</a></ui>
+				<ui><a href="#section2">Management Interface</a></ui>
+				<ui><a href="#vtyMainDiv">VTY Lines</a></ui>
+			{/if}
+
+			<SwitchIcon {url}></SwitchIcon>
+			{#if url == '/Switchconfig'}
+				<ui><a href="#section1">VTP</a></ui>
+				<br />
+				<ui><a href="#section2">VLANs</a></ui>
+				<br />
+				<ui><a href="#section3">STP</a></ui>
+				<br />
+				<ui><a href="#section3">Interfaces</a></ui>
+				<br />
+				<ui><a href="#section3">Port-Security</a></ui>
+				<br />
+				<ui><a href="#section3">Etherchannels</a></ui>
+			{/if}
+			<RouterIcon {url}></RouterIcon>
+			{#if url == '/Routerconfig'}
+				<ui><a href="#section1">???</a></ui>
+			{/if}
+		</div>
 	</div>
 
 	<div class="mainDiv">

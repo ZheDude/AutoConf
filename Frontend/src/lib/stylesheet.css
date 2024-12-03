@@ -83,8 +83,7 @@ a:hover {
 	padding-top: 3%;
 }
 
-
-#NavbarContent{
+#NavbarContent {
 	position: sticky;
 	top: 50px;
 	z-index: 1000;
@@ -104,6 +103,7 @@ a:hover {
 	font-size: 20px;
 	font-family: Arial, Helvetica, sans-serif;
 	gap: 10%;
+	margin-top: 10%;
 }
 
 #RouterIconDiv {
@@ -112,6 +112,7 @@ a:hover {
 	font-size: 20px;
 	font-family: Arial, Helvetica, sans-serif;
 	gap: 10%;
+	margin-top: 10%;
 }
 
 /*
@@ -441,4 +442,8 @@ General Layout Style
 .TrunkRangeDiv {
 	display: flex;
 	flex-direction: row;
+}
+
+#NavbarContent ui {
+	margin-left: 15%;
 }
