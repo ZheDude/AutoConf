@@ -83,6 +83,13 @@ a:hover {
 	padding-top: 3%;
 }
 
+
+#NavbarContent{
+	position: sticky;
+	top: 50px;
+	z-index: 1000;
+}
+
 #GrundkonfigIconDiv {
 	display: flex;
 	flex-direction: row;

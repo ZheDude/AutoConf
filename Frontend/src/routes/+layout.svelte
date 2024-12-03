@@ -21,9 +21,11 @@
 
 <div class="pageDiv">
 	<div id="navbar">
+	<div id="NavbarContent">
 		<GrundkonfigIcon {url}></GrundkonfigIcon>
 		<SwitchIcon {url}></SwitchIcon>
 		<RouterIcon {url}></RouterIcon>
+	</div>
 	</div>
 
 	<div class="mainDiv">
