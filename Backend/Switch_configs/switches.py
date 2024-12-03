@@ -1,17 +1,22 @@
 class VlanGenerator:
     def __init__(self, vlan_data):
-        self.vlan = {}
-        for enumerate in vlan_data['VLAN']:
-            self.vlan['number'] = enumerate['number']
-            self.vlan['name'] = enumerate['name']
+        self.vlan = []
+        for val in vlan_data['VLAN']:
+            self.vlan.append({
+                'number': val['number'],
+                'name': val['name']
+            })
 
     def display_config(self):
         print(self.vlan['number'])
         print(self.vlan['name'])
 
     def generate_script(self):
-        fin_str = (f"vlan {self.vlan['number']}\n" +
-                   f"name {self.vlan['name']}")
+        fin_str = ""
+        for vlan_entry in self.vlan:
+            fin_str += (f"vlan {vlan_entry['number']}\n" +
+                        f"name {vlan_entry['name']}\n" +
+                        f"exit\n")
         return fin_str
 
 
@@ -98,9 +103,11 @@ class PortsecurityGenerator:
 
     def generate_script(self):
         fin_str = (f"interface {self.portsecurity['interface']}\n" +
+                   f"switchport port-security\n" +
                    f"switchport port-security maximum {self.portsecurity['maximum']}\n" +
                    f"switchport port-security violation {self.portsecurity['violation']}\n" +
-                   f"switchport port-security mac-address {self.portsecurity['mac_address']}")
+                   f"switchport port-security mac-address {self.portsecurity['mac_address']}\n"+
+                   f"exit")
         return fin_str
 
 

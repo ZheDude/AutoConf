@@ -8,13 +8,13 @@ from Switch_configs.switches import VlanGenerator
 from Switch_configs.switches import VTPGenerator
 def main():
     from connections import SSHConnection
-    dev1 = SSHConnection("172.16.2.127", "cisco", "cisco")
-    result = dev1.send_command_imprvd("configure terminal\n    ")
-    print(result)
+    #dev1 = SSHConnection("172.16.2.126", "cisco", "cisco")
+    #result = dev1.send_command_imprvd("configure terminal\n    ")
+    #print(result)
 
-    #vlan_gen = VlanGenerator(vlan_data)
-    #vlan_script = vlan_gen.generate_script()
-    #print(vlan_script)
+    vlan_gen = VlanGenerator(vlan_data)
+    vlan_script = vlan_gen.generate_script()
+    print(vlan_script)
     #dev1.send_command_imprvd(vlan_script)
 
     #vtp_gen = VTPGenerator(vtp_data)
@@ -48,8 +48,8 @@ def main():
     #trunk_script = trunk_gen.generate_script()
     #print(dev1.send_command_imprvd(trunk_script))
 
-    result = dev1.send_command_imprvd("do-exec show running\n    ")
-    print(result)
+    #result = dev1.send_command_imprvd("do-exec show running\n    ")
+    #print(result)
 
 
     # dev1.send_command_noreturn("do-exec show ip interface brief\n    ")
@@ -61,6 +61,14 @@ vlan_data = {
     "VLAN": [
         {
             "number": 10,
+            "name": "VLAN_NAME"
+        },
+        {
+            "number": 20,
+            "name": "VLAN_NAME"
+        },
+        {
+            "number": 30,
             "name": "VLAN_NAME"
         }
     ]

@@ -95,7 +95,7 @@
 
 	<Dropdown
 		bind:value={trunks.Interfaces[count].mode}
-		options={['Dynamic-Auto', 'Dynamic-Desirable', 'Static']}
+		options={['Dynamic Auto', 'Dynamic Desirable', 'Static']}
 		fieldName="Mode{count}"
 		Heading="Trunk-Mode:"
 	></Dropdown>

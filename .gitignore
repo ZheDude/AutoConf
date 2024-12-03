@@ -3,3 +3,6 @@ Backend/.env
 __pychache__
 .venv
 node_modules/
+Backend/api.py
+Backend/connections.py
+Backend/main.py

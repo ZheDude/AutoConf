@@ -167,8 +167,8 @@ def get_list_of_konfigurations(json_content: str) -> tuple[str, list[Any]]:
                 vlan_data = json_list.get("VLAN")
                 if not vlan_data:
                     continue
-                vlan_data = {"VLAN": vlan_data}
-                vlan_gen = VlanGenerator(vlan_data)
+                vlan_newdata = {"VLAN": vlan_data}
+                vlan_gen = VlanGenerator(vlan_newdata)
                 vlan_script = vlan_gen.generate_script()
                 konfigurations_liste.append(vlan_script)
             except Exception as e:
