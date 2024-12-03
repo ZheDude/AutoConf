@@ -23,28 +23,30 @@
 		<div id="NavbarContent">
 			<GrundkonfigIcon {url}></GrundkonfigIcon>
 			{#if url == '/'}
-				<ui><a href="#section1">Console Interface</a></ui>
-				<ui><a href="#section2">Management Interface</a></ui>
-				<ui><a href="#vtyMainDiv">VTY Lines</a></ui>
+				<ul><a href="#section1">Console Interface</a></ul>
+				<br />
+				<ul><a href="#section2">Management Interface</a></ul>
+				<br />
+				<ul><a href="#vtyMainDiv">VTY Lines</a></ul>
 			{/if}
 
 			<SwitchIcon {url}></SwitchIcon>
 			{#if url == '/Switchconfig'}
-				<ui><a href="#section1">VTP</a></ui>
+				<ul><a href="#section1">VTP</a></ul>
 				<br />
-				<ui><a href="#section2">VLANs</a></ui>
+				<ul><a href="#section2">VLANs</a></ul>
 				<br />
-				<ui><a href="#section3">STP</a></ui>
+				<ul><a href="#section3">STP</a></ul>
 				<br />
-				<ui><a href="#section3">Interfaces</a></ui>
+				<ul><a href="#section3">Interfaces</a></ul>
 				<br />
-				<ui><a href="#section3">Port-Security</a></ui>
+				<ul><a href="#section3">Port-Security</a></ul>
 				<br />
-				<ui><a href="#section3">Etherchannels</a></ui>
+				<ul><a href="#section3">Etherchannels</a></ul>
 			{/if}
 			<RouterIcon {url}></RouterIcon>
 			{#if url == '/Routerconfig'}
-				<ui><a href="#section1">???</a></ui>
+				<ul><a href="#section1">???</a></ul>
 			{/if}
 		</div>
 	</div>
