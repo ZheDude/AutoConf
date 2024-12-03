@@ -36,8 +36,8 @@
 	}
 </script>
 
-<h2 class="subHeading">Edge-Ports</h2>
-<h2 class="subHeading">Single Interfaces</h2>
+<h2 class="subSubHeading">Edge-Ports</h2>
+<h2 class="subSubSubHeading">Single Interfaces</h2>
 
 {#each range(0, edgeInterfaces.Interfaces.length - 1) as count}
 	<InputField
@@ -60,7 +60,7 @@
 {/each}
 <button class="leftButton" on:click={addEdgeInterface}>Add Interface</button>
 <button class="rightButton" on:click={removeEdgeInterface}>Remove Interface</button>
-<h2 class="subHeading">Interface Ranges</h2>
+<h2 class="subSubSubHeading">Interface Ranges</h2>
 
 {#each range(0, edgeInterfaces.InterfaceRanges.length - 1) as count}
 	<InputField

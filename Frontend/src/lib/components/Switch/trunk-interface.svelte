@@ -57,7 +57,7 @@
 	}
 </script>
 
-<h2 class="subHeading">Single Interfaces</h2>
+<h2 class="subSubSubHeading">Single Interfaces</h2>
 
 {#each range(0, trunks.Interfaces.length - 1) as count}
 	<InputField
@@ -110,7 +110,7 @@
 <button class="leftButton" on:click={addInterface}>Add Interface</button>
 <button class="rightButton" on:click={removeInterface}>Remove Interface</button>
 
-<h2 class="subHeading">Interface Ranges</h2>
+<h2 class="subSubSubHeading">Interface Ranges</h2>
 {#each range(0, trunks.InterfaceRanges.length - 1) as count}
 	<div class="TrunkRangeDiv">
 		<InputField
