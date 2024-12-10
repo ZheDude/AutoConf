@@ -14,7 +14,6 @@
 
 	let enableVTP = false;
 
-
 	onMount(() => {});
 	let userParameter = {
 		SSH: {
@@ -69,7 +68,7 @@
 					priority: stp.priority || '',
 					hello_timer: stp.hello_timer || '',
 					max_age: stp.max_age || '',
-					vlan: stp.vlan || [],
+					vlan: stp.vlan.split(',') || [],
 					forward_timer: stp.forward_timer || ''
 				}))
 			},
@@ -211,7 +210,6 @@
 				number: ''
 			}
 		];
-
 	}
 
 	function removeEtherChannel() {
@@ -219,8 +217,6 @@
 			userParameter.EtherChannels = userParameter.EtherChannels.slice(0, -1);
 		}
 	}
-
-
 
 	$: {
 		if (enableVTP) {
@@ -233,18 +229,17 @@
 					pruning: true,
 					is_primary: false
 				}
-			]
-		}else{
+			];
+		} else {
 			userParameter.VTP = [];
 		}
-
-
 	}
 
-	$: console.log(userParameter)
+	$: console.log(userParameter);
 
 	async function sendData() {
-		let postData = JSON.stringify(formatAPIData(userParameter))
+		let postData = JSON.stringify(formatAPIData(userParameter));
+		console.log(postData);
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
@@ -261,7 +256,7 @@
 	<div class="mainHeading">
 		<h1>Switchconfig</h1>
 	</div>
-	<h2 class="subHeading">VTP</h2>
+	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
 	{#if enableVTP}
 		<Dropdown
@@ -301,8 +296,8 @@
 		{/if}
 	{/if}
 
-	{#if !enableVTP ||  userParameter.VTP[0].mode === 'Server' }
-		<h2 class="subHeading">VLANs</h2>
+	{#if !enableVTP || userParameter.VTP[0].mode === 'Server'}
+		<h2 class="subHeading" id="VLANs">VLANs</h2>
 		{#each range(0, userParameter.VLAN.length - 1) as count}
 			<VLAN
 				id={count}
@@ -315,7 +310,7 @@
 		<button class="rightButton" on:click={removeVLAN}>Remove VLAN</button>
 	{/if}
 
-	<h2 class="subHeading">STP</h2>
+	<h2 class="subHeading" id="STP">STP</h2>
 	{#each range(0, userParameter.STP.length - 1) as count}
 		<StpProcess id={count + 1} parameters={userParameter.STP[count]}></StpProcess>
 	{/each}
@@ -323,15 +318,15 @@
 	<button class="rightButton" on:click={removeSTPProcess}>Remove STP Process </button>
 	<EdgeInterfaces edgeInterfaces={userParameter.EdgePorts}></EdgeInterfaces>
 
-	<h2 class="subHeading">Interfaces</h2>
-	<h2 class="subHeading">Trunks</h2>
+	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
+	<h2 class="subSubHeading">Trunks</h2>
 	<TrunkInterface bind:trunks={userParameter.Trunks}></TrunkInterface>
 
-	<h2 class="subHeading">Access Interfaces</h2>
+	<h2 class="subSubHeading">Access Interfaces</h2>
 	<AccessInterface bind:accessInterfaces={userParameter.AccessInterfaces}></AccessInterface>
 	<br />
 
-	<h2 class="subHeading">Port-Security</h2>
+	<h2 class="subHeading" id="Port-Security">Port-Security</h2>
 	{#each range(0, userParameter.Portsecurity.length - 1) as count}
 		<PortSecurityInterface bind:parameters={userParameter.Portsecurity[count]} id={count}
 		></PortSecurityInterface>
@@ -339,7 +334,7 @@
 	<button on:click={addPortSecurityInterface} class="leftButton">Add Interface</button>
 	<button on:click={removePortSecurityInterface} class="rightButton">Remove Interface</button>
 
-	<h2 class="subHeading">Etherchannels</h2>
+	<h2 class="subHeading" id="Etherchannels">Etherchannels</h2>
 	{#each range(0, userParameter.EtherChannels.length - 1) as count}
 		<Etherchannel bind:parameters={userParameter.EtherChannels[count]} id={count}></Etherchannel>
 	{/each}

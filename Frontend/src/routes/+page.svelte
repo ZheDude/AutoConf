@@ -90,21 +90,21 @@
 	<InputField
 		placeholder="corp.at"
 		type="text"
-		fieldName="IP-Domainname"
+		fieldName="IP Domain-Name"
 		id="IP-Domainname"
 		bind:value={inputParams.domain}
 	/>
 	<InputField
 		placeholder="cisco"
 		type="text"
-		fieldName="Adminusername"
+		fieldName="Admin Username"
 		id="Adminusername"
 		bind:value={inputParams.adminUser}
 	/>
 	<InputField
 		placeholder=""
 		type="password"
-		fieldName="Adminpasswort"
+		fieldName="Admin Password"
 		id="Adminpasswort"
 		bind:value={inputParams.password}
 	/>
@@ -116,7 +116,7 @@
 		bind:value={inputParams.sshVersion}
 	></Dropdown>
 
-	<h2 class="subHeading">Console Interface</h2>
+	<h2 class="subHeading" id="ConsoleInterface">Console Interface</h2>
 	<InputField
 		type="text"
 		placeholder="3600"
@@ -126,25 +126,29 @@
 	></InputField>
 	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}
 	></Checkbox>
-	
+
 	<Checkbox name="login" Heading="Login Local" bind:isChecked={inputParams.consoleLoginLocal}
 	></Checkbox>
 
-	<h2 class="subHeading"> Management Interface</h2>
-	<InputField type="text"
-	placeholder="vlan 10/ Gig0/0"
-	fieldName=""
-	id="VLAN-Num"
-	bind:value={inputParams.managementInterface}></InputField>
+	<h2 class="subHeading" id="ManagementInterface">Management Interface</h2>
+	<InputField
+		type="text"
+		placeholder="vlan 10/ Gig0/0"
+		fieldName=""
+		id="VLAN-Num"
+		bind:value={inputParams.managementInterface}
+	></InputField>
 
-	<InputField type="text"
-	placeholder="192.168.30.254"
-	fieldName="IP-Addresse"
-	id="Management-IP"
-	bind:value={inputParams.ManagementIP}></InputField>
+	<InputField
+		type="text"
+		placeholder="192.168.30.254"
+		fieldName="IP-Addresse"
+		id="Management-IP"
+		bind:value={inputParams.ManagementIP}
+	></InputField>
 
 	<div id="vtyMainDiv">
-		<h2 class="subHeading">VTY Lines</h2>
+		<h2 class="subHeading" id="VTYLines">VTY Lines</h2>
 
 		{#each range(1, count) as number}
 			<VtyRange count={number} bind:attributes={inputParams['vtyRange' + number]}></VtyRange>
@@ -155,8 +159,6 @@
 	<button class="rightButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>
-
-	
 </div>
 
 {#if generate}
@@ -171,11 +173,11 @@
 		<p>username {inputParams.adminUser} algorithm-type scrypt secret {inputParams.password}</p>
 		<p>crypto key generate rsa usage-keys modulus 1024</p>
 		<p>ip ssh version {inputParams.sshVersion}</p>
-		<br>
+		<br />
 		<p>Interface {inputParams.managementInterface}</p>
 		<p>ip address {inputParams.ManagementIP}</p>
 		<p>no shut</p>
-		<br>
+		<br />
 		<p>line con 0</p>
 		<p>exec-timeout {inputParams.consoleExecTime}</p>
 		<p>{inputParams.consoleLoggingSyn ? 'logging syn' : ''}</p>
