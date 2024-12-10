@@ -1,4 +1,5 @@
 import json
+import os
 
 import uvicorn
 from fastapi import FastAPI, Request, HTTPException
@@ -6,11 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config_processor import get_list_of_konfigurations
 
+
+SECRET_TOKEN = os.getenv("SECRET_TOKEN", "your-secure-token")
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["example.com"],
-    allow_credentials=False,
+    allow_origins=["https://specific-origin1.com",],
+    allow_credentials=True,
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
 

@@ -843,7 +843,7 @@ Origin: http: //example.com
 POST https://127.0.0.1:8000/configuration/
 Content-Type: application/json
 Origin: https://specific-origin.com
-
+User-Agent: TestClient/1.0
 
 [
   {
