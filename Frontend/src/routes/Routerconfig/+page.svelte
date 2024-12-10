@@ -1,18 +1,40 @@
 
 <script>
-  import InputField from '../../lib/components/inputField.svelte';
-	import Dropdown from '../../lib/components/dropdown.svelte';
-	import Checkbox from '../../lib/components/checkbox.svelte';
-    let userParameters = [
+  import Interface from '../../lib/components/Router/Interface.svelte';
+	import Ospf from '../../lib/components/Router/ospf.svelte';
+  import OSPF from '../../lib/components/Router/ospf.svelte';
+
+    let userParameters = 
+    [
+    {
+    "Interface": [
+      {
+        "interface": "",
+        "ip_address": "",
+        "subnetmask": "",
+        "description": "",
+        "shutdown": false,
+        "ospf": {
+          "area_id": "",
+          "cost": "",
+          "priority": "",
+          "network_type": "",
+          "authentication": {
+            "key_chain": "",
+          }
+        }
+      }
+    ]
+  },
   {
     "OSPF": [
       {
-        "process_id": 10,
+        "process_id": "",
         "networks": [
           {
-            "network": "192.0.0.0",
-            "area_id": 10,
-            "wildcard": "0.0.0.255"
+            "network": "",
+            "area_id": "",
+            "wildcard": ""
           }
         ],
         "router_id": "10.0.0.1",
@@ -21,28 +43,6 @@
         "passive_interfaces": [
           "GigabitEthernet0/1",
           "GigabitEthernet0/2"
-        ]
-      },
-      {
-        "process_id": 1234,
-        "networks": [
-          {
-            "network": "10.0.0.0",
-            "area_id": 10,
-            "wildcard": "0.0.0.255"
-          },
-          {
-            "network": "172.0.0.0",
-            "area_id": 10,
-            "wildcard": "0.0.0.3"
-          }
-        ],
-        "router_id": "172.0.0.1",
-        "timer_dead": 30,
-        "timer_hello": 10,
-        "passive_interfaces": [
-          "GigabitEthernet0/1",
-          "GigabitEthernet0/123"
         ]
       }
     ]
@@ -123,28 +123,6 @@
     }
   },
   {
-    "Interface": [
-      {
-        "type": "GigabitEthernet",
-        "number": "0/0",
-        "ip_address": "0.0.0.0",
-        "subnetmask": "255.255.255.255",
-        "description": "This is a description",
-        "shutdown": false,
-        "ospf": {
-          "area_id": 10,
-          "cost": 10,
-          "priority": 10,
-          "network_type": "broadcast",
-          "authentication": {
-            "key_chain": "KEY_CHAIN",
-            "message_digest": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "Static-Routes": [
       {
         "source": "0.0.0.0",
@@ -160,12 +138,10 @@
       {
         "tunnel": "Tunnel0",
         "source": "GigabitEthernet0/0",
-        "destination": "1.1.1.1",
-        "key": 10,
-        "ipadd": {
-          "ip": "1.1.1.1",
-          "subnetmask": "255.255.255.0"
-        }
+        "source_ip": "",
+        "destination": "1.2.2.1",
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
       }
     ]
   },
@@ -175,7 +151,7 @@
         "group": 10,
         "version": 2,
         "interface": "GigabitEthernet0/0.1",
-        "standbyip": "1.1.1.1",
+        "ip": "1.1.1.1",
         "priority": 10,
         "preempt": true,
         "timers": {
@@ -212,10 +188,63 @@
     ]
   }
 ]
+
+
+
+function addInterface() {
+    
+    userParameters[0]["Interface"] = [
+      ...userParameters[0]["Interface"],
+      {
+        "interface": "",
+        "ip_address": "",
+        "subnetmask": "",
+        "description": "",
+        "shutdown": false,
+        "ospf": {
+          "area_id": "",
+          "cost": "",
+          "priority": "",
+          "network_type": "",
+          "authentication": {
+            "key_chain": "",
+          }
+        }
+      }
+    ];
+  }
+
+
+  function removeInterface() {
+  if (userParameters[0]["Interface"].length > 0) {
+    userParameters[0]["Interface"] = userParameters[0]["Interface"].slice(0, -1);
+  }
+}
+
+
+function range(start, end) {
+		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+	}
+
+
+const mappings = {'OSPF': 1, 'Key-Chain': 2, 'RIP': 3, 'BGP': 4, 
+'Interface': 0, 'Static-Routes:': 5, 'GRE': 6, 'HSRP': 7, 'DHCP': 8}
+
+
 </script>
 
 <div class="mainHeading">
 <h1>Routerconfig</h1>
 
 <h2 class="subHeading">Interfaces</h2>
+
+{#each range(0, userParameters[mappings['Interface']]['Interface'].length-1) as number}
+<Interface id={number} bind:params={userParameters[mappings['Interface']]['Interface'][number]}></Interface>
+
+{/each}
+<button class="leftButton" on:click={addInterface}>Add Interface</button>
+<button class="rightButton" on:click={removeInterface}>Remove Interface</button>
+
+<h1>OSPF</h1>
+<Ospf id=1></Ospf>
 </div>
