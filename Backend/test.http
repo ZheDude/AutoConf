@@ -842,8 +842,7 @@ Origin: http: //example.com
 ### HTTPS TESTING
 POST https://127.0.0.1:8000/configuration/
 Content-Type: application/json
-Origin: https://specific-origin.com
-User-Agent: TestClient/1.0
+Authorization: Bearer CHICKEN
 
 [
   {
@@ -900,7 +899,7 @@ User-Agent: TestClient/1.0
           }
         ],
         "router_id": "172.0.0.1",
-        "timer_dead": 30,
+        "timer_dead": 40,
         "timer_hello": 10,
         "passive_interfaces": [
           "GigabitEthernet0/1",
