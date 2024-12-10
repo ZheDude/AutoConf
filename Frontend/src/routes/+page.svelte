@@ -90,21 +90,21 @@
 	<InputField
 		placeholder="corp.at"
 		type="text"
-		fieldName="IP-Domainname"
+		fieldName="IP Domain-Name"
 		id="IP-Domainname"
 		bind:value={inputParams.domain}
 	/>
 	<InputField
 		placeholder="cisco"
 		type="text"
-		fieldName="Adminusername"
+		fieldName="Admin Username"
 		id="Adminusername"
 		bind:value={inputParams.adminUser}
 	/>
 	<InputField
 		placeholder=""
 		type="password"
-		fieldName="Adminpasswort"
+		fieldName="Admin Password"
 		id="Adminpasswort"
 		bind:value={inputParams.password}
 	/>
