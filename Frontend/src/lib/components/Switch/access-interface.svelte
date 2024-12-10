@@ -73,8 +73,8 @@
 	></Checkbox>
 {/each}
 
-<button class="leftButton" on:click={addInterface}>Add Interface</button>
-<button class="rightButton" on:click={removeInterface}>Remove Interface</button>
+<button class="leftButton extra-margin" on:click={addInterface}>Add Interface</button>
+<button class="rightButton extra-margin" on:click={removeInterface}>Remove Interface</button>
 
 <h2 class="subSubSubHeading">Interface Ranges</h2>
 {#each range(0, accessInterfaces.InterfaceRanges.length - 1) as count}
@@ -109,5 +109,7 @@
 	></Checkbox>
 {/each}
 
-<button class="leftButton" on:click={addInterfaceRange}>Add Interface Range</button>
-<button class="rightButton" on:click={removeInterfaceRange}>Remove Interface Range</button>
+<button class="leftButton extra-margin" on:click={addInterfaceRange}>Add Interface Range</button>
+<button class="rightButton extra-margin" on:click={removeInterfaceRange}
+	>Remove Interface Range</button
+>

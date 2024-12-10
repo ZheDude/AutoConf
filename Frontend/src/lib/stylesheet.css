@@ -371,6 +371,10 @@ a:hover {
 	background-color: #30313a;
 	box-shadow: #14462033 0 1px inset;
 }
+.leftButton.extra-margin,
+.rightButton.extra-margin {
+	margin-left: calc(15% + 10%);
+}
 .TrunkRangeDiv {
 	display: flex;
 	flex-direction: row;
