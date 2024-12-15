@@ -5,7 +5,7 @@
 	export let id;
 
 	let params = {
-		process_id: 10,
+		process_id: '',
 		networks: [
 			{
 				network: '',
