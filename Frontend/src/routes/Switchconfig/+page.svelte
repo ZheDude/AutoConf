@@ -256,6 +256,13 @@
 	<div class="mainHeading">
 		<h1>Switchconfig</h1>
 	</div>
+	<InputField
+		placeholder="192.168.10.10"
+		type="text"
+		bind:value={userParameter.SSH.ip}
+		fieldName="SSH-IP"
+		id="SSH-IP"
+	/>
 	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
 	{#if enableVTP}
@@ -340,15 +347,6 @@
 	{/each}
 	<button class="leftButton" on:click={addEtherChannel}>Add Etherchannel</button>
 	<button class="rightButton" on:click={removeEtherChannel}>Remove Etherchannel</button>
-
-	<br />
-	<InputField
-		placeholder="192.168.10.10"
-		type="text"
-		bind:value={userParameter.SSH.ip}
-		fieldName="SSH-IP"
-		id="SSH-IP"
-	/>
 	<br />
 	<button class="generateSkriptButton" on:click={sendData}> Submit</button>
 </div>
