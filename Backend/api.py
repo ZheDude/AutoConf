@@ -11,15 +11,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from config_processor import get_list_of_konfigurations
 
 load_dotenv()
-# Application Configuration
-SECRET_TOKEN = os.getenv("SECRET_TOKEN", "default-token")
+SECRET_TOKEN = os.getenv("SECRET_TOKEN", "default-token-chicken")
 SSL_CERTFILE = os.getenv("SSL_CERTFILE")
 SSL_KEYFILE = os.getenv("SSL_KEYFILE")
 app = FastAPI()
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
 logger = logging.getLogger(__name__)
-
 
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setLevel(logging.INFO)
@@ -55,7 +53,6 @@ def process_data(data: dict):
     ssh_ip = configuration_processer_tuple[0]
     logger.info("SSH IP: %s", ssh_ip)
     logger.info("Configurations: %s", konfig_liste)
-
 
     for element in konfig_liste:
         print(element)
