@@ -79,9 +79,23 @@ async def receive_json(request: Request):
     result = process_data_testing(json_data)
     return result
 
+@app.get("/metadata/switch")
+async def get_metadata_switch():
+    import switch_meta_vars as swmv
+    try:
+        switch = swmv.switch_meta_vars("172.16.2.127", "cisco", "cisco")
+    except Exception as e:
+        return {"error": str(e)}
+    return {"Interfaces": switch.extract_interfaces(), "Neighbors": switch.extract_neighbors()}
+
+@app.get("/metadata/router")
+async def get_metadata_router():
+    return {"metadata": "This is the metadata"}
+
+
 
 if __name__ == "__main__":
     # load_dotenv()
     # API_KEY = os.getenv("API_KEY")
-    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
 
