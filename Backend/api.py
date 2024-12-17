@@ -90,7 +90,7 @@ async def get_metadata_switch():
 
 @app.get("/metadata/router")
 async def get_metadata_router():
-    return {"metadata": "This is the metadata"}
+    return {"Top Secret! This is a government project. Authorized users only!": "https://www.youtube.com/watch?v=k85mRPqvMbE"}
 
 
 
