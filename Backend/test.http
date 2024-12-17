@@ -842,7 +842,7 @@ Origin: http: //example.com
 ### HTTPS TESTING
 POST https://127.0.0.1:8000/configuration/
 Content-Type: application/json
-Authorization: Bearer CHICKEN
+Authorization: Bearer SuperGeheim123!
 
 [
   {
