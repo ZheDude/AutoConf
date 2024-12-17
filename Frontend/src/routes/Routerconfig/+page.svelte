@@ -222,6 +222,33 @@ function addInterface() {
 }
 
 
+function addOspfProcess(){
+  userParameters[mappings.OSPF].OSPF =  [...userParameters[mappings.OSPF].OSPF,  {
+        "process_id": "",
+        "networks": [
+          {
+            "network": "",
+            "area_id": "",
+            "wildcard": ""
+          }
+        ],
+        "router_id": "10.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/2"
+        ]
+      }]
+
+      console.log(userParameters)
+}
+
+function removeOspfProcess(){
+  userParameters[mappings.OSPF].OSPF =  userParameters[mappings.OSPF].OSPF.slice(0, -1)
+
+}
+
 function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
@@ -229,6 +256,9 @@ function range(start, end) {
 
 const mappings = {'OSPF': 1, 'Key-Chain': 2, 'RIP': 3, 'BGP': 4, 
 'Interface': 0, 'Static-Routes:': 5, 'GRE': 6, 'HSRP': 7, 'DHCP': 8}
+
+
+console.log(userParameters[mappings.OSPF].OSPF.length)
 
 
 </script>
@@ -245,6 +275,13 @@ const mappings = {'OSPF': 1, 'Key-Chain': 2, 'RIP': 3, 'BGP': 4,
 <button class="leftButton" on:click={addInterface}>Add Interface</button>
 <button class="rightButton" on:click={removeInterface}>Remove Interface</button>
 
-<h1>OSPF</h1>
-<Ospf id=1></Ospf>
+<h1 class="subHeading">OSPF</h1>
+
+{#each range(0, userParameters[mappings.OSPF].OSPF.length-1) as number}
+<Ospf id={number}, params={userParameters[mappings.OSPF].OSPF[number]}></Ospf>
+
+
+{/each}
+<button class="leftButton" on:click={addOspfProcess}>Add OSPF Process</button>
+<button class="rightButton" on:click={removeOspfProcess}>Remove OSPF Process</button>
 </div>

@@ -4,7 +4,7 @@
 	import Checkbox from '../checkbox.svelte';
 	export let id;
 
-	let params = {
+	export let params = {
 		process_id: '',
 		networks: [
 			{
@@ -16,7 +16,7 @@
 		router_id: '',
 		timer_dead: 40,
 		timer_hello: 10,
-		passive_interfaces: ['GigabitEthernet0/1', 'GigabitEthernet0/2']
+		passive_interfaces: ['']
 	};
 
 	function addNetwork() {
@@ -31,6 +31,25 @@
 	}
 
 
+	function removeNetwork() {
+		params.networks =  params.networks.slice(0, -1)
+	}
+
+
+
+
+function addPassiveInterface(){
+	
+	params.passive_interfaces =  [...params.passive_interfaces, ""]
+
+}
+
+
+function removePassiveInterface(){
+	
+	params.passive_interfaces =  params.passive_interfaces.slice(0, -1)
+
+}
     function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
@@ -40,7 +59,7 @@
 	placeholder="10"
 	type="text"
 	fieldName="Process-ID"
-	id="OSPFRocessID{id}"
+	id="OSPFProcessID{id}"
 	bind:value={params['process_id']}
 />
 
@@ -61,8 +80,32 @@ bind:value={params['timer_dead']}
 />
 
 
+<InputField
+placeholder="15"
+type="text"
+fieldName="Hello-Timer"
+id="OSPF-HelloTimer{id}"
+bind:value={params['timer_hello']}
+/>
+<h2 class="subSubHeading">Passive Interfaces</h2>
+{#each range(0, params.passive_interfaces.length-1) as number}
+
+<InputField
+placeholder="Gig0/0"
+type="text"
+fieldName=""
+id="OSPF-passiveInterface{number}"
+bind:value={params['passive_interfaces'][number]}
+/>
+
+{/each}
+
+
+<button class="leftButton" on:click={addPassiveInterface}>Add Interface</button>
+<button class="rightButton" on:click={removePassiveInterface}>Remove Interface</button>
+
 {#each range(0, params['networks'].length-1) as number}
-<h2>Network {number}</h2>
+<h2 class="subSubHeading">Network {number}</h2>
 <InputField
 placeholder="192.168.10.0"
 type="text"
@@ -89,7 +132,7 @@ bind:value={params['networks'][number]['wildcard']}
 {/each}
 
 
+<br>
 
-
-<button class="leftButton" on:click={addNetwork}>Add Interface</button>
-<button class="rightButton" on:click={addNetwork}>Remove Interface</button>
+<button class="leftButton" on:click={addNetwork}>Add Network</button>
+<button class="rightButton" on:click={removeNetwork}>Remove Network</button>
