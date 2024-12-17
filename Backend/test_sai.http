@@ -1,0 +1,1051 @@
+### POST Request with json body to the API endpoint /configuration
+
+### POST Request with Json body to test the configuration of a Router
+POST http://127.0.0.1:8000/configuration/
+Content-Type: application/json
+Origin: http://example.com
+
+[
+  {
+    "SSH": {
+      "ip": "192.168.10.1"
+    }
+  },
+  {
+    "OSPF": [
+      {
+        "process_id": 10,
+        "networks": [
+          {
+            "network": "192.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          }
+        ],
+        "router_id": "10.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/2"
+        ]
+      },
+      {
+        "process_id": 1234,
+        "networks": [
+          {
+            "network": "10.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          },
+          {
+            "network": "172.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.3"
+          }
+        ],
+        "router_id": "172.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/123"
+        ]
+      }
+    ]
+  },
+  {
+    "Key-Chain": [
+      {
+        "number": 12,
+        "name": "NAM1234123E",
+        "password": "PASSWORD",
+        "ALGO": "hmac-sha-512"
+      },
+      {
+        "number": 112341232,
+        "name": "NA1234123ME",
+        "password": "PASSWO123412RD",
+        "ALGO": "hmac-sha-256"
+      }
+    ]
+  },
+  {
+    "RIP": {
+      "version": 2,
+      "auto-summary": true,
+      "networks": [
+        {
+          "network": "10.0.0.0"
+        },
+        {
+          "network": "172.0.0.0"
+        }
+      ],
+      "neighbor": "10.0.0.3",
+      "timer_update": 30,
+      "passive_interface": [
+        "GigabitEthernet0/1",
+        "GigabitEthernet0/2"
+      ],
+      "redistribute": [
+        "bgp",
+        "ospf"
+      ]
+    }
+  },
+  {
+    "BGP": {
+      "neighbor": [
+        {
+          "ip_of_neighbor": "192.168.0.1",
+          "as": 100,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        },
+        {
+          "ip_of_neighbor": "6.6.6.6",
+          "as": 1234,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        }
+      ],
+      "networks": [
+        {
+          "network": "10.0.0.0",
+          "subnetmask": "0.0.0.255"
+        },
+        {
+          "network": "172.0.0.0",
+          "submask": "0.0.0.3"
+        }
+      ],
+      "timer_bgp": 30,
+      "hold_time": 180,
+      "local_as": 696969
+    }
+  },
+  {
+    "Interface": [
+      {
+        "interface": "GigabitEthernet0/123",
+        "ip_address": "0.0.0.0",
+        "subnetmask": "255.255.255.255",
+        "description": "This is a description",
+        "shutdown": false,
+        "ospf": {
+          "area_id": 10,
+          "cost": 10,
+          "priority": 10,
+          "network_type": "broadcast",
+          "authentication": {
+            "key_chain": "KEY_CHAIN",
+            "message_digest": true
+          }
+        }
+      },
+      {
+        "interface": "GigabitEthernet0/1",
+        "ip_address": "0.0.0.0",
+        "subnetmask": "255.255.255.255",
+        "description": "This is a description",
+        "shutdown": false
+      }
+    ]
+  },
+  {
+    "Static-Routes": [
+      {
+        "source": "0.0.0.0",
+        "mask": "0.0.0.0",
+        "destination": "1.1.1.1",
+        "interface": "GigabitEthernet0/0",
+        "distance": 1
+      }
+    ]
+  },
+  {
+    "GRE": [
+      {
+        "tunnel": "Tunnel0",
+        "source": "GigabitEthernet0/0",
+        "source_ip": "",
+        "destination": "1.1.1.1",
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
+      },
+      {
+        "tunnel": "Tunnel123",
+        "source": "",
+        "source_ip": "192.168.1.1",
+        "destination": "212.12.1.1",
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
+      }
+    ]
+  },
+  {
+    "HSRP": [
+      {
+        "group": 10,
+        "version": 2,
+        "interface": "GigabitEthernet0/0.2",
+        "ip": "1.1.1.1",
+        "priority": 10,
+        "preempt": true,
+        "timers": {
+          "hello": 10,
+          "hold": 30
+        }
+      },
+      {
+        "group": 123,
+        "version": 2,
+        "interface": "GigabitEthernet0/0.1",
+        "ip": "1.3.1.2",
+        "priority": 150,
+        "preempt": false,
+        "timers": {
+          "hello": 101,
+          "hold": 30
+        }
+      }
+    ]
+  },
+  {
+    "DHCP": [
+      {
+        "pool": "POOL",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      },
+      {
+        "pool": "POOL123123",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      }
+    ]
+  },
+  {
+    "VTP": [
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true,
+        "vlan": 10
+      },
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "VLAN": [
+      {
+        "name": "Management",
+        "number": "10"
+      }
+    ]
+  },
+  {
+    "STP": [
+      {
+        "mode": "Rapid-PVST",
+        "priority": "4096",
+        "hello_timer": "10",
+        "max_age": "10",
+        "vlan": [
+          "10",
+          "20",
+          "30"
+        ],
+        "forward_timer": "10"
+      }
+    ]
+  },
+  {
+    "EdgePorts": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "portfast": true,
+          "bpduguard": true
+        },
+        {
+          "name": "Gig0/0",
+          "portfast": true,
+          "bpduguard": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "portfaste": true,
+          "bpduguard": false
+        },
+        {
+          "startInterface": "Gig1/2",
+          "endInterface": "Gig1/3",
+          "portfaste": true,
+          "bpduguard": false
+        }
+      ]
+    }
+  },
+  {
+    "Trunks": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "name": "Gig3/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "startInterface": "Gig2/2",
+          "endInterface": "Gig2/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ]
+    }
+  },
+  {
+    "AccessInterfaces": {
+      "Interfaces": [
+        {
+          "name": "Gig0/2",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        },
+        {
+          "name": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ]
+    }
+  },
+  {
+    "Portsecurity": [
+      {
+        "interface": "Gig0/1",
+        "maximum": "20",
+        "violation": "Shutdown",
+        "mac_address": "sticky"
+      }
+    ]
+  },
+  {
+    "EtherChannels": [
+      {
+        "Interfaces": [
+          {
+            "name": "Gig0/0"
+          }
+        ],
+        "InterfaceRanges": [
+          {
+            "startInterface": "Gig3/2",
+            "endInterface": "Gig3/3"
+          }
+        ],
+        "mode": "Passive",
+        "number": "1"
+      }
+    ]
+  }
+]
+
+### POST Request with Json body to test the configuration of a Switch
+POST http://127.0.0.1:8000/configuration/
+Content-Type: application/json
+Origin: http: //example.com
+
+
+[
+  {
+    "SSH": {
+      "ip": "192.168.10.1"
+    }
+  },
+  {
+    "VTP": [
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true,
+        "vlan": 10
+      },
+      {
+        "version": 3,
+        "mode": "server",
+        "domain": "DOMAIN",
+        "password": "PASSWORD",
+        "pruning": true,
+        "is_primary": true
+      }
+    ]
+  },
+  {
+    "VLAN": [
+      {
+        "name": "Management",
+        "number": "10"
+      }
+    ]
+  },
+  {
+    "STP": [
+      {
+        "mode": "Rapid-PVST",
+        "priority": "4096",
+        "hello_timer": "10",
+        "max_age": "10",
+        "vlan": [
+          "10",
+          "20",
+          "30"
+        ],
+        "forward_timer": "10"
+      }
+    ]
+  },
+  {
+    "EdgePorts": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "portfast": true,
+          "bpduguard": true
+        },
+        {
+          "name": "Gig0/0",
+          "portfast": true,
+          "bpduguard": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "portfaste": true,
+          "bpduguard": false
+        },
+        {
+          "startInterface": "Gig1/2",
+          "endInterface": "Gig1/3",
+          "portfaste": true,
+          "bpduguard": false
+        }
+      ]
+    }
+  },
+  {
+    "Trunks": {
+      "Interfaces": [
+        {
+          "name": "Gig0/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "name": "Gig3/1",
+          "allowed_vlan": "10,30,40",
+          "native_vlan": "20",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        },
+        {
+          "startInterface": "Gig2/2",
+          "endInterface": "Gig2/3",
+          "allowed_vlan": "10,20",
+          "native_vlan": "10",
+          "encapsulation": "Dot1q",
+          "mode": "Dynamic Desirable",
+          "shutdown": true
+        }
+      ]
+    }
+  },
+  {
+    "AccessInterfaces": {
+      "Interfaces": [
+        {
+          "name": "Gig0/2",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        },
+        {
+          "name": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ],
+      "InterfaceRanges": [
+        {
+          "startInterface": "Gig0/2",
+          "endInterface": "Gig0/3",
+          "allowed_vlan": "",
+          "native_vlan": "",
+          "encapsulation": "",
+          "mode": "",
+          "shutdown": true,
+          "vlan": "20"
+        }
+      ]
+    }
+  },
+  {
+    "Portsecurity": [
+      {
+        "interface": "Gig0/1",
+        "maximum": "20",
+        "violation": "Shutdown",
+        "mac_address": "sticky"
+      }
+    ]
+  },
+  {
+    "EtherChannels": [
+      {
+        "Interfaces": [
+          {
+            "name": "Gig0/0"
+          }
+        ],
+        "InterfaceRanges": [
+          {
+            "startInterface": "Gig3/2",
+            "endInterface": "Gig3/3"
+          }
+        ],
+        "mode": "Passive",
+        "number": "1"
+      }
+    ]
+  }
+]
+
+
+### POST Request with Json body to test the configuration of a empty router
+POST http://127.0.0.1:8000/configuration/
+Content-Type: application/json
+Origin: http: //example.com
+
+[
+  {
+    "OSPF": [
+      {
+        "process_id": 10,
+        "networks": [
+          {
+            "network": "192.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          }
+        ],
+        "router_id": "10.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/2"
+        ]
+      },
+      {
+        "process_id": 1234,
+        "networks": [
+          {
+            "network": "10.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          },
+          {
+            "network": "172.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.3"
+          }
+        ],
+        "router_id": "172.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/123"
+        ]
+      }
+    ]
+  },
+  {
+    "Key-Chain": [
+      {
+        "number": 12,
+        "name": "NAME",
+        "password": "PASSWORD",
+        "ALGO": "hmac-sha-512"
+      },
+      {
+        "number": 112341232,
+        "name": "NA1234123ME",
+        "password": "PASSWO123412RD",
+        "ALGO": "hmac-sha-256"
+      }
+    ]
+  },
+  {
+    "RIP": {
+      "version": 2,
+      "auto-summary": true,
+      "networks": [
+        {
+          "network": "10.0.0.0"
+        },
+        {
+          "network": "172.0.0.0"
+        }
+      ],
+      "neighbor": "10.0.0.3",
+      "timer_update": 30,
+      "passive_interface": [
+        "GigabitEthernet0/1",
+        "GigabitEthernet0/2"
+      ],
+      "redistribute": [
+        "bgp",
+        "ospf"
+      ]
+    }
+  },
+  {
+    "BGP": {
+      "neighbor": [
+        {
+          "ip_of_neighbor": "192.168.0.1",
+          "as": 100,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        },
+        {
+          "ip_of_neighbor": "6.6.6.6",
+          "as": 1234,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        }
+      ],
+      "networks": [
+        {
+          "network": "10.0.0.0",
+          "subnetmask": "0.0.0.255"
+        },
+        {
+          "network": "172.0.0.0",
+          "submask": "0.0.0.3"
+        }
+      ],
+      "timer_bgp": 30,
+      "hold_time": 180,
+      "local_as": 696969
+    }
+  },
+  {
+    "Interface": [
+      {
+        "type": "GigabitEthernet",
+        "number": "0/0",
+        "ip_address": "0.0.0.0",
+        "subnetmask": "255.255.255.255",
+        "description": "This is a description",
+        "shutdown": false,
+        "ospf": {
+          "area_id": 10,
+          "cost": 10,
+          "priority": 10,
+          "network_type": "broadcast",
+          "authentication": {
+            "key_chain": "KEY_CHAIN",
+            "message_digest": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "Static-Routes": [
+      {
+        "source": "0.0.0.0",
+        "mask": "0.0.0.0",
+        "destination": "1.1.1.1",
+        "interface": "GigabitEthernet0/0",
+        "distance": 1
+      }
+    ]
+  },
+  {
+    "GRE": [
+      {
+        "tunnel": "Tunnel0",
+        "source": "GigabitEthernet0/0",
+        "destination": "1.1.1.1",
+        "key": 10,
+        "ipadd": {
+          "ip": "1.1.1.1",
+          "subnetmask": "255.255.255.0"
+        }
+      }
+    ]
+  },
+  {
+    "HSRP": [
+      {
+        "group": 10,
+        "version": 2,
+        "interface": "GigabitEthernet0/0.1",
+        "standbyip": "1.1.1.1",
+        "priority": 10,
+        "preempt": true,
+        "timers": {
+          "hello": 10,
+          "hold": 30
+        }
+      }
+    ]
+  },
+  {
+    "DHCP": [
+      {
+        "pool": "POOL",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      },
+      {
+        "pool": "POOL123123",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      }
+    ]
+  }
+]
+
+
+### HTTPS TESTING
+POST https://127.0.0.1:8000/configuration/
+Content-Type: application/json
+
+
+[
+  {
+    "Interface": [
+      {
+        "interface": "GigabitEthernet0/123",
+        "ip_address": "0.0.0.0",
+        "subnetmask": "255.255.255.255",
+        "description": "This is a description",
+        "shutdown": false,
+        "ospf": {
+          "area_id": 10,
+          "cost": 10,
+          "priority": 10,
+          "network_type": "broadcast",
+          "authentication": {
+            "key_chain": "KEY_CHAIN"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "OSPF": [
+      {
+        "process_id": 10,
+        "networks": [
+          {
+            "network": "192.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          }
+        ],
+        "router_id": "10.0.0.1",
+        "timer_dead": 30,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/2"
+        ]
+      },
+      {
+        "process_id": 1234,
+        "networks": [
+          {
+            "network": "10.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.255"
+          },
+          {
+            "network": "172.0.0.0",
+            "area_id": 10,
+            "wildcard": "0.0.0.3"
+          }
+        ],
+        "router_id": "172.0.0.1",
+        "timer_dead": 40,
+        "timer_hello": 10,
+        "passive_interfaces": [
+          "GigabitEthernet0/1",
+          "GigabitEthernet0/123"
+        ]
+      }
+    ]
+  },
+  {
+    "Key-Chain": [
+      {
+        "number": 12,
+        "name": "NAME",
+        "password": "PASSWORD",
+        "ALGO": "hmac-sha-512"
+      },
+      {
+        "number": 112341232,
+        "name": "NA1234123ME",
+        "password": "PASSWO123412RD",
+        "ALGO": "hmac-sha-256"
+      }
+    ]
+  },
+  {
+    "RIP": {
+      "version": 2,
+      "auto-summary": true,
+      "networks": [
+        {
+          "network": "10.0.0.0"
+        },
+        {
+          "network": "172.0.0.0"
+        }
+      ],
+      "neighbor": "10.0.0.3",
+      "timer_update": 30,
+      "passive_interface": [
+        "GigabitEthernet0/1",
+        "GigabitEthernet0/2"
+      ],
+      "redistribute": [
+        "bgp",
+        "ospf"
+      ]
+    }
+  },
+  {
+    "BGP": {
+      "neighbor": [
+        {
+          "ip_of_neighbor": "192.168.0.1",
+          "as": 100,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        },
+        {
+          "ip_of_neighbor": "6.6.6.6",
+          "as": 1234,
+          "update_source": "Loopback1",
+          "next_hop_self": true,
+          "route_reflector": true,
+          "default_originate": true
+        }
+      ],
+      "networks": [
+        {
+          "network": "10.0.0.0",
+          "subnetmask": "0.0.0.255"
+        },
+        {
+          "network": "172.0.0.0",
+          "submask": "0.0.0.3"
+        }
+      ],
+      "timer_bgp": 30,
+      "hold_time": 180,
+      "local_as": 696969
+    }
+  },
+  {
+    "Static-Routes": [
+      {
+        "source": "0.0.0.0",
+        "mask": "0.0.0.0",
+        "destination": "1.1.1.1",
+        "interface": "GigabitEthernet0/0",
+        "distance": 1
+      }
+    ]
+  },
+  {
+    "GRE": [
+      {
+        "tunnel": "Tunnel0",
+        "source": "GigabitEthernet0/0",
+        "source_ip": "",
+        "destination": "1.2.2.1",
+        "ip": "1.1.1.1",
+        "subnetmask": "255.255.255.0"
+      }
+    ]
+  },
+  {
+    "HSRP": [
+      {
+        "group": 10,
+        "version": 2,
+        "interface": "GigabitEthernet0/0.1",
+        "ip": "1.1.1.1",
+        "priority": 10,
+        "preempt": true,
+        "timers": {
+          "hello": 10,
+          "hold": 30
+        }
+      }
+    ]
+  },
+  {
+    "DHCP": [
+      {
+        "pool": "POOL",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      },
+      {
+        "pool": "POOL123123",
+        "network": "1.1.1.0",
+        "subnetmask": "255.255.255.0",
+        "default_router": "1.1.1.1",
+        "dns": "as.dasd",
+        "exclude": [
+          "1.1.1.1"
+        ],
+        "lease": 10
+      }
+    ]
+  }
+]
