@@ -43,6 +43,8 @@
 				<ul><a href="#Port-Security">Port-Security</a></ul>
 				<br />
 				<ul><a href="#Etherchannels">Etherchannels</a></ul>
+				<br />
+				<ul><a href="#Submit"><strong>Submit</strong></a></ul>
 			{/if}
 			<RouterIcon {url}></RouterIcon>
 			{#if url == '/Routerconfig'}
