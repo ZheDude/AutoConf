@@ -3,7 +3,6 @@
 	import Dropdown from '../dropdown.svelte';
 	import Checkbox from '../checkbox.svelte';
 	export let id;
-
 	export let params = {
 		process_id: '',
 		networks: [
@@ -54,6 +53,11 @@ function removePassiveInterface(){
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 </script>
+
+
+
+
+
 
 <InputField
 	placeholder="10"

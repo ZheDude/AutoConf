@@ -72,13 +72,7 @@ bind:value={params['ospf']['area_id']}
 />
 
 
-<InputField
-placeholder="10"
-type="text"
-fieldName="Kosten"
-id="OSPFCost-Interface{id}"
-bind:value={params['ospf']['cost']}
-/>
+
 
 <InputField
 placeholder="10"
@@ -91,7 +85,7 @@ bind:value={params['ospf']['cost']}
 <InputField
 placeholder="10"
 type="text"
-fieldName="Priorit"
+fieldName="Priority"
 id="OSPFPriority-Interface{id}"
 bind:value={params['ospf']['priority']}
 />
