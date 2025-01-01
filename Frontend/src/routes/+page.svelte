@@ -22,6 +22,18 @@
 
 	let generate = false;
 
+	let cssClasses = {
+		hostname: 'correct',
+		domain: 'correct',
+		adminUser: 'correct',
+		adminPassword: 'correct',
+		sshVersion: 'correct',
+		managementInterface: 'correct',
+
+	}
+
+	$: cssClasses; 
+
 	let count = 1;
 	function addVtyRange() {
 		count += 1;
@@ -55,6 +67,45 @@
 	}
 
 	function checkUserInputs() {
+		let correct = true;
+		if (inputParams.hostname === '') {
+			correct = false;
+			cssClasses.hostname = 'error';
+		}else{
+			cssClasses.hostname = 'correct';
+		}
+
+		if (inputParams.domain === '') {
+			correct = false;
+			cssClasses.domain = 'error';
+		}else{
+			cssClasses.domain = 'correct';
+		}
+
+		if (inputParams.adminUser === '') {
+			correct = false;
+			cssClasses.adminUser = "error";
+ 		}else{
+			cssClasses.adminUser = 'correct';
+		}
+
+		if (inputParams.password === '') {
+			correct = false;
+			cssClasses.password = "error";
+		}else{
+			cssClasses.password = 'correct';
+		}
+
+
+		if(inputParams.managementInterface === '') {
+			correct = false;
+			cssClasses.managementInterface = "error";
+		}else{
+			cssClasses.managementInterface = 'correct';
+		}
+
+
+
 		let missingInputs = [];
 		let missingVTYParams = {};
 		for (let [key, value] of Object.entries(inputParams)) {
@@ -71,7 +122,11 @@
 				}
 			}
 		}
-
+		if (missingInputs.length > 0) {
+			console.log(missingInputs);
+			return false;
+		}
+		
 		return true;
 	}
 </script>
@@ -86,6 +141,7 @@
 		fieldName="Hostname"
 		id="Hostname"
 		bind:value={inputParams.hostname}
+		bind:cssClass={cssClasses.hostname}
 	/>
 	<InputField
 		placeholder="corp.at"
@@ -93,6 +149,7 @@
 		fieldName="IP Domain-Name"
 		id="IP-Domainname"
 		bind:value={inputParams.domain}
+		bind:cssClass={cssClasses.domain}
 	/>
 	<InputField
 		placeholder="cisco"
@@ -100,6 +157,7 @@
 		fieldName="Admin Username"
 		id="Adminusername"
 		bind:value={inputParams.adminUser}
+		bind:cssClass={cssClasses.adminUser}
 	/>
 	<InputField
 		placeholder=""
@@ -107,6 +165,7 @@
 		fieldName="Admin Password"
 		id="Adminpasswort"
 		bind:value={inputParams.password}
+		bind:cssClass={cssClasses.password}
 	/>
 
 	<Dropdown
@@ -114,12 +173,13 @@
 		fieldName="SSH"
 		Heading="Choose SSH Version:"
 		bind:value={inputParams.sshVersion}
+		bind:cssClass={cssClasses.sshVersion}
 	></Dropdown>
 
 	<h2 class="subHeading" id="ConsoleInterface">Console Interface</h2>
 	<InputField
 		type="text"
-		placeholder="3600"
+		placeholder="3600 (default = 0)"
 		fieldName="Execution Timeout"
 		id="ExecTimeout Console"
 		bind:value={inputParams.consoleExecTime}

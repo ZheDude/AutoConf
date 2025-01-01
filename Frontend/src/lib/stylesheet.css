@@ -5,6 +5,13 @@
 body {
 	background-color: #30313a;
 }
+
+
+
+.error{
+	border-color: #ed4337 !important;
+}
+
 .subHeading {
 	font-size: 25px;
 	font-family: Arial, Helvetica, sans-serif;
