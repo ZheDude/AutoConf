@@ -1,11 +1,16 @@
 <script>
+	
 	import InputField from './inputField.svelte';
 
 
     export let execTime = {
-        minutes: '',
-        seconds: '',
-    };
+		minutes: '',
+		seconds: ''
+	};
+
+	export let execMinuteClass = 'correct';
+	export let execSecondsClass = 'correct';
+	
     export let id; 
 </script>
 
@@ -17,6 +22,7 @@
 	fieldName="Minutes"
 	id="execTimeoutMinutes{id}"
 	bind:value={execTime.minutes}
+	cssClass={execMinuteClass}
 ></InputField>
 
 
@@ -26,6 +32,7 @@
 	fieldName="Seconds"
 	id="execTimeoutSeconds{id}"
 	bind:value={execTime.seconds}
+	cssClass={execSecondsClass}
 
 ></InputField>
 
