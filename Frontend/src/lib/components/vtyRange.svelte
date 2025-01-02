@@ -3,15 +3,18 @@
 	import InputField from '$lib/components/inputField.svelte';
 	import Checkbox from '$lib/components/checkbox.svelte';
 	import ExecTimeout from '$lib/components/execTimeout.svelte';
+	import Dropdown from './dropdown.svelte';
 	export let count;
+	export let required = false;
 	export let attributes = {
 		startLine: '',
 		endLine: '',
 		loggingSyn: '',
 		loginLocal: '',
+		transportInput: 'SSH',
 		execTimeout: {
 			minutes: '',
-			seconds: '',
+			seconds: ''
 		}
 	};
 	let startLine = attributes.startLine !== undefined ? attributes.startLine : '';
@@ -32,8 +35,18 @@
 		<input type="text" bind:value={endLine} />
 	</h2>
 
+	<ExecTimeout id="console" bind:execTime={attributes.execTimeout}></ExecTimeout>
 
 	<Checkbox name="syn VTY {count}" Heading="Logging Synchronous" bind:isChecked={loggingSyn}
 	></Checkbox>
-	<Checkbox name="local {count}" Heading="Login Local" bind:isChecked={loginLocal}></Checkbox>
+	{#if !required}
+		<Checkbox name="local {count}" Heading="Login Local" bind:isChecked={loginLocal}></Checkbox>
+
+		<Dropdown
+			options={["SSH", "Telnet", "Telnet/SSH"]}
+			fieldName="TransportInput{count}"
+			Heading="Transport Input:"
+			bind:value={attributes.transportInput}
+		></Dropdown>
+	{/if}
 </div>

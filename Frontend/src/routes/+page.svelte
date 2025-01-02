@@ -38,6 +38,7 @@
 		managementInterface: 'correct',
 		managementIP: 'correct',
 		managementMask: 'correct'
+
 		
 	};
 
@@ -242,9 +243,14 @@
 
 	<div id="vtyMainDiv">
 		<h2 class="subHeading" id="VTYLines">VTY Lines</h2>
-
+		<h2 class="subSubHeading">Note: At least on vty range is required!</h2>
 		{#each range(1, count) as number}
+			{#if number === 1}
+				<VtyRange required=true count={number} bind:attributes={inputParams.vtyRange1}></VtyRange>
+			{:else}
+			
 			<VtyRange count={number} bind:attributes={inputParams['vtyRange' + number]}></VtyRange>
+			{/if}
 		{/each}
 	</div>
 
