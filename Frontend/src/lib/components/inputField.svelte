@@ -5,7 +5,13 @@
 	export let value = '';
 	export let id = '';
 	export let cssClass = 'correct';
+	export let required = false;
 	$: cssClass; 
+
+	if(required){
+
+		fieldName += "*";
+	}
 
 </script>
 
@@ -16,5 +22,9 @@
 		<input bind:value {placeholder} {id} class={cssClass} type="text" />
 	{:else}
 		<input bind:value {placeholder} {id} class={cssClass} type="password" />
+	{/if}
+
+	{#if required}
+		<p class>* This field is required</p>
 	{/if}
 </div>

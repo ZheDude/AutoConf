@@ -11,7 +11,11 @@
 	<p>{Heading}</p>
 	<select id="dropdown{fieldName}" name="dropdown" bind:value class={cssClass}>
 		{#each options as option}
+			{#if option === options[0]}
+			<option value={option} selected>{option}</option>
+			{:else}
 			<option value={option}>{option}</option>
+			{/if}
 		{/each}
 	</select>
 </div>

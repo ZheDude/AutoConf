@@ -6,18 +6,25 @@
 	import VtyDiv from '../lib/components/checkbox.svelte';
 	import VtyRange from '../lib/components/vtyRange.svelte';
 	import { get } from 'svelte/store';
-
+	import ExecTimeout from '../lib/components/execTimeout.svelte';
 	let inputParams = {
 		hostname: '',
 		domain: '',
+		domainLookup: false,
 		adminUser: '',
 		password: '',
 		sshVersion: '',
-		consoleExecTime: '',
 		consoleLoggingSyn: false,
 		consoleLoginLocal: false,
 		managementInterface: '',
-		vtyRange1: {}
+		managementIP: '',
+		managementMask: '',
+		keylength: 1024,
+		vtyRange1: {},
+		execTimeout: {
+			minutes: '',
+			seconds: ''
+		}
 	};
 
 	let generate = false;
@@ -27,12 +34,14 @@
 		domain: 'correct',
 		adminUser: 'correct',
 		adminPassword: 'correct',
-		sshVersion: 'correct',
+		/*sshVersion: 'correct', */
 		managementInterface: 'correct',
+		managementIP: 'correct',
+		managementMask: 'correct'
+		
+	};
 
-	}
-
-	$: cssClasses; 
+	$: cssClasses;
 
 	let count = 1;
 	function addVtyRange() {
@@ -71,40 +80,37 @@
 		if (inputParams.hostname === '') {
 			correct = false;
 			cssClasses.hostname = 'error';
-		}else{
+		} else {
 			cssClasses.hostname = 'correct';
 		}
 
 		if (inputParams.domain === '') {
 			correct = false;
 			cssClasses.domain = 'error';
-		}else{
+		} else {
 			cssClasses.domain = 'correct';
 		}
 
 		if (inputParams.adminUser === '') {
 			correct = false;
-			cssClasses.adminUser = "error";
- 		}else{
+			cssClasses.adminUser = 'error';
+		} else {
 			cssClasses.adminUser = 'correct';
 		}
 
 		if (inputParams.password === '') {
 			correct = false;
-			cssClasses.password = "error";
-		}else{
+			cssClasses.password = 'error';
+		} else {
 			cssClasses.password = 'correct';
 		}
 
-
-		if(inputParams.managementInterface === '') {
+		if (inputParams.managementInterface === '') {
 			correct = false;
-			cssClasses.managementInterface = "error";
-		}else{
+			cssClasses.managementInterface = 'error';
+		} else {
 			cssClasses.managementInterface = 'correct';
 		}
-
-
 
 		let missingInputs = [];
 		let missingVTYParams = {};
@@ -126,7 +132,7 @@
 			console.log(missingInputs);
 			return false;
 		}
-		
+
 		return true;
 	}
 </script>
@@ -142,6 +148,7 @@
 		id="Hostname"
 		bind:value={inputParams.hostname}
 		bind:cssClass={cssClasses.hostname}
+		required="true"
 	/>
 	<InputField
 		placeholder="corp.at"
@@ -150,7 +157,14 @@
 		id="IP-Domainname"
 		bind:value={inputParams.domain}
 		bind:cssClass={cssClasses.domain}
+		required="true;"
 	/>
+
+	<Checkbox
+		name="domainLookup"
+		Heading="Enable 'No IP Domain Lookup'"
+		bind:isChecked={inputParams.domainLookup}
+	></Checkbox>
 	<InputField
 		placeholder="cisco"
 		type="text"
@@ -158,6 +172,7 @@
 		id="Adminusername"
 		bind:value={inputParams.adminUser}
 		bind:cssClass={cssClasses.adminUser}
+		required="true;"
 	/>
 	<InputField
 		placeholder=""
@@ -166,37 +181,33 @@
 		id="Adminpasswort"
 		bind:value={inputParams.password}
 		bind:cssClass={cssClasses.password}
+		required="true;"
+	/>
+
+	<InputField
+		placeholder="1024 (default)"
+		type="text"
+		fieldName="Keylength"
+		id="Keylength"
+		bind:value={inputParams.keylength}
 	/>
 
 	<Dropdown
 		options={[1, 2]}
 		fieldName="SSH"
-		Heading="Choose SSH Version:"
+		Heading="Choose SSH Version (Default = 2):"
 		bind:value={inputParams.sshVersion}
 		bind:cssClass={cssClasses.sshVersion}
 	></Dropdown>
-
-	<h2 class="subHeading" id="ConsoleInterface">Console Interface</h2>
-	<InputField
-		type="text"
-		placeholder="3600 (default = 0)"
-		fieldName="Execution Timeout"
-		id="ExecTimeout Console"
-		bind:value={inputParams.consoleExecTime}
-	></InputField>
-	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}
-	></Checkbox>
-
-	<Checkbox name="login" Heading="Login Local" bind:isChecked={inputParams.consoleLoginLocal}
-	></Checkbox>
 
 	<h2 class="subHeading" id="ManagementInterface">Management Interface</h2>
 	<InputField
 		type="text"
 		placeholder="vlan 10/ Gig0/0"
-		fieldName=""
+		fieldName="Interface"
 		id="VLAN-Num"
 		bind:value={inputParams.managementInterface}
+		required="true"
 	></InputField>
 
 	<InputField
@@ -204,8 +215,30 @@
 		placeholder="192.168.30.254"
 		fieldName="IP-Addresse"
 		id="Management-IP"
-		bind:value={inputParams.ManagementIP}
+		bind:value={inputParams.managementIP}
+		required="true;"
 	></InputField>
+
+	<InputField
+		type="text"
+		placeholder="255.255.255.0"
+		fieldName="Subnetmask"
+		id="Management-Mask"
+		bind:value={inputParams.managementMask}
+		required="true;"
+	></InputField>
+
+	<h2 class="subHeading" id="ConsoleInterface">Console Interface</h2>
+
+	<ExecTimeout id = "console"  bind:execTime={inputParams.execTimeout}>
+
+	</ExecTimeout>
+	
+	<Checkbox name="syn" Heading="Logging Synchronous" bind:isChecked={inputParams.consoleLoggingSyn}
+	></Checkbox>
+
+	<Checkbox name="login" Heading="Login Local" bind:isChecked={inputParams.consoleLoginLocal}
+	></Checkbox>
 
 	<div id="vtyMainDiv">
 		<h2 class="subHeading" id="VTYLines">VTY Lines</h2>

@@ -213,6 +213,12 @@ a:hover {
 	display: flex;
 	flex-direction: column;
 }
+
+.execTimeoutDiv{
+
+	display: flex;
+	flex-direction: row;
+}
 .generateSkriptButton {
 	margin-top: 10%;
 	margin-left: 15%;
