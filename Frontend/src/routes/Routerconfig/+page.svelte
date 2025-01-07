@@ -336,7 +336,7 @@
 	<InputField
 		placeholder="192.168.10.10"
 		type="text"
-		bind:value={userParameters[mappings['SSH']].ip}
+		bind:value={userParameters[mappings['SSH']]['SSH']['ip']}
 		fieldName="SSH-IP"
 		id="SSH-IP"
 	/>
