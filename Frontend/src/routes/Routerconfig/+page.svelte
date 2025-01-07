@@ -9,11 +9,13 @@
 	import GRE from '../../lib/components/Router/GRE.svelte';
 	import HsrpGroup from '../../lib/components/Router/HSRPGroup.svelte';
 	import DHCPPool from '../../lib/components/Router/DHCPPool.svelte';
+	import InputField from '../../lib/components/inputField.svelte';
 	let enableOSPF = false;
 	let enableHSRP = false;
 	let enableDHCP = false;
 	let userParameters = [
 		{
+			
 			Interface: [
 				{
 					interface: '',
@@ -123,10 +125,15 @@
 					lease: 10
 				}
 			]
+		},
+		{
+		SSH: {
+				ip: ''
+			},
 		}
 	];
 
-	$: console.log(userParameters)
+	$: console.log(userParameters);
 
 	function addInterface() {
 		userParameters[0]['Interface'] = [
@@ -297,12 +304,42 @@
 		'Static-Routes': 5,
 		GRE: 6,
 		HSRP: 7,
-		DHCP: 8
+		DHCP: 8,
+		SSH: 9
 	};
+
+
+	function checkConnectivity(){
+
+	}
+
+	async function sendData(){
+		let postData = JSON.stringify(userParameters);
+		console.log(postData);
+		const response = await fetch('/api/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: postData
+		});
+		let ApiData = await response.json();
+		return true;
+
+	}
 </script>
 
 <div class="mainHeading">
 	<h1>Routerconfig</h1>
+
+	<InputField
+		placeholder="192.168.10.10"
+		type="text"
+		bind:value={userParameters[mappings['SSH']].ip}
+		fieldName="SSH-IP"
+		id="SSH-IP"
+	/>
+	<button class="generateSkriptButton" on:click={checkConnectivity}> Check Connectivity</button>
 
 	<h2 class="subHeading">Interfaces</h2>
 
@@ -379,5 +416,6 @@
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 	{/if}
 
-
+	<button class="generateSkriptButton" id="Submit" on:click={sendData}> Submit</button>
+	<button class="generateSkriptButton"> Show Script</button>
 </div>
