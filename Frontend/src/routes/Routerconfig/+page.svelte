@@ -15,7 +15,6 @@
 	let enableDHCP = false;
 	let userParameters = [
 		{
-			
 			Interface: [
 				{
 					interface: '',
@@ -121,15 +120,16 @@
 					subnetmask: '',
 					default_router: '',
 					dns: '',
-					exclude: [{ start: '', end: '' }],
+					exclude: [],
+					'exclude-range': [{ start: '', end: '' }],
 					lease: 10
 				}
 			]
 		},
 		{
-		SSH: {
+			SSH: {
 				ip: ''
-			},
+			}
 		}
 	];
 
@@ -283,7 +283,8 @@
 				subnetmask: '',
 				default_router: '',
 				dns: '',
-				exclude: [{ start: '', end: '' }],
+				exclude: [],
+				'exclude-range': [],
 				lease: 10
 			}
 		];
@@ -309,12 +310,9 @@
 		SSH: 9
 	};
 
+	function checkConnectivity() {}
 
-	function checkConnectivity(){
-
-	}
-
-	async function sendData(){
+	async function sendData() {
 		let postData = JSON.stringify(userParameters);
 		console.log(postData);
 		const response = await fetch('/api/', {
@@ -326,7 +324,6 @@
 		});
 		let ApiData = await response.json();
 		return true;
-
 	}
 </script>
 
