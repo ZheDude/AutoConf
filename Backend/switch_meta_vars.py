@@ -29,7 +29,7 @@ class switch_meta_vars():
                     S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone, 
                     D - Remote, C - CVTA, M - Two-port Mac Relay 
 
-        Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+        Device ID        Local Interface     Holdtime    Capability  Platform  Port ID
         R1.5CN           Gig 0/0           135              R B             Gig 0/0
 
         Total cdp entries displayed : 1
@@ -48,9 +48,20 @@ class switch_meta_vars():
             elif "Total cdp entries displayed" in line:
                 start_flag = False
             elif start_flag:
-                splitline = line.split()
-                if splitline == []:
+                if line.split() == "":
                     continue
-                output.append({"Device ID": splitline[0], "Local Interface": splitline[1], "Holdtime": splitline[2], 
-                            "Capability": splitline[3], "Platform": splitline[4], "Port ID": splitline[5]})
+                field = line.split()
+                print(field)
+                if len(field) < 8:  # Handle cases where fields are missing
+                    continue
+                entry = {
+                    "Device ID": field[0],
+                    "Local Interface": field[1] + " " + field[2],
+                    "Holdtime": field[3],
+                    "Capability": " ".join(field[4:6]),  # Join Capability fields (if present)
+                    "Platform": field[6] if len(field) > 8 else "",  # Check if Platform is present
+                    "Port ID": " ".join(field[7:]) if len(field) > 8 else " ".join(field[6:])  # Join remaining fields for Port ID
+                }
+                output.append(entry)
+                start_flag = False
         return output

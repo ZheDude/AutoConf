@@ -4,17 +4,17 @@ import os
 import sys
 
 import uvicorn
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 # from dotenv import load_dotenv
 from fastapi import FastAPI, Request, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from config_processor import get_list_of_konfigurations
 
 app = FastAPI()
-load_dotenv()
-SECRET_TOKEN = os.getenv("SECRET_TOKEN", "default-token-chicken")
-SSL_CERTFILE = os.getenv("SSL_CERTFILE")
-SSL_KEYFILE = os.getenv("SSL_KEYFILE")
+#load_dotenv()
+#SECRET_TOKEN = os.getenv("SECRET_TOKEN", "default-token-chicken")
+#SSL_CERTFILE = os.getenv("SSL_CERTFILE")
+#SSL_KEYFILE = os.getenv("SSL_KEYFILE")
 app = FastAPI()
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
@@ -154,8 +154,9 @@ if __name__ == "__main__":
         "api:app",
         host="127.0.0.1",
         port=8000,
-        reload=True,
-        ssl_certfile=SSL_CERTFILE,
-        ssl_keyfile=SSL_KEYFILE
+        reload=True
+        #,
+        #ssl_certfile=SSL_CERTFILE,
+        #ssl_keyfile=SSL_KEYFILE
     )
 

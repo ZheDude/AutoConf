@@ -134,6 +134,7 @@
 	];
 
 	$: console.log(userParameters);
+	$: console.log(userParameters);
 
 	function addInterface() {
 		userParameters[0]['Interface'] = [
@@ -350,7 +351,7 @@
 	<button class="leftButton" on:click={addInterface}>Add Interface</button>
 	<button class="rightButton" on:click={removeInterface}>Remove Interface</button>
 
-	<h1 class="subHeading">Key-Chains</h1>
+	<h1 class="subHeading" id="Key-Chains">Key-Chains</h1>
 
 	{#each range(0, userParameters[mappings['Key-Chain']]['Key-Chain'].length - 1) as number}
 		<KeyChain id={number} bind:params={userParameters[mappings['Key-Chain']]['Key-Chain'][number]}
@@ -360,7 +361,7 @@
 	<button class="leftButton" on:click={addKeyChain}>Add Key-Chain</button>
 	<button class="rightButton" on:click={removeKeyChain}>Remove Key-Chain</button>
 
-	<h1 class="subHeading">OSPF</h1>
+	<h1 class="subHeading" id="OSPF">OSPF</h1>
 
 	<Checkbox name="enableOSPF{1}" Heading="Enable OSPF" bind:isChecked={enableOSPF} />
 	{#if enableOSPF}
@@ -371,12 +372,12 @@
 		<button class="rightButton" on:click={removeOspfProcess}>Remove OSPF Process</button>
 	{/if}
 
-	<h2 class="subHeading">RIP</h2>
+	<h2 class="subHeading" id="RIP">RIP</h2>
 	<RIP id="1" bind:params={userParameters[mappings.RIP].RIP}></RIP>
-	<h2 class="subHeading">BGP</h2>
+	<h2 class="subHeading" id="BGP">BGP</h2>
 	<BGP id="1" bind:params={userParameters[mappings.BGP].BGP}></BGP>
 
-	<h2 class="subHeading">Static Routes</h2>
+	<h2 class="subHeading" id="StaticRoutes">Static Routes</h2>
 	{#each range(0, userParameters[mappings['Static-Routes']]['Static-Routes'].length - 1) as route, i}
 		<h2 class="subSubHeading">Route {i + 1}</h2>
 		<StaticRoute id={i} bind:params={userParameters[mappings['Static-Routes']]['Static-Routes'][i]}
@@ -386,7 +387,7 @@
 	<button class="leftButton" on:click={addStaticRoute}>Add Static-Route</button>
 	<button class="rightButton" on:click={removeStaticRoute}>Remove Static-Route</button>
 
-	<h2 class="subHeading">GRE-Tunnels</h2>
+	<h2 class="subHeading" id="GRE-Tunnels">GRE-Tunnels</h2>
 	{#each range(0, userParameters[mappings.GRE].GRE.length - 1) as number}
 		<h2 class="subSubHeading">Tunnel {number + 1}</h2>
 		<GRE id={number} bind:params={userParameters[mappings.GRE].GRE[number]}></GRE>
@@ -395,7 +396,7 @@
 	<button class="leftButton" on:click={addGRETunnel}>Add GRE-Tunnel</button>
 	<button class="rightButton" on:click={removeGRETunnel}>Remove GRE-Tunnel</button>
 
-	<h2 class="subHeading">HSRP</h2>
+	<h2 class="subHeading" id="HSRP">HSRP</h2>
 	<Checkbox name="enableHSRP{1}" Heading="Enable HSRP" bind:isChecked={enableHSRP} />
 	{#if enableHSRP}
 		{#each range(0, userParameters[mappings.HSRP].HSRP.length - 1) as number}
@@ -406,7 +407,7 @@
 		<button class="rightButton" on:click={removeHSRPGroup}>Remove HSRP-Group</button>
 	{/if}
 
-	<h2 class="subHeading">DHCP</h2>
+	<h2 class="subHeading" id="DHCP">DHCP</h2>
 	<Checkbox name="enableDHCP{1}" Heading="Enable DHCP" bind:isChecked={enableDHCP} />
 	{#if enableDHCP}
 		{#each range(0, userParameters[mappings.DHCP].DHCP.length - 1) as number}
