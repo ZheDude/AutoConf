@@ -11,8 +11,10 @@ def main():
     from connections import SSHConnection
     from switch_meta_vars import switch_meta_vars
     switch = switch_meta_vars("172.16.2.126", "cisco", "cisco")
-    switch.extract_interfaces()
-    switch.extract_neighbors()
+    print("Interfaces:")
+    print(switch.extract_interfaces())
+    print("Neighbors:")
+    print(switch.extract_neighbors())
     #dev1 = SSHConnection("172.16.2.126", "cisco", "cisco")
     #dev1.send_command_imprvd("configure terminal\n    ")
 
