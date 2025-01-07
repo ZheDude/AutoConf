@@ -12,6 +12,13 @@ class DHCPGenerator:
             default_router = entry.get("default_router")
             dns = entry.get("dns")
             exclude = entry.get("exclude", [])
+            exclude_range = entry.get("exclude-range")
+            exclude_range_start = ""
+            exclude_range_end = ""
+            if exclude_range:
+                exclude_range_start = exclude_range.get("start")
+                exclude_range_end = exclude_range.get("end")
+
             lease = entry.get("lease")
 
             if not all([pool, network, subnetmask, default_router]):
@@ -20,6 +27,12 @@ class DHCPGenerator:
 
             for ip in exclude:
                 commands.append(f"ip dhcp excluded-address {ip}")
+
+
+            if exclude_range_start and exclude_range_end:
+                commands.append(f"ip dhcp excluded-address {exclude_range_start} {exclude_range_end}")
+
+
 
             commands.append(f"ip dhcp pool {pool}")
             commands.append(f"network {network} {subnetmask}")
@@ -40,19 +53,24 @@ if __name__ == "__main__":
             "network": "1.1.1.0",
             "subnetmask": "255.255.255.0",
             "default_router": "1.1.1.1",
-            "dns": "8.8.8.8",
-            "exclude": ["1.1.1.1", "192.168.10.10"],
-            "lease": 10,
+            "dns": "as.dasd",
+            "exclude": [
+                "1.1.1.1"
+            ],
+            "lease": 10
         },
         {
             "pool": "POOL123123",
             "network": "1.1.1.0",
             "subnetmask": "255.255.255.0",
             "default_router": "1.1.1.1",
-            "dns": "8.8.8.8",
-            "exclude": ["1.1.1.1", "192.168.10.10"],
-            "lease": 10,
-        },
+            "dns": "as.dasd",
+            "exclude-range": {
+                "start": "1.1.1.1",
+                "end": "2.2.2.2"
+            },
+            "lease": 10
+        }
     ]
     dhcp_gen = DHCPGenerator(data)
     script = dhcp_gen.generate_script()
