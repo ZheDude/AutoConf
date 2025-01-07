@@ -10,9 +10,26 @@
 	import HsrpGroup from '../../lib/components/Router/HSRPGroup.svelte';
 	import DHCPPool from '../../lib/components/Router/DHCPPool.svelte';
 	import InputField from '../../lib/components/inputField.svelte';
+	import { beforeNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 	let enableOSPF = false;
 	let enableHSRP = false;
 	let enableDHCP = false;
+
+	function saveToLocalStorage() {
+		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
+	}
+
+	beforeNavigate(() => {
+		saveToLocalStorage();
+	});
+
+	onMount(() => {
+		const savedParams = localStorage.getItem('RouterParams');
+		if (savedParams) {
+			userParameters = JSON.parse(savedParams);
+		}
+	});
 	let userParameters = [
 		{
 			Interface: [
@@ -128,7 +145,9 @@
 		},
 		{
 			SSH: {
-				ip: ''
+				ip: '',
+				username: '',
+				password: ''
 			}
 		}
 	];
@@ -337,6 +356,22 @@
 		bind:value={userParameters[mappings['SSH']]['SSH']['ip']}
 		fieldName="SSH-IP"
 		id="SSH-IP"
+	/>
+
+	<InputField
+		placeholder="cisco"
+		type="text"
+		bind:value={userParameters.SSH.username}
+		fieldName="SSH-Username"
+		id="SSH-Username"
+	/>
+
+	<InputField
+		placeholder=""
+		type="password"
+		bind:value={userParameters.SSH.username}
+		fieldName="SSH-Password"
+		id="SSH-Password"
 	/>
 	<button class="generateSkriptButton" on:click={checkConnectivity}> Check Connectivity</button>
 

@@ -11,15 +11,16 @@
 	export let endCssClass = 'correct';
 	export let execMinuteClass = 'correct';
 	export let execSecondsClass = 'correct';
+
 	export let attributes = {
 		startLine: '',
 		endLine: '',
 		loggingSyn: '',
 		loginLocal: '',
-		transportInput: 'SSH',
+		transportInput: '',
 		execTimeout: {
-			minutes: '',
-			seconds: ''
+			minutes: '0',
+			seconds: '0'
 		}
 		
 	};
@@ -43,7 +44,7 @@
 		<Checkbox name="local {count}" Heading="Login Local" bind:isChecked={attributes.loginLocal}></Checkbox>
 
 		<Dropdown
-			options={["SSH", "Telnet", "Telnet/SSH"]}
+			options={["ssh", "telnet", "ssh telnet"]}
 			fieldName="TransportInput{count}"
 			Heading="Transport Input:"
 			bind:value={attributes.transportInput}

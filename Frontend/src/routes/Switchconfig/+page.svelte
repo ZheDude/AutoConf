@@ -10,14 +10,33 @@
 	import StpProcess from '../../lib/components/Switch/stp-process.svelte';
 	import PortSecurityInterface from '../../lib/components/Switch/Port-Security-Interface.svelte';
 	import { onMount } from 'svelte';
+	import { beforeNavigate } from '$app/navigation';
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
 
 	let enableVTP = false;
 
-	onMount(() => {});
+
+	function saveToLocalStorage() {
+		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
+	}
+
+
+	beforeNavigate(() => {
+		saveToLocalStorage();
+	
+	});
+
+	onMount(() => {
+		const savedParams = localStorage.getItem('SwitchParams');
+		if (savedParams) {
+			userParameter = JSON.parse(savedParams);
+		}
+	});
 	let userParameter = {
 		SSH: {
-			ip: ''
+			ip: '',
+			username: '',
+			password: ''
 		},
 		VTP: [],
 		VLAN: [],
@@ -263,6 +282,24 @@
 		fieldName="SSH-IP"
 		id="SSH-IP"
 	/>
+
+
+	<InputField
+		placeholder="cisco"
+		type="text"
+		bind:value={userParameter.SSH.username}
+		fieldName="SSH-Username"
+		id="SSH-Username"
+	/>
+
+
+	<InputField
+	placeholder=""
+	type="password"
+	bind:value={userParameter.SSH.username}
+	fieldName="SSH-Password"
+	id="SSH-Password"
+/>
 	<button class="generateSkriptButton" on:click={sendData}> Check Connectivity</button>
 	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
