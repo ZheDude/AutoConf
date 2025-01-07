@@ -29,7 +29,9 @@ class OSPFgenerator:
             with open(self.template_file, 'r') as file:
                 template = file.read()
 
-            passive_if_str = "\n".join([f"passive-interface {iface}" for iface in self.passive_interfaces])
+            passive_if_str = ""
+            if self.passive_interfaces:
+                passive_if_str = "\n".join([f"passive-interface {iface}" for iface in self.passive_interfaces])
 
             networks_str = "\n".join(
                 [f"network {network['network']} {network['wildcard']} area {network['area_id']}" for network in
