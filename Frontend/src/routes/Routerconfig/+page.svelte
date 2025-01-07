@@ -15,7 +15,6 @@
 	let enableDHCP = false;
 	let userParameters = [
 		{
-			
 			Interface: [
 				{
 					interface: '',
@@ -127,9 +126,9 @@
 			]
 		},
 		{
-		SSH: {
+			SSH: {
 				ip: ''
-			},
+			}
 		}
 	];
 
@@ -309,12 +308,9 @@
 		SSH: 9
 	};
 
+	function checkConnectivity() {}
 
-	function checkConnectivity(){
-
-	}
-
-	async function sendData(){
+	async function sendData() {
 		let postData = JSON.stringify(userParameters);
 		console.log(postData);
 		const response = await fetch('/api/', {
@@ -326,13 +322,13 @@
 		});
 		let ApiData = await response.json();
 		return true;
-
 	}
 </script>
 
-<div class="mainHeading">
-	<h1>Routerconfig</h1>
-
+<div id="parameterDivGrundkonfig">
+	<div class="mainHeading">
+		<h1>Routerconfig</h1>
+	</div>
 	<InputField
 		placeholder="192.168.10.10"
 		type="text"
@@ -417,6 +413,6 @@
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 	{/if}
 
-	<button class="generateSkriptButton" id="Submit" on:click={sendData}> Submit</button>
+	<button class="generateSkriptButton" id="SubmitR" on:click={sendData}> Submit</button>
 	<button class="generateSkriptButton"> Show Script</button>
 </div>
