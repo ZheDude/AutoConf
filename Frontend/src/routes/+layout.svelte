@@ -48,7 +48,23 @@
 			{/if}
 			<RouterIcon {url}></RouterIcon>
 			{#if url == '/Routerconfig'}
-				<ul><a href="#section1">???</a></ul>
+				<ul><a href="#Interfaces">Interfaces</a></ul>
+				<br />
+				<ul><a href="#Key-Chains">Key-Chains</a></ul>
+				<br />
+				<ul><a href="#OSPF">OSPF</a></ul>
+				<br />
+				<ul><a href="#RIP">RIP</a></ul>
+				<br />
+				<ul><a href="#BGP">BGP</a></ul>
+				<br />
+				<ul><a href="#StaticRoutes">Static Routes</a></ul>
+				<br />
+				<ul><a href="#GRE-Tunnels">GRE-Tunnels</a></ul>
+				<br />
+				<ul><a href="#HSRP">HSRP</a></ul>
+				<br />
+				<ul><a href="#DHCP">DHCP</a></ul>
 			{/if}
 		</div>
 	</div>
