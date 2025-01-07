@@ -65,6 +65,8 @@
 				<ul><a href="#HSRP">HSRP</a></ul>
 				<br />
 				<ul><a href="#DHCP">DHCP</a></ul>
+				<br />
+				<ul><a href="#SubmitR"><strong>Submit</strong></a></ul>
 			{/if}
 		</div>
 	</div>
