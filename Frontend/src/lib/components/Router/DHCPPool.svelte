@@ -7,7 +7,7 @@
 		subnetmask: '',
 		default_router: '',
 		dns: '',
-		exclude: [],
+		exclude: [''],
 		'exclude-range': [{ start: '', end: '' }],
 		lease: 10
 	};
@@ -103,7 +103,7 @@
 		bind:value={params['exclude-range'][number].end}
 		placeholder="192.168.10.100"
 		type="text"
-		fieldName="Start IP"
+		fieldName="End IP"
 		id="DHCPExcludedÊnd{id}.{number}"
 	/>
 {/each}
