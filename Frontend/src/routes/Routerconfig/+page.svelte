@@ -10,6 +10,7 @@
 	import HsrpGroup from '../../lib/components/Router/HSRPGroup.svelte';
 	import DHCPPool from '../../lib/components/Router/DHCPPool.svelte';
 	import InputField from '../../lib/components/inputField.svelte';
+	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	let enableOSPF = false;
@@ -350,32 +351,12 @@
 	<div class="mainHeading">
 		<h1>Routerconfig</h1>
 	</div>
-	<InputField
-		placeholder="192.168.10.10"
-		type="text"
-		bind:value={userParameters[mappings['SSH']]['SSH']['ip']}
-		fieldName="SSH-IP"
-		id="SSH-IP"
-	/>
 
-	<InputField
-		placeholder="cisco"
-		type="text"
-		bind:value={userParameters.SSH.username}
-		fieldName="SSH-Username"
-		id="SSH-Username"
-	/>
-
-	<InputField
-		placeholder=""
-		type="password"
-		bind:value={userParameters.SSH.username}
-		fieldName="SSH-Password"
-		id="SSH-Password"
-	/>
+	<SshCredentials bind:params={userParameters[mappings['SSH']].SSH}></SshCredentials>
+	
 	<button class="generateSkriptButton" on:click={checkConnectivity}> Check Connectivity</button>
 
-	<h2 class="subHeading">Interfaces</h2>
+	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 
 	{#each range(0, userParameters[mappings['Interface']]['Interface'].length - 1) as number}
 		<Interface id={number} bind:params={userParameters[mappings['Interface']]['Interface'][number]}

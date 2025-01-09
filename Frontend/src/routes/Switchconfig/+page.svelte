@@ -12,6 +12,7 @@
 	import { onMount } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
+	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 
 	let enableVTP = false;
 
@@ -275,31 +276,8 @@
 	<div class="mainHeading">
 		<h1>Switchconfig</h1>
 	</div>
-	<InputField
-		placeholder="192.168.10.10"
-		type="text"
-		bind:value={userParameter.SSH.ip}
-		fieldName="SSH-IP"
-		id="SSH-IP"
-	/>
-
-
-	<InputField
-		placeholder="cisco"
-		type="text"
-		bind:value={userParameter.SSH.username}
-		fieldName="SSH-Username"
-		id="SSH-Username"
-	/>
-
-
-	<InputField
-	placeholder=""
-	type="password"
-	bind:value={userParameter.SSH.username}
-	fieldName="SSH-Password"
-	id="SSH-Password"
-/>
+	
+	<SshCredentials bind:params={userParameter.SSH}></SshCredentials>
 	<button class="generateSkriptButton" on:click={sendData}> Check Connectivity</button>
 	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
