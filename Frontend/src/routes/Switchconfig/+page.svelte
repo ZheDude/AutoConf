@@ -15,7 +15,7 @@
 	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 
 
-
+	let enableCheck;
 	let enableConnectivityCheck = false;
 
 	let enableVTP = false;
@@ -76,7 +76,7 @@
 
 
 	}
-	
+	/*
 	function saveToLocalStorage() {
 		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
 	}
@@ -94,7 +94,7 @@
 		}
 	});
 
-	
+	*/
 	let userParameter = {
 		SSH: {
 			ip: '',
@@ -119,7 +119,6 @@
 		Portsecurity: [],
 		EtherChannels: []
 	};
-
 
 	let cssClasses = {
 		SSH: {
@@ -270,24 +269,29 @@
 
 	function addVLAN() {
 		userParameter.VLAN = [...userParameter.VLAN, { name: '', number: '' }];
+		cssClasses.VLAN = [... cssClasses.VLAN, {name: 'correct', number: 'correct'}]
 	}
 
 	function removeVLAN() {
 		if (userParameter.VLAN.length != 0) {
 			userParameter.VLAN = userParameter.VLAN.slice(0, -1);
+			cssClasses.VLAN = cssClasses.VLAN.slice(0,-1);
 		}
 	}
 
 	function addSTPProcess() {
 		userParameter.STP = [
 			...userParameter.STP,
-			{ mode: '', priority: '', hello_timer: '', forward_timer: '', max_age: '', vlan: '' }
+			{ mode: 'Rapid-PVST', priority: '', hello_timer: '', forward_timer: '', max_age: '', vlan: '' }
 		];
+
+		cssClasses.STP = [...userParameter.STP, {priority: 'correct', hello_timer: 'correct', forward_timer: 'correct', max_age: 'correct', vlan: 'correct' }]
 	}
 
 	function removeSTPProcess() {
 		if (userParameter.STP.length != 0) {
 			userParameter.STP = userParameter.STP.slice(0, -1);
+			cssClasses.STP = cssClasses.STP.slice(0,-1)
 		}
 	}
 
@@ -339,7 +343,15 @@
 					is_primary: false
 				}
 			];
+
+			cssClasses.VTP = [
+				{
+					domain: 'correct',
+					password: 'correct',
+				}
+			]
 		} else {
+			cssClasses.VTP = [];
 			userParameter.VTP = [];
 		}
 	}
@@ -359,6 +371,24 @@
 
 	}
 
+	async function checkUserParameter(){
+		enableCheck = true;
+		checkConectivity();
+
+
+		let postData = {userParameter: userParameter,  cssClasses: cssClasses};
+		const response = await fetch('/api/parameterChecks/Switchconfig', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses = data.cssClasses 
+		console.log(cssClasses)
+
+	}
 	async function sendData() {
 		let postData = JSON.stringify(formatAPIData(userParameter));
 		const response = await fetch('/api/', {
@@ -396,6 +426,7 @@
 			bind:value={userParameter.VTP[0]['domain']}
 			fieldName="VTP-Domain"
 			id="VTP-Domain"
+			cssClass = {enableCheck ? cssClasses.VTP[0].domain : 'correct'}
 		/>
 		<InputField
 			placeholder=""
@@ -403,6 +434,7 @@
 			bind:value={userParameter.VTP[0]['password']}
 			fieldName="VTP-Password"
 			id="VTP-Password"
+			cssClass = {enableCheck ? cssClasses.VTP[0].password : 'correct'}
 		/>
 		<Checkbox
 			name="VTP-Pruning"
@@ -440,7 +472,7 @@
 	{/each}
 	<button class="leftButton" on:click={addSTPProcess}>Add STP Process</button>
 	<button class="rightButton" on:click={removeSTPProcess}>Remove STP Process </button>
-	<EdgeInterfaces edgeInterfaces={userParameter.EdgePorts}></EdgeInterfaces>
+	<EdgeInterfaces check={enableCheck} bind:edgeInterfaces={userParameter.EdgePorts} InterfaceCssClasses={cssClasses.EdgePorts}></EdgeInterfaces>
 
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 	<h2 class="subSubHeading">Trunks</h2>
@@ -465,7 +497,7 @@
 	<button class="leftButton" on:click={addEtherChannel}>Add Etherchannel</button>
 	<button class="rightButton" on:click={removeEtherChannel}>Remove Etherchannel</button>
 	<br />
-	<button class="generateSkriptButton" id="Submit" on:click={sendData}> Submit</button>
+	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
 	<button class="generateSkriptButton" on:click={sendData}> Show Script</button>
 	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>

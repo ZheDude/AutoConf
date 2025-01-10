@@ -2,38 +2,51 @@
 	import InputField from '../inputField.svelte';
 	import Checkbox from '../checkbox.svelte';
 
+	export let check = false;
+
 	function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 	export let edgeInterfaces = {
-		Interfaces: [{ name: '', portfast: true, bpduguard: true }],
-		InterfaceRanges: [{ startInterface: '', endInterface: '', portfast: true, bpduguard: true }]
+		Interfaces: [],
+		InterfaceRanges: []
 	};
+
+	export let InterfaceCssClasses = {
+		Interfaces: [],
+		InterfaceRanges: []
+	}
+
+
+	console.log(InterfaceCssClasses)
 
 	function addEdgeInterface() {
 		edgeInterfaces.Interfaces = [
 			...edgeInterfaces.Interfaces,
 			{ name: '', portfast: true, bpduguard: true }
 		];
+		InterfaceCssClasses.Interfaces = [ ... edgeInterfaces.Interfaces, {name: 'correct'}]
 	}
 
 	function removeEdgeInterface() {
-		if (edgeInterfaces.Interfaces.length != 1) {
 			edgeInterfaces.Interfaces = edgeInterfaces.Interfaces.slice(0, -1);
-		}
+			InterfaceCssClasses.Interfaces = InterfaceCssClasses.Interfaces.slice(0,-1)
 	}
+
+
 	function addEdegInterfaceRange() {
 		edgeInterfaces.InterfaceRanges = [
 			...edgeInterfaces.InterfaceRanges,
 			{ startInterface: '', endInterface: '', portfaste: true, bpduguard: true }
 		];
+
+		InterfaceCssClasses.InterfaceRanges = [... InterfaceCssClasses , { startInterface: 'correct', endInterface: 'correct'}]
 	}
 
 	function removeEdegInterfaceRange() {
-		if (edgeInterfaces.InterfaceRanges.length != 1) {
 			edgeInterfaces.InterfaceRanges = edgeInterfaces.InterfaceRanges.slice(0, -1);
+			InterfaceCssClasses.InterfaceRanges = InterfaceCssClasses.InterfaceRanges.slice(0, -1);
 		}
-	}
 </script>
 
 <h2 class="subSubHeading">Edge-Ports</h2>
@@ -46,6 +59,7 @@
 		type="text"
 		fieldName="Interface"
 		id="EdgeInterface{edgeInterfaces.Interfaces.length}"
+		cssClass ={check ? InterfaceCssClasses.Interfaces[count].name : 'correct'}
 	/>
 	<Checkbox
 		bind:isChecked={edgeInterfaces.Interfaces[count].portfast}
@@ -69,6 +83,7 @@
 		type="text"
 		fieldName="Start-Interface"
 		id="EdgeInterface{edgeInterfaces.Interfaces.length}"
+		cssClass ={check ? InterfaceCssClasses.InterfaceRanges[count].startInterface : 'correct'}
 	/>
 	<InputField
 		bind:value={edgeInterfaces.InterfaceRanges[count].endInterface}
@@ -76,6 +91,7 @@
 		type="text"
 		fieldName="End-Interface"
 		id="EdgeInterface{edgeInterfaces.Interfaces.length}"
+		cssClass ={check ? InterfaceCssClasses.InterfaceRanges[count].endInterface : 'correct'}
 	/>
 	<Checkbox
 		bind:isChecked={edgeInterfaces.InterfaceRanges[count].portfast}
@@ -89,8 +105,5 @@
 	></Checkbox>
 {/each}
 
-<button class="leftButton extra-margin" on:click={addEdegInterfaceRange}>Add Interface Range</button
->
-<button class="rightButton extra-margin" on:click={removeEdegInterfaceRange}
-	>Remove Interface Range</button
->
+<button class="leftButton extra-margin" on:click={addEdegInterfaceRange}>Add Interface Range</button>
+<button class="rightButton extra-margin" on:click={removeEdegInterfaceRange}>Remove Interface Range</button>

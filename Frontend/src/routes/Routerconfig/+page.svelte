@@ -68,21 +68,12 @@
 		},
 		{
 			RIP: {
-				/*
-				version: '',
-				'auto-summary': true,
-				*/
+
 				networks: [
 					{
 						network: ''
 					}
 				],
-				/*
-				neighbor: '10.0.0.3', 
-				timer_update: 30,
-				passive_interface: ['']
-				redistribute: ['bgp', 'ospf'] 
-				*/
 				passive_interface: ['']
 			}
 		},
