@@ -7,11 +7,9 @@
 	import ExecTimeout from '../lib/components/execTimeout.svelte';
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+
 	import { beforeNavigate } from '$app/navigation';
 	import { afterNavigate } from '$app/navigation';
-
-
-
 
 	let inputParams = {
 		hostname: '',
@@ -59,47 +57,32 @@
 			}
 		]
 	};
-	
 
 	onMount(() => {
-	
 		const savedParams = localStorage.getItem('grundconfigParams');
-		
-		const savedCssClasses = localStorage.getItem('grundConfigCssClasses')
-		
+
+		const savedCssClasses = localStorage.getItem('grundConfigCssClasses');
+
 		if (savedParams) {
 			inputParams = JSON.parse(savedParams);
-			
 		}
-		
-		if (savedCssClasses){
-			console.log(cssClasses['vtyRanges'][0]['execMinutes'])
+
+		if (savedCssClasses) {
 			cssClasses = JSON.parse(savedCssClasses);
 		}
-		
 	});
 
 	function saveToLocalStorage() {
 		localStorage.setItem('grundconfigParams', JSON.stringify(inputParams));
 		localStorage.setItem('grundConfigCssClasses', JSON.stringify(cssClasses));
-
 	}
-
 
 	beforeNavigate(() => {
 		saveToLocalStorage();
-	
 	});
-
-	
-
-	
 
 	let generate = false;
 	let showError = false;
-
-	
-
 
 	$: cssClasses;
 
@@ -139,8 +122,8 @@
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 
-	function generateSkript() {
-		if (checkUserInputs()) {
+	async function generateSkript() {
+		if (await checkUserInputs()) {
 			generate = true;
 		} else {
 			generate = false;
@@ -148,209 +131,72 @@
 		}
 	}
 
-	function checkUserInputs() {
-		let correct = true;
-		if (
-			inputParams.hostname === '' ||
-			!inputParams.hostname.match(/^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$/)
-		) {
-			correct = false;
-			cssClasses.hostname = 'error';
-		} else {
-			cssClasses.hostname = 'correct';
-		}
+	async function checkUserInputs() {
+		let postData = {userInputs: inputParams};
 
-		if (inputParams.domain === '') {
-			correct = false;
-			cssClasses.domain = 'error';
-		} else {
-			cssClasses.domain = 'correct';
-		}
-
-		if (
-			inputParams.adminUser === '' ||
-			!inputParams.adminUser.match(
-				/^(?!.*\.\.)(?!.*__)(?!.*--)(?![-_.])[A-Za-z0-9._-]{3,30}(?<![-_.])$/
-			)
-		) {
-			correct = false;
-			cssClasses.adminUser = 'error';
-		} else {
-			cssClasses.adminUser = 'correct';
-		}
-
-		if (inputParams.password === '') {
-			correct = false;
-			cssClasses.password = 'error';
-		} else {
-			cssClasses.password = 'correct';
-		}
-
-		if (inputParams.managementInterface === '') {
-			correct = false;
-			cssClasses.managementInterface = 'error';
-		} else {
-			cssClasses.managementInterface = 'correct';
-		}
-
-		if (
-			inputParams.managementIP === '' ||
-			!inputParams.managementIP.match(
-				/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-			)
-		) {
-			correct = false;
-			cssClasses.managementIP = 'error';
-		} else {
-			cssClasses.managementIP = 'correct';
-		}
-
-		if (
-			inputParams.managementMask === '' ||
-			!inputParams.managementMask.match(
-				/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
-			)
-		) {
-			correct = false;
-			cssClasses.managementMask = 'error';
-		} else {
-			cssClasses.managementMask = 'correct';
-		}
-
-		range(0, inputParams.vtyRanges.length - 1).forEach((element) => {
-			if (
-				inputParams.vtyRanges[element].execTimeout.minutes === '' ||
-				!inputParams.vtyRanges[element].execTimeout.minutes.match(/^-?\d*\.?\d+$/)
-			) {
-				correct = false;
-				cssClasses.vtyRanges[element].execMinutes = 'error';
-			} else {
-				cssClasses.vtyRanges[element].execMinutes = 'correct';
-			}
-
-			if (
-				inputParams.vtyRanges[element].execTimeout.seconds === '' ||
-				!inputParams.vtyRanges[element].execTimeout.seconds.match(/^-?\d*\.?\d+$/)
-			) {
-				correct = false;
-				cssClasses.vtyRanges[element].execSeconds = 'error';
-			} else {
-				cssClasses.vtyRanges[element].execSeconds = 'correct';
-			}
-
-			if (
-				inputParams.vtyRanges[element].startLine === '' ||
-				!inputParams.vtyRanges[element].startLine.match(
-					/^(0|([1-9]?[0-9]{1,2}|9[0-1][0-9]|92[0-4]))$/
-				)
-			) {
-
-				correct = false;
-				cssClasses.vtyRanges[element].startLine = 'error';
-			} else {
-				cssClasses.vtyRanges[element].startLine = 'correct';
-			}
-
-			if (
-				inputParams.vtyRanges[element].endLine === '' ||
-				!inputParams.vtyRanges[element].endLine.match(
-					/^(0|([1-9]?[0-9]{1,2}|9[0-1][0-9]|92[0-4]))$/
-				)
-			) {
-				correct = false;
-				cssClasses.vtyRanges[element].endLine = 'error';
-			} else {
-				cssClasses.vtyRanges[element].endLine = 'correct';
-			}
+		const response = await fetch('/api/parameterChecks/Grundkonfig/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
 		});
-
-		if (
-			inputParams.consoleExecTime.minutes === '' ||
-			!inputParams.consoleExecTime.minutes.match(/^-?\d*\.?\d+$/)
-		) {
-			correct = false;
-			cssClasses.consoleExecTime.minutes = 'error';
-		} else {
-			cssClasses.consoleExecTime.minutes = 'correct';
-		}
-
-		if (
-			inputParams.consoleExecTime.seconds === '' ||
-			!inputParams.consoleExecTime.seconds.match(/^-?\d*\.?\d+$/)
-		) {
-			correct = false;
-			cssClasses.consoleExecTime.seconds = 'error';
-		} else {
-			cssClasses.consoleExecTime.seconds = 'correct';
-		}
-
-		if (
-			inputParams.keylength === '' ||
-			!inputParams.keylength.match(/^(512|768|1024|2048|4096)$/)
-		) {
-			correct = false;
-			cssClasses.keylength = 'error';
-		} else {
-			cssClasses.keylength = 'correct';
-		}
-
-		return correct;
+		let data = await response.json();
+		console.log(data);
+		cssClasses = data['cssClasses']
+		return data['correct']
 	}
 
-
-	function resetInputs(){
-
-		
+	function resetInputs() {
 		generate = false;
 		showError = false;
 
 		inputParams = {
-		hostname: '',
-		domain: '',
-		domainLookup: false,
-		adminUser: '',
-		password: '',
-		sshVersion: '2',
-		consoleExecTime: { minutes: '0', seconds: '0' },
-		consoleLoggingSyn: false,
-		consoleLoginLocal: false,
-		managementInterface: '',
-		managementIP: '',
-		managementMask: '',
-		keylength: '1024',
-		vtyRanges: [
-			{
-				startLine: '',
-				endLine: '',
-				execTimeout: { minutes: '0', seconds: '0' },
-				loggingSyn: false,
-				loginLocal: false,
-				required: true,
-				transportInput: 'ssh'
-			}
-		]
-	}
+			hostname: '',
+			domain: '',
+			domainLookup: false,
+			adminUser: '',
+			password: '',
+			sshVersion: '2',
+			consoleExecTime: { minutes: '0', seconds: '0' },
+			consoleLoggingSyn: false,
+			consoleLoginLocal: false,
+			managementInterface: '',
+			managementIP: '',
+			managementMask: '',
+			keylength: '1024',
+			vtyRanges: [
+				{
+					startLine: '',
+					endLine: '',
+					execTimeout: { minutes: '0', seconds: '0' },
+					loggingSyn: false,
+					loginLocal: false,
+					required: true,
+					transportInput: 'ssh'
+				}
+			]
+		};
 
-	cssClasses ={
-	
-		hostname: 'correct',
-		domain: 'correct',
-		adminUser: 'correct',
-		adminPassword: 'correct',
-		managementInterface: 'correct',
-		managementIP: 'correct',
-		managementMask: 'correct',
-		keylength: 'correct',
-		consoleExecTime: { minutes: 'correct', seconds: 'correct' },
-		vtyRanges: [
-			{
-				startLine: 'correct',
-				endLine: 'correct',
-				execMinutes: 'correct',
-				execSeconds: 'correct'
-			}
-		]
-	};
+		cssClasses = {
+			hostname: 'correct',
+			domain: 'correct',
+			adminUser: 'correct',
+			adminPassword: 'correct',
+			managementInterface: 'correct',
+			managementIP: 'correct',
+			managementMask: 'correct',
+			keylength: 'correct',
+			consoleExecTime: { minutes: 'correct', seconds: 'correct' },
+			vtyRanges: [
+				{
+					startLine: 'correct',
+					endLine: 'correct',
+					execMinutes: 'correct',
+					execSeconds: 'correct'
+				}
+			]
+		};
 	}
 </script>
 
@@ -487,40 +333,40 @@
 	<button class="rightButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>
-		<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
+	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}
 	<div id="textAreaDiv">
 		<h1>Folgendes Skript muss vom User selbst in das Netzwerkgerät eingefügt werden!</h1>
 		<p>enable</p>
-			<p>configure terminal</p>
-				<p>hostname {inputParams.hostname}</p>
+		<p>configure terminal</p>
+		<p>hostname {inputParams.hostname}</p>
 		{#if inputParams.domainLookup}
-				<p>no ip domain-lookup</p>
+			<p>no ip domain-lookup</p>
 		{/if}
-				<p>ip domain-name {inputParams.domain}</p>
-				<p>username {inputParams.adminUser} priv 15</p>
-				<p>username {inputParams.adminUser} algorithm-type scrypt secret {inputParams.password}</p>
-				<p>crypto key generate rsa usage-keys modulus {inputParams.keylength}</p>
-				<p>ip ssh version {inputParams.sshVersion}</p>
-				<br />
-				<p>Interface {inputParams.managementInterface}</p>
-				<p>ip address {inputParams.managementIP} {inputParams.managementMask}</p>
-				<p>no shut</p>
-				<br />
-				<p>line con 0</p>
-					<p>exec-timeout {inputParams.consoleExecTime.minutes} {inputParams.consoleExecTime.seconds}</p>
-					<p>{inputParams.consoleLoggingSyn ? 'logging syn' : ''}</p>
-					<p>{inputParams.consoleLoginLocal ? 'login local' : ''}</p>
+		<p>ip domain-name {inputParams.domain}</p>
+		<p>username {inputParams.adminUser} priv 15</p>
+		<p>username {inputParams.adminUser} algorithm-type scrypt secret {inputParams.password}</p>
+		<p>crypto key generate rsa usage-keys modulus {inputParams.keylength}</p>
+		<p>ip ssh version {inputParams.sshVersion}</p>
+		<br />
+		<p>Interface {inputParams.managementInterface}</p>
+		<p>ip address {inputParams.managementIP} {inputParams.managementMask}</p>
+		<p>no shut</p>
+		<br />
+		<p>line con 0</p>
+		<p>exec-timeout {inputParams.consoleExecTime.minutes} {inputParams.consoleExecTime.seconds}</p>
+		<p>{inputParams.consoleLoggingSyn ? 'logging syn' : ''}</p>
+		<p>{inputParams.consoleLoginLocal ? 'login local' : ''}</p>
 
-		<br>
+		<br />
 
 		{#each inputParams.vtyRanges as range}
 			<p>line vty {range.startLine} {range.endLine}</p>
 			{#if range.required}
-			<p>transport input ssh</p>
-			<p>login local</p>
+				<p>transport input ssh</p>
+				<p>login local</p>
 			{/if}
 			<p>exec-timeout {range.execTimeout.minutes} {range.execTimeout.seconds}</p>
 			<p>{range.loggingSyn ? 'logging syn' : ''}</p>

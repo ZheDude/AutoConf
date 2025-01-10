@@ -16,6 +16,7 @@
 	let enableOSPF = false;
 	let enableHSRP = false;
 	let enableDHCP = false;
+	let enableConnectivityCheck = false;
 
 	function saveToLocalStorage() {
 		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
@@ -153,6 +154,128 @@
 		}
 	];
 
+	let cssClasses = [
+		{
+			Interface: [
+				{
+					interface: '',
+					ip_address: '',
+					subnetmask: '',
+					description: '',
+					shutdown: false,
+					ospf: {
+						area_id: '',
+						cost: '',
+						priority: '',
+						network_type: '',
+						authentication: {
+							key_chain: ''
+						}
+					}
+				}
+			]
+		},
+		{
+			OSPF: []
+		},
+		{
+			'Key-Chain': [
+				{
+					number: '',
+					name: '',
+					password: '',
+					ALGO: ''
+				}
+			]
+		},
+		{
+			RIP: {
+				/*
+				version: '',
+				'auto-summary': true,
+				*/
+				networks: [
+					{
+						network: ''
+					}
+				],
+				/*
+				neighbor: '10.0.0.3', 
+				timer_update: 30,
+				passive_interface: ['']
+				redistribute: ['bgp', 'ospf'] 
+				*/
+				passive_interface: ['']
+			}
+		},
+		{
+			BGP: {
+				neighbor: [],
+				networks: []
+			}
+		},
+		{
+			'Static-Routes': [
+				{
+					source: '',
+					mask: '',
+					destination: '',
+					interface: '',
+					distance: ''
+				}
+			]
+		},
+		{
+			GRE: [
+				{
+					tunnel: '',
+					source: '',
+					source_ip: '',
+					destination: '',
+					ip: '',
+					subnetmask: ''
+				}
+			]
+		},
+		{
+			HSRP: [
+				{
+					group: '',
+					version: '',
+					interface: '',
+					ip: '',
+					priority: '',
+					preempt: true,
+					timers: {
+						hello: '',
+						hold: ''
+					}
+				}
+			]
+		},
+		{
+			DHCP: [
+				{
+					pool: '',
+					network: '',
+					subnetmask: '',
+					default_router: '',
+					dns: '',
+					exclude: [],
+					'exclude-range': [{ start: '', end: '' }],
+					lease: 10
+				}
+			]
+		},
+		{
+			SSH: {
+				ip: 'correct',
+				username: 'correct',
+				passord: 'correct',
+				isReachable: true
+			}
+		}
+	];
 	$: console.log(userParameters);
 	$: console.log(userParameters);
 
@@ -330,7 +453,20 @@
 		SSH: 9
 	};
 
-	function checkConnectivity() {}
+	async function checkConnectivity() {
+		enableConnectivityCheck = true;
+		let postData = { userParameter: userParameters[mappings['SSH']].SSH };
+		const response = await fetch('/api/checkConnectivity/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses[mappings['SSH']].SSH = data;
+
+	}
 
 	async function sendData() {
 		let postData = JSON.stringify(userParameters);
@@ -352,8 +488,12 @@
 		<h1>Routerconfig</h1>
 	</div>
 
-	<SshCredentials bind:params={userParameters[mappings['SSH']].SSH}></SshCredentials>
-	
+	<SshCredentials
+		cssClasses={cssClasses[mappings['SSH']].SSH}
+		connectivityCheck={enableConnectivityCheck}
+		bind:params={userParameters[mappings['SSH']].SSH}
+	></SshCredentials>
+
 	<button class="generateSkriptButton" on:click={checkConnectivity}> Check Connectivity</button>
 
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>

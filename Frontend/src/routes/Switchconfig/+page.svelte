@@ -14,9 +14,69 @@
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
 	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 
+
+
+	let enableConnectivityCheck = false;
+
 	let enableVTP = false;
 
+	function resetInputs(){
 
+		enableConnectivityCheck = false;
+		cssClasses = {
+		SSH: {
+			ip: 'correct',
+			username: 'correct',
+			passord: 'correct',
+			isReachable: false
+		},
+		VTP: [],
+		VLAN: [],
+		STP: [],
+		EdgePorts: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Trunks: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		AccessInterfaces: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Portsecurity: [],
+		EtherChannels: []
+	}
+
+	userParameter = {
+		SSH: {
+			ip: '',
+			username: '',
+			password: ''
+		},
+		VTP: [],
+		VLAN: [],
+		STP: [],
+		EdgePorts: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Trunks: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		AccessInterfaces: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Portsecurity: [],
+		EtherChannels: []
+	}
+
+
+	}
+	
 	function saveToLocalStorage() {
 		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
 	}
@@ -33,11 +93,40 @@
 			userParameter = JSON.parse(savedParams);
 		}
 	});
+
+	
 	let userParameter = {
 		SSH: {
 			ip: '',
 			username: '',
 			password: ''
+		},
+		VTP: [],
+		VLAN: [],
+		STP: [],
+		EdgePorts: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Trunks: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		AccessInterfaces: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Portsecurity: [],
+		EtherChannels: []
+	};
+
+
+	let cssClasses = {
+		SSH: {
+			ip: 'correct',
+			username: 'correct',
+			passord: 'correct',
+			isReachable: true
 		},
 		VTP: [],
 		VLAN: [],
@@ -255,11 +344,23 @@
 		}
 	}
 
-	$: console.log(userParameter);
+	async function checkConectivity(){
+		enableConnectivityCheck = true;
+		let postData = {userParameter: userParameter['SSH']};
+		const response = await fetch('/api/checkConnectivity/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses.SSH = data;
+
+	}
 
 	async function sendData() {
 		let postData = JSON.stringify(formatAPIData(userParameter));
-		console.log(postData);
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
@@ -277,8 +378,8 @@
 		<h1>Switchconfig</h1>
 	</div>
 	
-	<SshCredentials bind:params={userParameter.SSH}></SshCredentials>
-	<button class="generateSkriptButton" on:click={sendData}> Check Connectivity</button>
+	<SshCredentials cssClasses={cssClasses.SSH} connectivityCheck={enableConnectivityCheck} bind:params={userParameter.SSH}></SshCredentials>
+	<button class="generateSkriptButton" on:click={checkConectivity}> Check Connectivity</button>
 	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
 	{#if enableVTP}
@@ -366,4 +467,5 @@
 	<br />
 	<button class="generateSkriptButton" id="Submit" on:click={sendData}> Submit</button>
 	<button class="generateSkriptButton" on:click={sendData}> Show Script</button>
+	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
