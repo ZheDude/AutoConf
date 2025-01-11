@@ -13,6 +13,7 @@
 	let divClass = '';
 	$:{
 
+		
 	if (cssClasses['ip'] != 'correct' || cssClasses['username'] != 'correct' || cssClasses['password'] != 'correct'){
 		divClass = 'SSHDivDefault';
 	}else if (cssClasses['isReachable'] === true){

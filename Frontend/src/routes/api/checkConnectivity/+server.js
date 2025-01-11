@@ -8,7 +8,6 @@ export async function POST({ request }) {
     let apiReturn = {ip: 'correct', username: 'correct', password: 'correct', isReachable: true}
 
 
-    console.log(inputParams)
     if (!inputParams.userParameter.ip.match(
         
         /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/

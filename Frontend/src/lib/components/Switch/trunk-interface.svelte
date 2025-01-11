@@ -2,22 +2,17 @@
 	import InputField from '../inputField.svelte';
 	import Dropdown from '../dropdown.svelte';
 	import Checkbox from '../checkbox.svelte';
+
+	export let check = false;
 	export let trunks = {
-		Interfaces: [
-			{ name: '', allowed_vlan: '', native_vlan: '', encapsulation: '', mode: '', shutdown: false }
-		],
-		InterfaceRanges: [
-			{
-				startInterface: '',
-				endInterface: '',
-				allowed_vlan: '',
-				native_vlan: '',
-				encapsulation: '',
-				mode: '',
-				shutdown: false
-			}
-		]
+		Interfaces: [],
+		InterfaceRanges: []
 	};
+
+	export let cssClasses = {
+		Interfaces: [],
+		InterfaceRanges: []
+	}
 
 	function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -26,14 +21,17 @@
 	function addInterface() {
 		trunks.Interfaces = [
 			...trunks.Interfaces,
-			{ name: '', allowed_vlan: '', native_vlan: '', encapsulation: '', mode: '', shutdown: false }
+			{ name: '', allowed_vlan: '', native_vlan: '', encapsulation: 'dot1q', mode: 'Trunk', shutdown: false }
 		];
+
+		cssClasses.Interfaces = [... cssClasses.Interfaces, { name: 'correct', allowed_vlan: 'correct', native_vlan: 'correct' } ]
 	}
 
 	function removeInterface() {
-		if (trunks.Interfaces.length != 0) {
+
 			trunks.Interfaces = trunks.Interfaces.slice(0, -1);
-		}
+			cssClasses.Interfaces = trunks.Interfaces.slice(0,-1);
+		
 	}
 	function addInterfaceRange() {
 		trunks.InterfaceRanges = [
@@ -43,17 +41,23 @@
 				endInterface: '',
 				allowed_vlan: '',
 				native_vlan: '',
-				encapsulation: '',
-				mode: '',
+				encapsulation: 'dot1q',
+				mode: 'Trunk',
 				shutdown: false
 			}
 		];
+
+		cssClasses.InterfaceRanges = [... trunks.InterfaceRanges,{
+				startInterface: 'correct',
+				endInterface: 'correct',
+				allowed_vlan: 'correct',
+				native_vlan: 'correct'
+			} ]
 	}
 
 	function removeInterfaceRange() {
-		if (trunks.InterfaceRanges.length != 0) {
 			trunks.InterfaceRanges = trunks.InterfaceRanges.slice(0, -1);
-		}
+			cssClasses.InterfaceRanges = cssClasses.InterfaceRanges.slice(0, -1);
 	}
 </script>
 
@@ -66,15 +70,9 @@
 		type="text"
 		fieldName="Interface:"
 		id="Trunk{count}"
+		cssClass={check ? cssClasses.Interfaces[count].name : 'correct'}
 	/>
 
-	<InputField
-		bind:value={trunks.Interfaces[count].encapsulation}
-		placeholder="Dot1q"
-		type="text"
-		fieldName="Encapsulation:"
-		id="Encapsulation{count}"
-	/>
 
 	<InputField
 		bind:value={trunks.Interfaces[count].allowed_vlan}
@@ -82,6 +80,7 @@
 		type="text"
 		fieldName="Allowed VLANs:"
 		id="AllowedVlans{count}"
+		cssClass={check ? cssClasses.Interfaces[count].allowed_vlan : 'correct'}
 	/>
 
 	<InputField
@@ -90,12 +89,13 @@
 		type="text"
 		fieldName="Native VLAN:"
 		id="NativeVlan{count}"
+		cssClass={check ? cssClasses.Interfaces[count].native_vlan : 'correct'}
 	/>
 	<br />
 
 	<Dropdown
 		bind:value={trunks.Interfaces[count].mode}
-		options={['Dynamic Auto', 'Dynamic Desirable', 'Static']}
+		options={['Dynamic Auto', 'Dynamic Desirable', 'Trunk']}
 		fieldName="Mode{count}"
 		Heading="Trunk-Mode:"
 	></Dropdown>
@@ -119,6 +119,7 @@
 			type="text"
 			fieldName="Start-Interface:"
 			id="Trunk{count}"
+			cssClass={check ? cssClasses.InterfaceRanges[count].startInterface : 'correct'}
 		/>
 		<InputField
 			bind:value={trunks.InterfaceRanges[count].endInterface}
@@ -126,22 +127,16 @@
 			type="text"
 			fieldName="End-Interface:"
 			id="Trunk{count}"
+			cssClass={check ? cssClasses.InterfaceRanges[count].endInterface : 'correct'}
 		/>
 	</div>
-	<InputField
-		placeholder="Dot1q"
-		type="text"
-		fieldName="Encapsulation:"
-		id="Encapsulation{count}"
-		bind:value={trunks.InterfaceRanges[count].encapsulation}
-	/>
-
 	<InputField
 		placeholder="10,20,30"
 		type="text"
 		fieldName="Allowed VLANs:"
 		id="AllowedVlans{count}"
 		bind:value={trunks.InterfaceRanges[count].allowed_vlan}
+		cssClass={check ? cssClasses.InterfaceRanges[count].allowed_vlan : 'correct'}
 	/>
 
 	<InputField
@@ -150,6 +145,7 @@
 		fieldName="Native VLAN:"
 		id="NativeVlan{count}"
 		bind:value={trunks.InterfaceRanges[count].native_vlan}
+		cssClass={check ? cssClasses.InterfaceRanges[count].native_vlan : 'correct'}
 	/>
 	<br />
 

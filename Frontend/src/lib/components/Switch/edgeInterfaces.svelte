@@ -17,15 +17,14 @@
 		InterfaceRanges: []
 	}
 
-
-	console.log(InterfaceCssClasses)
+	$: console.log(InterfaceCssClasses)
 
 	function addEdgeInterface() {
 		edgeInterfaces.Interfaces = [
 			...edgeInterfaces.Interfaces,
 			{ name: '', portfast: true, bpduguard: true }
 		];
-		InterfaceCssClasses.Interfaces = [ ... edgeInterfaces.Interfaces, {name: 'correct'}]
+		InterfaceCssClasses.Interfaces = [ ... InterfaceCssClasses.Interfaces, {name: 'correct'}]
 	}
 
 	function removeEdgeInterface() {
@@ -40,7 +39,7 @@
 			{ startInterface: '', endInterface: '', portfaste: true, bpduguard: true }
 		];
 
-		InterfaceCssClasses.InterfaceRanges = [... InterfaceCssClasses , { startInterface: 'correct', endInterface: 'correct'}]
+		InterfaceCssClasses.InterfaceRanges = [... InterfaceCssClasses.InterfaceRanges , { startInterface: 'correct', endInterface: 'correct'}]
 	}
 
 	function removeEdegInterfaceRange() {
@@ -82,7 +81,7 @@
 		placeholder="Gig0/1"
 		type="text"
 		fieldName="Start-Interface"
-		id="EdgeInterface{edgeInterfaces.Interfaces.length}"
+		id="EdgeInterfaceStart{edgeInterfaces.Interfaces.length}.{count}"
 		cssClass ={check ? InterfaceCssClasses.InterfaceRanges[count].startInterface : 'correct'}
 	/>
 	<InputField
@@ -90,7 +89,7 @@
 		placeholder="Gig0/1"
 		type="text"
 		fieldName="End-Interface"
-		id="EdgeInterface{edgeInterfaces.Interfaces.length}"
+		id="EdgeInterfaceEnd{edgeInterfaces.Interfaces.length}.{count}"
 		cssClass ={check ? InterfaceCssClasses.InterfaceRanges[count].endInterface : 'correct'}
 	/>
 	<Checkbox
