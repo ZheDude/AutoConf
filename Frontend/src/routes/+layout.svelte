@@ -10,6 +10,7 @@
 	import GrundkonfigPage from '/src/routes/+page.svelte';
 	import SwitchPage from '/src/routes/Switchconfig/+page.svelte';
 	import RouterPage from '/src/routes/Routerconfig/+page.svelte';
+	import SubnetCalculatorIcon from '../lib/components/icons/SubnetCalculatorIcon.svelte';
 
 	let url = '/';
 	afterNavigate((navigation) => {
@@ -68,6 +69,8 @@
 				<br />
 				<ul><a href="#SubmitR"><strong>Submit</strong></a></ul>
 			{/if}
+
+			<SubnetCalculatorIcon {url}> </SubnetCalculatorIcon>
 		</div>
 	</div>
 

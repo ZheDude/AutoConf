@@ -17,7 +17,9 @@
 	let enableHSRP = false;
 	let enableDHCP = false;
 	let enableConnectivityCheck = false;
+	let enableCheck = false;
 
+	/*
 	function saveToLocalStorage() {
 		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
 	}
@@ -32,6 +34,7 @@
 			userParameters = JSON.parse(savedParams);
 		}
 	});
+	*/
 	let userParameters = [
 		{
 			Interface: [
@@ -41,15 +44,6 @@
 					subnetmask: '',
 					description: '',
 					shutdown: false,
-					ospf: {
-						area_id: '',
-						cost: '',
-						priority: '',
-						network_type: '',
-						authentication: {
-							key_chain: ''
-						}
-					}
 				}
 			]
 		},
@@ -58,12 +52,6 @@
 		},
 		{
 			'Key-Chain': [
-				{
-					number: '',
-					name: '',
-					password: '',
-					ALGO: ''
-				}
 			]
 		},
 		{
@@ -74,7 +62,7 @@
 						network: ''
 					}
 				],
-				passive_interface: ['']
+				passive_interface: []
 			}
 		},
 		{
@@ -85,25 +73,10 @@
 		},
 		{
 			'Static-Routes': [
-				{
-					source: '',
-					mask: '',
-					destination: '',
-					interface: '',
-					distance: ''
-				}
 			]
 		},
 		{
 			GRE: [
-				{
-					tunnel: '',
-					source: '',
-					source_ip: '',
-					destination: '',
-					ip: '',
-					subnetmask: ''
-				}
 			]
 		},
 		{
@@ -149,20 +122,11 @@
 		{
 			Interface: [
 				{
-					interface: '',
-					ip_address: '',
-					subnetmask: '',
-					description: '',
-					shutdown: false,
-					ospf: {
-						area_id: '',
-						cost: '',
-						priority: '',
-						network_type: '',
-						authentication: {
-							key_chain: ''
-						}
-					}
+					interface: 'correct',
+					ip_address: 'correct',
+					subnetmask: 'correct',
+					description: 'correct',
+					
 				}
 			]
 		},
@@ -171,32 +135,17 @@
 		},
 		{
 			'Key-Chain': [
-				{
-					number: '',
-					name: '',
-					password: '',
-					ALGO: ''
-				}
 			]
 		},
 		{
 			RIP: {
-				/*
-				version: '',
-				'auto-summary': true,
-				*/
 				networks: [
 					{
 						network: ''
 					}
 				],
-				/*
-				neighbor: '10.0.0.3', 
-				timer_update: 30,
-				passive_interface: ['']
-				redistribute: ['bgp', 'ospf'] 
-				*/
-				passive_interface: ['']
+				
+				passive_interface: []
 			}
 		},
 		{
@@ -207,25 +156,10 @@
 		},
 		{
 			'Static-Routes': [
-				{
-					source: '',
-					mask: '',
-					destination: '',
-					interface: '',
-					distance: ''
-				}
 			]
 		},
 		{
 			GRE: [
-				{
-					tunnel: '',
-					source: '',
-					source_ip: '',
-					destination: '',
-					ip: '',
-					subnetmask: ''
-				}
 			]
 		},
 		{
@@ -259,43 +193,40 @@
 			]
 		},
 		{
-			SSH: {
-				ip: 'correct',
-				username: 'correct',
-				passord: 'correct',
-				isReachable: true
-			}
+			SSH: {}
 		}
 	];
 	$: console.log(userParameters);
 	$: console.log(userParameters);
 
 	function addInterface() {
-		userParameters[0]['Interface'] = [
-			...userParameters[0]['Interface'],
+		userParameters[mappings['Interface']]['Interface'] = [
+			...userParameters[mappings['Interface']]['Interface'],
 			{
 				interface: '',
 				ip_address: '',
 				subnetmask: '',
 				description: '',
 				shutdown: false,
-				ospf: {
-					area_id: '',
-					cost: '',
-					priority: '',
-					network_type: '',
-					authentication: {
-						key_chain: ''
-					}
-				}
 			}
 		];
+
+		cssClasses[mappings['Interface']]['Interface'] = [
+			...userParameters[mappings['Interface']]['Interface'],
+			{
+				interface: 'correct',
+				ip_address: 'correct',
+				subnetmask: 'correct',
+				description: 'correct',
+			}
+		];
+
+		
 	}
 
 	function removeInterface() {
-		if (userParameters[0]['Interface'].length > 0) {
-			userParameters[0]['Interface'] = userParameters[0]['Interface'].slice(0, -1);
-		}
+			userParameters[mappings['Interface']]['Interface'] = userParameters[0]['Interface'].slice(0, -1);
+			cssClasses[mappings['Interface']['Interface']] = cssClasses[mappings['Interface']['Interface']].slice(0,-1)
 	}
 
 	function addOspfProcess() {
@@ -459,9 +390,31 @@
 
 	}
 
+
+	async function checkUserParameter() {
+		enableCheck = true;
+		checkConnectivity();
+
+		let postData = { userParameter: userParameters, cssClasses: cssClasses };
+		const response = await fetch('/api/parameterChecks/Routerconfig', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses = data.cssClasses;
+		/*
+		if(data.isCorrect && userParameters[mappings['SSH']].SSH){
+			sendData()
+		}
+		*/
+
+	}
 	async function sendData() {
+		console.log('sending data')
 		let postData = JSON.stringify(userParameters);
-		console.log(postData);
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
@@ -470,6 +423,8 @@
 			body: postData
 		});
 		let ApiData = await response.json();
+
+
 		return true;
 	}
 </script>
@@ -490,7 +445,7 @@
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 
 	{#each range(0, userParameters[mappings['Interface']]['Interface'].length - 1) as number}
-		<Interface id={number} bind:params={userParameters[mappings['Interface']]['Interface'][number]}
+		<Interface check={enableCheck} cssClasses={cssClasses[mappings['Interface']]['Interface'][number]} id={number} bind:params={userParameters[mappings['Interface']]['Interface'][number]}
 		></Interface>
 	{/each}
 	<button class="leftButton" on:click={addInterface}>Add Interface</button>
@@ -562,6 +517,6 @@
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 	{/if}
 
-	<button class="generateSkriptButton" id="SubmitR" on:click={sendData}> Submit</button>
-	<button class="generateSkriptButton"> Show Script</button>
+	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
+	<button class="generateSkriptButton" on:click={checkUserParameter}> Show Script</button>
 </div>

@@ -5,22 +5,50 @@
     export let id;
     let enableAuthentication = false;
     let enableOspf = false;
+    export let check = false;
     export let params =      {
         "interface": "",
         "ip_address": "",
         "subnetmask": "",
         "description": "",
         "shutdown": false,
-        "ospf": {
+      }
+
+    export let cssClasses = {
+        "interface": "correct",
+        "ip_address": "correct",
+        "subnetmask": "correct",
+        "description": "correct",
+      }
+
+
+      $:{
+        if (enableOspf){
+          params.ospf =  {
           "area_id": "",
           "cost": "",
           "priority": "",
-          "network_type": "",
-          "authentication": {
+          "network_type": "broadcast", 
+        }
+
+        cssClasses.ospf =  {
+          "area_id": "correct",
+          "cost": "correct",
+          "priority": "correct", 
+        }
+        
+      }
+
+      if (enableAuthentication){
+        params.ospf.authentication = {
             "key_chain": ""
           }
-        }
+
+          cssClasses.ospf.authentication = {
+            "key_chain": "correct"
+          }
       }
+    }
 </script>  
 
 <InputField
@@ -29,6 +57,8 @@ type="text"
 fieldName="InterfaceType"
 id="InterfaceType{id}"
 bind:value={params['interface']}
+
+cssClass={check ? cssClasses.interface : 'correct'}
 />
 
 <InputField
@@ -37,6 +67,7 @@ type="text"
 fieldName="IP-Address"
 id="IP-AddressInterface{id}"
 bind:value={params['ip_address']}
+cssClass={check ? cssClasses.ip_address : 'correct'}
 
 />
 
@@ -46,6 +77,7 @@ type="text"
 fieldName="Subnetzmaske"
 id="Subnetzmaske{id}"
 bind:value={params['subnetmask']}
+cssClass={check ? cssClasses.subnetmask : 'correct'}
 />
 
 
@@ -55,6 +87,7 @@ type="text"
 fieldName="Description"
 id="InterfaceDescription{id}"
 bind:value={params['description']}
+cssClass={check ? cssClasses.description : 'correct'}
 />
 
 <Checkbox name="InterfaceShutdown{id}" bind:isChecked={params['shutdown']} Heading="Shutdown"></Checkbox>
@@ -69,6 +102,7 @@ type="text"
 fieldName="Area-ID"
 id="AreaID-Interface{id}"
 bind:value={params['ospf']['area_id']}
+cssClass={check ? cssClasses.ospf.area_id : 'correct'}
 />
 
 
@@ -80,6 +114,7 @@ type="text"
 fieldName="Kosten"
 id="OSPFCost-Interface{id}"
 bind:value={params['ospf']['cost']}
+cssClass={check ? cssClasses.ospf.cost : 'correct'}
 />
 
 <InputField
@@ -88,6 +123,7 @@ type="text"
 fieldName="Priority"
 id="OSPFPriority-Interface{id}"
 bind:value={params['ospf']['priority']}
+cssClass={check ? cssClasses.ospf.priority : 'correct'}
 />
 
 
@@ -107,6 +143,7 @@ type="text"
 fieldName="key-chain1"
 id="OSPFPriority-Interface{id}"
 bind:value={params['ospf']['authentication']['key_chain']}
+cssClass={check ? cssClasses.ospf.authentication.key_chain : 'correct'}
 />
 {/if}
 
