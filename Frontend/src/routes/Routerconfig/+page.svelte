@@ -266,7 +266,16 @@
 				number: '',
 				name: '',
 				password: '',
-				ALGO: ''
+				ALGO: 'sha-512'
+			}
+		];
+
+		cssClasses[mappings['Key-Chain']]['Key-Chain'] = [
+			...cssClasses[mappings['Key-Chain']]['Key-Chain'],
+			{
+				number: 'correct',
+				name: 'correct',
+				password: 'correct'
 			}
 		];
 	}
@@ -275,6 +284,10 @@
 		userParameters[mappings['Key-Chain']]['Key-Chain'] = userParameters[mappings['Key-Chain']][
 			'Key-Chain'
 		].slice(0, -1);
+		cssClasses[mappings['Key-Chain']]['Key-Chain'] = userParameters[mappings['Key-Chain']][
+			'Key-Chain'
+		].slice(0, -1);
+
 	}
 
 	function addStaticRoute() {
@@ -454,7 +467,8 @@
 	<h1 class="subHeading" id="Key-Chains">Key-Chains</h1>
 
 	{#each range(0, userParameters[mappings['Key-Chain']]['Key-Chain'].length - 1) as number}
-		<KeyChain id={number} bind:params={userParameters[mappings['Key-Chain']]['Key-Chain'][number]}
+		<h1 class="subHeading">Key Chain {number}</h1>
+		<KeyChain id={number} check={enableCheck} cssClasses={cssClasses[mappings['Key-Chain']]['Key-Chain'][number]} bind:params={userParameters[mappings['Key-Chain']]['Key-Chain'][number]}
 		></KeyChain>
 	{/each}
 

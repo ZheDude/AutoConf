@@ -16,7 +16,7 @@ export async function POST({ request }) {
         SSH: 9
     };
 
-    console.log(cssClasses[mappings['Interface']])
+    console.log(cssClasses[mappings['Interface']]['Interface'][0].ospf)
 
 
     function range(start, end) {
@@ -32,7 +32,13 @@ export async function POST({ request }) {
     function checkIP(IP){
         return IP.match(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)
     }
+    
+    function checkSubnetMask(mask){
+        return mask.match((/^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/))
+    }
 
+
+    /* Interface validaiton */
     for (let i = 0; i < inputParams[mappings['Interface']]['Interface'].length; i++) {
         if (checkInterfaceName(inputParams[mappings['Interface']]['Interface'][i].interface)) {
             cssClasses[mappings['Interface']]['Interface'][i].interface = 'correct'
@@ -49,13 +55,92 @@ export async function POST({ request }) {
         }
         
 
+        if (checkSubnetMask(inputParams[mappings['Interface']]['Interface'][i].subnetmask)){
+            cssClasses[mappings['Interface']]['Interface'][i].subnetmask = 'correct'
+        }else{
+            cssClasses[mappings['Interface']]['Interface'][i].subnetmask = 'error'
+            isCorrect = false;
+        }
 
+        if (inputParams[mappings['Interface']]['Interface'][i].description != ''){
+            cssClasses[mappings['Interface']]['Interface'][i].description = 'correct';
+        }else{
+            cssClasses[mappings['Interface']]['Interface'][i].description = 'error'
+            isCorrect = false;
+        }
+
+
+        if(inputParams[mappings['Interface']]['Interface'][i].ospf != undefined){
+            
+            if (inputParams[mappings['Interface']]['Interface'][i].ospf.area_id.match(/\d+$/)){
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.area_id = 'correct'
+            }else{
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.area_id = 'error';
+                isCorrect = false;
+            }
+
+            if (inputParams[mappings['Interface']]['Interface'][i].ospf.cost.match(/\d+$/) && 
+            (parseInt(inputParams[mappings['Interface']]['Interface'][i].ospf.cost) > 0 
+            && parseInt(inputParams[mappings['Interface']]['Interface'][i].ospf.cost)  <= 65535)){
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.cost = 'correct'
+            }else{
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.cost = 'error';
+                isCorrect = false;
+            }
+
+
+            if (inputParams[mappings['Interface']]['Interface'][i].ospf.priority.match(/\d+$/) && 
+            (parseInt(inputParams[mappings['Interface']]['Interface'][i].ospf.priority) >= 0 
+            && parseInt(inputParams[mappings['Interface']]['Interface'][i].ospf.priority)  <= 255)){
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.priority = 'correct'
+            }else{
+                cssClasses[mappings['Interface']]['Interface'][i].ospf.priority = 'error';
+                isCorrect = false;
+            }
+
+            if (inputParams[mappings['Interface']]['Interface'][i].ospf.authentication != undefined){
+                if (inputParams[mappings['Interface']]['Interface'][i].ospf.authentication.key_chain != ''){
+                    cssClasses[mappings['Interface']]['Interface'][i].ospf.authentication.key_chain = 'correct'; 
+                }else{
+                    cssClasses[mappings['Interface']]['Interface'][i].ospf.authentication.key_chain = 'error'; 
+                    isCorrect = false;
+                }
+
+            }
+
+
+        }
+
+        for(let i = 0; i < inputParams[mappings['Key-Chain']]['Key-Chain'].length; i++){
+            if (inputParams[mappings['Key-Chain']]['Key-Chain'][i].number.match(/\d+$/)){
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].number = 'correct';
+            }else{
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].number = 'error';
+                isCorrect = false;
+            }
+
+
+            if (inputParams[mappings['Key-Chain']]['Key-Chain'][i].name != ''){
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].name = 'correct';
+            }else{
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].name = 'error';
+                isCorrect = false;
+            }
+
+            if (inputParams[mappings['Key-Chain']]['Key-Chain'][i].password != ''){
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].password = 'correct';
+            }else{
+                cssClasses[mappings['Key-Chain']]['Key-Chain'][i].password = 'error';
+                isCorrect = false;
+            }
+        }
 
     }
 
 
 
 
+    
 
 
 
