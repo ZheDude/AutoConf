@@ -18,10 +18,6 @@ class DHCPGenerator:
 
             lease = entry.get("lease")
 
-            if not all([pool, network, subnetmask, default_router]):
-                print(f"Skipping incomplete DHCP entry: {entry}")
-                continue
-
             for ip in exclude:
                 commands.append(f"ip dhcp excluded-address {ip}")
 
@@ -29,6 +25,12 @@ class DHCPGenerator:
                 exclude_range_start = exclude_element.get("start")
                 exclude_range_end = exclude_element.get("end")
                 commands.append(f"ip dhcp excluded-address {exclude_range_start} {exclude_range_end}")
+
+            if not all([pool, network, subnetmask, default_router]):
+                print(f"Skipping incomplete DHCP entry: {entry}")
+                continue
+
+
 
             commands.append(f"ip dhcp pool {pool}")
             commands.append(f"network {network} {subnetmask}")
@@ -73,6 +75,25 @@ if __name__ == "__main__":
                 }
             ],
             "lease": 10
+        },
+        {
+            "pool": "",
+            "network": "",
+            "subnetmask": "",
+            "default_router": "",
+            "dns": "",
+            "exclude": ["1.1.1.1"],
+            "exclude-range": [
+                {
+                    "start": "6.2.1.1",
+                    "end": "2.2.2.2"
+                },
+                {
+                    "start": "1.1.1.1",
+                    "end": "3.2.2.2"
+                }
+            ],
+            "lease": 0
         }
     ]
     dhcp_gen = DHCPGenerator(data)
