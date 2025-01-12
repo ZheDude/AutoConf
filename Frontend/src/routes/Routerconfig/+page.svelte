@@ -16,6 +16,8 @@
 	let enableOSPF = false;
 	let enableHSRP = false;
 	let enableDHCP = false;
+	let enableRIP = false;
+	let enableBGP = false;
 	let enableConnectivityCheck = false;
 	let enableCheck = false;
 
@@ -43,7 +45,7 @@
 					ip_address: '',
 					subnetmask: '',
 					description: '',
-					shutdown: false,
+					shutdown: false
 				}
 			]
 		},
@@ -51,33 +53,19 @@
 			OSPF: []
 		},
 		{
-			'Key-Chain': [
-			]
+			'Key-Chain': []
 		},
 		{
-			RIP: {
-
-				networks: [
-					{
-						network: ''
-					}
-				],
-				passive_interface: []
-			}
+			RIP: {}
 		},
 		{
-			BGP: {
-				neighbor: [],
-				networks: []
-			}
+			BGP: {}
 		},
 		{
-			'Static-Routes': [
-			]
+			'Static-Routes': []
 		},
 		{
-			GRE: [
-			]
+			GRE: []
 		},
 		{
 			HSRP: [
@@ -125,8 +113,7 @@
 					interface: 'correct',
 					ip_address: 'correct',
 					subnetmask: 'correct',
-					description: 'correct',
-					
+					description: 'correct'
 				}
 			]
 		},
@@ -134,33 +121,19 @@
 			OSPF: []
 		},
 		{
-			'Key-Chain': [
-			]
+			'Key-Chain': []
 		},
 		{
-			RIP: {
-				networks: [
-					{
-						network: ''
-					}
-				],
-				
-				passive_interface: []
-			}
+			RIP: {}
 		},
 		{
-			BGP: {
-				neighbor: [],
-				networks: []
-			}
+			BGP: {}
 		},
 		{
-			'Static-Routes': [
-			]
+			'Static-Routes': []
 		},
 		{
-			GRE: [
-			]
+			GRE: []
 		},
 		{
 			HSRP: [
@@ -207,7 +180,7 @@
 				ip_address: '',
 				subnetmask: '',
 				description: '',
-				shutdown: false,
+				shutdown: false
 			}
 		];
 
@@ -217,16 +190,19 @@
 				interface: 'correct',
 				ip_address: 'correct',
 				subnetmask: 'correct',
-				description: 'correct',
+				description: 'correct'
 			}
 		];
-
-		
 	}
 
 	function removeInterface() {
-			userParameters[mappings['Interface']]['Interface'] = userParameters[0]['Interface'].slice(0, -1);
-			cssClasses[mappings['Interface']['Interface']] = cssClasses[mappings['Interface']['Interface']].slice(0,-1)
+		userParameters[mappings['Interface']]['Interface'] = userParameters[0]['Interface'].slice(
+			0,
+			-1
+		);
+		cssClasses[mappings['Interface']['Interface']] = cssClasses[
+			mappings['Interface']['Interface']
+		].slice(0, -1);
 	}
 
 	function addOspfProcess() {
@@ -242,17 +218,130 @@
 					}
 				],
 				router_id: '',
-				timer_dead: 30,
-				timer_hello: 10,
+				timer_dead: '30',
+				timer_hello: '10',
 				passive_interfaces: ['']
 			}
 		];
-		console.log(userParameters[mappings.OSPF].OSPF);
-		console.log(userParameters[mappings.OSPF].OSPF.length);
+
+		cssClasses[mappings.OSPF]['OSPF'] = [
+			...userParameters[mappings.OSPF]['OSPF'],
+			{
+				process_id: 'correct',
+				networks: [
+					{
+						network: 'correct',
+						area_id: 'correct',
+						wildcard: 'correct'
+					}
+				],
+				router_id: 'correct',
+				timer_dead: 'correct',
+				timer_hello: 'correct',
+				passive_interfaces: ['correct']
+			}
+		];
 	}
 
 	function removeOspfProcess() {
-		userParameters[mappings.OSPF].OSPF = userParameters[mappings.OSPF].OSPF.slice(0, -1);
+		if (!enableOSPF) {
+			userParameters[mappings.OSPF].OSPF = [];
+		} else {
+			userParameters[mappings.OSPF].OSPF = userParameters[mappings.OSPF].OSPF.slice(0, -1);
+			cssClasses[mappings.OSPF].OSPF = cssClasses[mappings.OSPF].OSPF.slice(0, -1);
+
+			if (userParameters[mappings.OSPF].OSPF.length == 0) {
+				enableOSPF = false;
+			}
+		}
+	}
+
+	$: {
+		if (enableOSPF) {
+			addOspfProcess();
+		}
+
+		if (!enableOSPF) {
+			removeOspfProcess();
+		}
+
+		if (enableRIP) {
+			userParameters[mappings.RIP].RIP = {
+				version: 2,
+				'auto-summary': true,
+				networks: [
+					{
+						network: ''
+					}
+				],
+				timer_update: '30'
+			};
+
+			cssClasses[mappings.RIP].RIP = {
+				version: 2,
+				'auto-summary': true,
+				networks: [
+					{
+						network: ''
+					}
+				],
+				timer_update: '30'
+			};
+		}
+
+		if (!enableRIP) {
+			userParameters[mappings.RIP].RIP = {};
+
+			cssClasses[mappings.RIP].RIP = {};
+		}
+
+		if (enableBGP) {
+			userParameters[mappings.BGP].BGP = {
+				neighbor: [
+					{
+						ip_of_neighbor: '',
+						as: '',
+						update_source: '',
+						next_hop_self: false,
+						route_reflector: false,
+						default_originate: false
+					}
+				],
+				networks: [
+					{
+						network: '',
+						subnetmask: ''
+					}
+				],
+				timer_bgp: '30',
+				hold_time: '180',
+				local_as: '100'
+			};
+
+			cssClasses[mappings.BGP].BGP = {
+				neighbor: [
+					{
+						ip_of_neighbor: 'correct',
+						as: 'correct',
+						update_source: 'correct'
+					}
+				],
+				networks: [
+					{
+						network: 'correct',
+						subnetmask: 'correct'
+					}
+				],
+				timer_bgp: 'correct',
+				hold_time: 'correct',
+				local_as: 'correct'
+			};
+		}
+
+		if (!enableBGP) {
+			userParameters[mappings.BGP].BGP = {};
+			cssClasses[mappings.BGP].BGP = {};
+		}
 	}
 
 	function range(start, end) {
@@ -287,7 +376,6 @@
 		cssClasses[mappings['Key-Chain']]['Key-Chain'] = userParameters[mappings['Key-Chain']][
 			'Key-Chain'
 		].slice(0, -1);
-
 	}
 
 	function addStaticRoute() {
@@ -298,13 +386,28 @@
 				mask: '',
 				destination: '',
 				interface: '',
-				distance: ''
+				distance: '1'
+			}
+		];
+
+		cssClasses[mappings['Static-Routes']]['Static-Routes'] = [
+			...cssClasses[mappings['Static-Routes']]['Static-Routes'],
+			{
+				source: 'correct',
+				mask: 'correct',
+				destination: 'correct',
+				interface: 'correct',
+				distance: 'correct'
 			}
 		];
 	}
 
 	function removeStaticRoute() {
 		userParameters[mappings['Static-Routes']]['Static-Routes'] = userParameters[
+			mappings['Static-Routes']
+		]['Static-Routes'].slice(0, -1);
+
+		cssClasses[mappings['Static-Routes']]['Static-Routes'] = cssClasses[
 			mappings['Static-Routes']
 		]['Static-Routes'].slice(0, -1);
 	}
@@ -400,9 +503,7 @@
 		});
 		let data = await response.json();
 		cssClasses[mappings['SSH']].SSH = data;
-
 	}
-
 
 	async function checkUserParameter() {
 		enableCheck = true;
@@ -423,10 +524,9 @@
 			sendData()
 		}
 		*/
-
 	}
 	async function sendData() {
-		console.log('sending data')
+		console.log('sending data');
 		let postData = JSON.stringify(userParameters);
 		const response = await fetch('/api/', {
 			method: 'POST',
@@ -436,7 +536,6 @@
 			body: postData
 		});
 		let ApiData = await response.json();
-
 
 		return true;
 	}
@@ -458,7 +557,11 @@
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 
 	{#each range(0, userParameters[mappings['Interface']]['Interface'].length - 1) as number}
-		<Interface check={enableCheck} cssClasses={cssClasses[mappings['Interface']]['Interface'][number]} id={number} bind:params={userParameters[mappings['Interface']]['Interface'][number]}
+		<Interface
+			check={enableCheck}
+			cssClasses={cssClasses[mappings['Interface']]['Interface'][number]}
+			id={number}
+			bind:params={userParameters[mappings['Interface']]['Interface'][number]}
 		></Interface>
 	{/each}
 	<button class="leftButton" on:click={addInterface}>Add Interface</button>
@@ -467,8 +570,12 @@
 	<h1 class="subHeading" id="Key-Chains">Key-Chains</h1>
 
 	{#each range(0, userParameters[mappings['Key-Chain']]['Key-Chain'].length - 1) as number}
-		<h1 class="subHeading">Key Chain {number}</h1>
-		<KeyChain id={number} check={enableCheck} cssClasses={cssClasses[mappings['Key-Chain']]['Key-Chain'][number]} bind:params={userParameters[mappings['Key-Chain']]['Key-Chain'][number]}
+		<h1 class="subSubHeading">Key Chain {number}</h1>
+		<KeyChain
+			id={number}
+			check={enableCheck}
+			cssClasses={cssClasses[mappings['Key-Chain']]['Key-Chain'][number]}
+			bind:params={userParameters[mappings['Key-Chain']]['Key-Chain'][number]}
 		></KeyChain>
 	{/each}
 
@@ -480,21 +587,39 @@
 	<Checkbox name="enableOSPF{1}" Heading="Enable OSPF" bind:isChecked={enableOSPF} />
 	{#if enableOSPF}
 		{#each range(0, userParameters[mappings.OSPF].OSPF.length - 1) as number}
-			<Ospf id={number} bind:params={userParameters[mappings.OSPF]['OSPF'][number]}></Ospf>
+			<Ospf
+				check={enableCheck}
+				cssClasses={cssClasses[mappings.OSPF]['OSPF'][number]}
+				id={number}
+				bind:params={userParameters[mappings.OSPF]['OSPF'][number]}
+			></Ospf>
 		{/each}
+		<br />
 		<button class="leftButton" on:click={addOspfProcess}>Add OSPF Process</button>
 		<button class="rightButton" on:click={removeOspfProcess}>Remove OSPF Process</button>
 	{/if}
 
 	<h2 class="subHeading" id="RIP">RIP</h2>
-	<RIP id="1" bind:params={userParameters[mappings.RIP].RIP}></RIP>
+	<Checkbox name="enableRIP" Heading="Enable RIP" bind:isChecked={enableRIP} />
+
+	{#if enableRIP}
+		<RIP
+			id="1"
+			check={enableCheck}
+			cssClasses={cssClasses[mappings.RIP].RIP}
+			bind:params={userParameters[mappings.RIP].RIP}
+		></RIP>
+	{/if}
 	<h2 class="subHeading" id="BGP">BGP</h2>
-	<BGP id="1" bind:params={userParameters[mappings.BGP].BGP}></BGP>
+	<Checkbox name="enableBGP" Heading="Enable BGP" bind:isChecked={enableBGP} />
+	{#if enableBGP}
+		<BGP id="1" check={enableCheck} cssClasses={cssClasses[mappings.BGP].BGP} bind:params={userParameters[mappings.BGP].BGP}></BGP>
+	{/if}
 
 	<h2 class="subHeading" id="StaticRoutes">Static Routes</h2>
 	{#each range(0, userParameters[mappings['Static-Routes']]['Static-Routes'].length - 1) as route, i}
 		<h2 class="subSubHeading">Route {i + 1}</h2>
-		<StaticRoute id={i} bind:params={userParameters[mappings['Static-Routes']]['Static-Routes'][i]}
+		<StaticRoute id={i} check={enableCheck} cssClasses={cssClasses[mappings['Static-Routes']]['Static-Routes'][i]} bind:params={userParameters[mappings['Static-Routes']]['Static-Routes'][i]}
 		></StaticRoute>
 	{/each}
 
