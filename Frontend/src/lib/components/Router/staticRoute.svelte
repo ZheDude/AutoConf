@@ -3,10 +3,10 @@
 	export let check = false;
 	export let id;
 	export let params = {
-		source: '0.0.0.0',
-		mask: '0.0.0.0',
-		destination: '1.1.1.1',
-		interface: 'GigabitEthernet0/0',
+		source: '',
+		mask: '',
+		destination: '',
+		interface: '',
 		distance: '1'
 	};
 
@@ -50,6 +50,10 @@
 	bind:value={params.interface}
 	cssClass = {check ? cssClasses['interface'] : 'correct'}
 />
+
+{#if check && params.interface == '' && params.destination == ''}
+	<p style='color: red'>Error you must either specify an outgoing interface or IP-Address or both!</p>
+{/if}
 
 <InputField
 	id="staticRouterDistance{id}"

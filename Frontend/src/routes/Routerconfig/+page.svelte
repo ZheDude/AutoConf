@@ -68,20 +68,7 @@
 			GRE: []
 		},
 		{
-			HSRP: [
-				{
-					group: '',
-					version: '',
-					interface: '',
-					ip: '',
-					priority: '',
-					preempt: true,
-					timers: {
-						hello: '',
-						hold: ''
-					}
-				}
-			]
+			HSRP: []
 		},
 		{
 			DHCP: [
@@ -91,9 +78,14 @@
 					subnetmask: '',
 					default_router: '',
 					dns: '',
-					exclude: [],
-					'exclude-range': [{ start: '', end: '' }],
-					lease: 10
+					exclude: [''],
+					'exclude-range': [
+						{
+							start: '',
+							end: ''
+						}
+					],
+					lease: ''
 				}
 			]
 		},
@@ -136,32 +128,24 @@
 			GRE: []
 		},
 		{
-			HSRP: [
-				{
-					group: '',
-					version: '',
-					interface: '',
-					ip: '',
-					priority: '',
-					preempt: true,
-					timers: {
-						hello: '',
-						hold: ''
-					}
-				}
-			]
+			HSRP: []
 		},
 		{
 			DHCP: [
 				{
-					pool: '',
-					network: '',
-					subnetmask: '',
-					default_router: '',
-					dns: '',
-					exclude: [],
-					'exclude-range': [{ start: '', end: '' }],
-					lease: 10
+					pool: 'correct',
+					network: 'correct',
+					subnetmask: 'correct',
+					default_router: 'correct',
+					dns: 'correct',
+					exclude: ['correct'],
+					'exclude-range': [
+						{
+							start: 'correct',
+							end: 'correct'
+						}
+					],
+					lease: 'correct'
 				}
 			]
 		},
@@ -342,6 +326,74 @@
 			userParameters[mappings.BGP].BGP = {};
 			cssClasses[mappings.BGP].BGP = {};
 		}
+
+		if (enableDHCP || !enableDHCP) {
+			userParameters[mappings.DHCP].DHCP = [
+				{
+					pool: '',
+					network: '',
+					subnetmask: '',
+					default_router: '',
+					dns: '',
+					exclude: [''],
+					'exclude-range': [
+						{
+							start: '',
+							end: ''
+						}
+					],
+					lease: ''
+				},
+				{
+					pool: '',
+					network: '',
+					subnetmask: '',
+					default_router: '',
+					dns: '',
+					exclude: [''],
+					'exclude-range': [
+						{
+							start: '',
+							end: ''
+						}
+					],
+					lease: ''
+				}
+			];
+
+			cssClasses[mappings.DHCP].DHCP = [
+				{
+					pool: 'correct',
+					network: 'correct',
+					subnetmask: 'correct',
+					default_router: 'correct',
+					dns: 'correct',
+					exclude: ['correct'],
+					'exclude-range': [
+						{
+							start: 'correct',
+							end: 'correct'
+						}
+					],
+					lease: 'correct'
+				},
+				{
+					pool: 'correct',
+					network: 'correct',
+					subnetmask: 'correct',
+					default_router: 'correct',
+					dns: 'correct',
+					exclude: ['correct'],
+					'exclude-range': [
+						{
+							start: 'correct',
+							end: 'correct'
+						}
+					],
+					lease: 'correct'
+				}
+			];
+		}
 	}
 
 	function range(start, end) {
@@ -407,9 +459,9 @@
 			mappings['Static-Routes']
 		]['Static-Routes'].slice(0, -1);
 
-		cssClasses[mappings['Static-Routes']]['Static-Routes'] = cssClasses[
-			mappings['Static-Routes']
-		]['Static-Routes'].slice(0, -1);
+		cssClasses[mappings['Static-Routes']]['Static-Routes'] = cssClasses[mappings['Static-Routes']][
+			'Static-Routes'
+		].slice(0, -1);
 	}
 
 	function addGRETunnel() {
@@ -424,10 +476,23 @@
 				subnetmask: ''
 			}
 		];
+
+		cssClasses[mappings['GRE']]['GRE'] = [
+			...cssClasses[mappings['GRE']]['GRE'],
+			{
+				tunnel: 'correct',
+				source: 'correct',
+				source_ip: 'correct',
+				destination: 'correct',
+				ip: 'correct',
+				subnetmask: 'correct'
+			}
+		];
 	}
 
 	function removeGRETunnel() {
 		userParameters[mappings['GRE']]['GRE'] = userParameters[mappings['GRE']]['GRE'].slice(0, -1);
+		cssClasses[mappings['GRE']]['GRE'] = cssClasses[mappings['GRE']]['GRE'].slice(0, -1);
 	}
 
 	function addHSRPGroup() {
@@ -435,7 +500,7 @@
 			...userParameters[mappings['HSRP']]['HSRP'],
 			{
 				group: '',
-				version: '',
+				version: '2',
 				interface: '',
 				ip: '',
 				priority: '',
@@ -446,6 +511,20 @@
 				}
 			}
 		];
+
+		cssClasses[mappings['HSRP']]['HSRP'] = [
+			...cssClasses[mappings['HSRP']]['HSRP'],
+			{
+				group: 'correct',
+				interface: 'correct',
+				ip: 'correct',
+				priority: 'correct',
+				timers: {
+					hello: 'correct',
+					hold: 'correct'
+				}
+			}
+		];
 	}
 
 	function removeHSRPGroup() {
@@ -453,6 +532,7 @@
 			0,
 			-1
 		);
+		cssClasses[mappings['HSRP']]['HSRP'] = cssClasses[mappings['HSRP']]['HSRP'].slice(0, -1);
 	}
 
 	function addDHCPPool() {
@@ -472,10 +552,37 @@
 	}
 
 	function removeDHCPPool() {
-		userParameters[mappings['DHCP']]['DHCP'] = userParameters[mappings['DHCP']]['DHCP'].slice(
-			0,
-			-1
-		);
+		if(userParameters[mappings['DHCP']]['DHCP'].length > 1){
+		
+		userParameters[mappings['DHCP']]['DHCP'] = userParameters[mappings['DHCP']]['DHCP'].slice(0,-1);
+	}
+	}
+
+	function addExclusionRange() {
+		userParameters[mappings.DHCP].DHCP[0]['exclude-range'] = [
+			...userParameters[mappings.DHCP].DHCP[0]['exclude-range'],
+			{
+				start: '',
+				end: ''
+			}
+		];
+	}
+
+	function removeExclusionRange() {
+		userParameters[mappings.DHCP].DHCP[0]['exclude-range'] = userParameters[mappings.DHCP].DHCP[0]['exclude-range'].slice(0,-1);
+	}
+
+	function addExcludedIP() {
+		userParameters[mappings.DHCP].DHCP[0].exclude = [
+			...userParameters[mappings.DHCP].DHCP[0].exclude,
+			''
+		];
+	}
+
+	function removeExcludedIP() {
+		userParameters[mappings.DHCP].DHCP[0].exclude = userParameters[
+			mappings.DHCP
+		].DHCP[0].exclude.slice(0, -1);
 	}
 
 	const mappings = {
@@ -613,13 +720,22 @@
 	<h2 class="subHeading" id="BGP">BGP</h2>
 	<Checkbox name="enableBGP" Heading="Enable BGP" bind:isChecked={enableBGP} />
 	{#if enableBGP}
-		<BGP id="1" check={enableCheck} cssClasses={cssClasses[mappings.BGP].BGP} bind:params={userParameters[mappings.BGP].BGP}></BGP>
+		<BGP
+			id="1"
+			check={enableCheck}
+			cssClasses={cssClasses[mappings.BGP].BGP}
+			bind:params={userParameters[mappings.BGP].BGP}
+		></BGP>
 	{/if}
 
 	<h2 class="subHeading" id="StaticRoutes">Static Routes</h2>
 	{#each range(0, userParameters[mappings['Static-Routes']]['Static-Routes'].length - 1) as route, i}
 		<h2 class="subSubHeading">Route {i + 1}</h2>
-		<StaticRoute id={i} check={enableCheck} cssClasses={cssClasses[mappings['Static-Routes']]['Static-Routes'][i]} bind:params={userParameters[mappings['Static-Routes']]['Static-Routes'][i]}
+		<StaticRoute
+			id={i}
+			check={enableCheck}
+			cssClasses={cssClasses[mappings['Static-Routes']]['Static-Routes'][i]}
+			bind:params={userParameters[mappings['Static-Routes']]['Static-Routes'][i]}
 		></StaticRoute>
 	{/each}
 
@@ -629,7 +745,12 @@
 	<h2 class="subHeading" id="GRE-Tunnels">GRE-Tunnels</h2>
 	{#each range(0, userParameters[mappings.GRE].GRE.length - 1) as number}
 		<h2 class="subSubHeading">Tunnel {number + 1}</h2>
-		<GRE id={number} bind:params={userParameters[mappings.GRE].GRE[number]}></GRE>
+		<GRE
+			check={enableCheck}
+			cssClasses={cssClasses[mappings.GRE].GRE[number]}
+			id={number}
+			bind:params={userParameters[mappings.GRE].GRE[number]}
+		></GRE>
 	{/each}
 
 	<button class="leftButton" on:click={addGRETunnel}>Add GRE-Tunnel</button>
@@ -640,7 +761,12 @@
 	{#if enableHSRP}
 		{#each range(0, userParameters[mappings.HSRP].HSRP.length - 1) as number}
 			<h2 class="subSubHeading">HSRP-Group {number + 1}</h2>
-			<HsrpGroup id={number} bind:params={userParameters[mappings.HSRP].HSRP[number]}></HsrpGroup>
+			<HsrpGroup
+				check={enableCheck}
+				cssClasses={cssClasses[mappings.HSRP].HSRP[number]}
+				id={number}
+				bind:params={userParameters[mappings.HSRP].HSRP[number]}
+			></HsrpGroup>
 		{/each}
 		<button class="leftButton" on:click={addHSRPGroup}>Add HSRP-Group</button>
 		<button class="rightButton" on:click={removeHSRPGroup}>Remove HSRP-Group</button>
@@ -649,11 +775,57 @@
 	<h2 class="subHeading" id="DHCP">DHCP</h2>
 	<Checkbox name="enableDHCP{1}" Heading="Enable DHCP" bind:isChecked={enableDHCP} />
 	{#if enableDHCP}
-		{#each range(0, userParameters[mappings.DHCP].DHCP.length - 1) as number}
-			<DHCPPool id={number} bind:params={userParameters[mappings.DHCP].DHCP[number]}></DHCPPool>
+		<h2 class="subHeading">Exlcuded Address-Spaces</h2>
+
+		{#each range(0, userParameters[mappings.DHCP].DHCP[0].exclude.length - 1) as number}
+			<InputField
+				bind:value={userParameters[mappings.DHCP].DHCP[0].exclude[number]}
+				placeholder="192.168.10.100"
+				type="text"
+				fieldName="IP"
+				id="ExcludedDHCPAddress{number}"
+				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0].exclude[number] : 'correct' }
+			/>
 		{/each}
+
+		<button class="leftButton" on:click={addExcludedIP}>Add IP</button>
+		<button class="rightButton" on:click={removeExcludedIP}>Remove IP</button>
+
+		{#each range(0, userParameters[mappings.DHCP].DHCP[0]['exclude-range'].length - 1) as number}
+			<h2 class="subSubHeading">Exlcusion Range {number}</h2>
+			<InputField
+				bind:value={userParameters[mappings.DHCP].DHCP[0]['exclude-range'][number].start}
+				placeholder="192.168.10.100"
+				type="text"
+				fieldName="Start IP"
+				id="DHCPExcludedStart{number}"
+				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].start : 'correct' }
+
+			/>
+			<InputField
+				bind:value={userParameters[mappings.DHCP].DHCP[0]['exclude-range'][number].end}
+				placeholder="192.168.10.100"
+				type="text"
+				fieldName="End IP"
+				id="DHCPExcludedEnd{number}"
+				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].end : 'correct' }
+			/>
+		{/each}
+
+		<button class="leftButton" on:click={addExclusionRange}>Add Exlcusion Range</button>
+		<button class="rightButton" on:click={removeExclusionRange}>Remove Exlcusion Range</button>
+		<br />
+
+		<h2 class="subHeading">DHCP Pools</h2>
+		{#each range(1, userParameters[mappings.DHCP].DHCP.length - 1) as number}
+		<h2 class="subSubHeading">Pool {number}</h2>
+			<DHCPPool check={enableCheck} cssClasses={cssClasses[mappings.DHCP].DHCP[number]} id={number} bind:params={userParameters[mappings.DHCP].DHCP[number]}></DHCPPool> 
+		{/each}
+
+		
 		<button class="leftButton" on:click={addDHCPPool}>Add DHCP-Pool</button>
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
+		<br />
 	{/if}
 
 	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>

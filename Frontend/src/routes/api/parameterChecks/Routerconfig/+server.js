@@ -23,9 +23,11 @@ export async function POST({ request }) {
     }
     function checkInterfaceName(name) {
         /*check if an Interface is valid */
-        return name.match(/^(g|gi|gig|giga|gigab|gigabi|gigabit|gigabite|gigabitet|gigabithe|gigabither|gigabithernet)\s?([0-9]+\/[0-9]+)$/i) ||
-            name.match(/^(f|fa|fas|fast|faste|fastet|fasteth|fastethe|fastether|fastethern|fastetherne|fastethernet)\s?([0-9]+\/[0-9]+)$/i) ||
-            name.match(/^(l|lo|loo|loop|loopb|loopba|loopbac|loopback)\s?([0-9]+)$/i)
+        return name.match(/^(g|gi|gig|giga|gigab|gigabi|gigabit|gigabite|gigabitet|gigabithe|gigabither|gigabithernet)\s?([0-9]+\/[0-9]+(\.[0-9]+)?)$/i) ||
+        name.match(/^(f|fa|fas|fast|faste|fastet|fasteth|fastethe|fastether|fastethern|fastetherne|fastethernet)\s?([0-9]+\/[0-9]+(\.[0-9]+)?)$/i) ||
+        name.match(/^(l|lo|loo|loop|loopb|loopba|loopbac|loopback)\s?([0-9]+(\.[0-9]+)?)$/i) ||
+        name.match(/^(t|tu|tun|tunn|tunne|tunnel)\s?([0-9]+(\.[0-9]+)?)$/i);
+        
 
     }
 
@@ -301,7 +303,7 @@ export async function POST({ request }) {
 
     /* static route check */
 
-    console.log(inputParams[mappings['Static-Routes']]['Static-Routes'])
+    
     for (let i = 0; i < inputParams[mappings['Static-Routes']]['Static-Routes'].length; i++) {
         if (checkIP(inputParams[mappings['Static-Routes']]['Static-Routes'][i].source)) {
             cssClasses[mappings['Static-Routes']]['Static-Routes'][i].source = 'correct';
@@ -354,16 +356,202 @@ export async function POST({ request }) {
             }
         }
 
+    }
+
+    /* GRE validation */
+    console.log(inputParams[mappings['GRE']]['GRE'])
+
+    for (let i = 0; i < inputParams[mappings['GRE']]['GRE'].length; i++){
+        if(inputParams[mappings['GRE']]['GRE'][i].tunnel.match(/^(t|tu|tun|tunn|tunne|tunnel)\s?([0-9]+)$/i)){
+            cssClasses[mappings['GRE']]['GRE'][i].tunnel = 'correct';
+        }else{
+            cssClasses[mappings['GRE']]['GRE'][i].tunnel = 'error';
+            isCorrect = false;
+        }
+
+        if(inputParams[mappings['GRE']]['GRE'][i].source == '' && inputParams[mappings['GRE']]['GRE'][i].source_ip == ''){
+            cssClasses[mappings['GRE']]['GRE'][i].source = 'error';
+            cssClasses[mappings['GRE']]['GRE'][i].source_ip = ' error';
+            isCorrect = false;
+        }else{
 
 
+            if (checkInterfaceName(inputParams[mappings['GRE']]['GRE'][i].source) || inputParams[mappings['GRE']]['GRE'][i].source == '') {
+                cssClasses[mappings['GRE']]['GRE'][i].source = 'correct';
+            } else {
+                cssClasses[mappings['GRE']]['GRE'][i].source = 'error';
+                isCorrect = false;
+            }
 
 
+            if (checkIP(inputParams[mappings['GRE']]['GRE'][i].source_ip) || inputParams[mappings['GRE']]['GRE'][i].source_ip == '') {
+                cssClasses[mappings['GRE']]['GRE'][i].source_ip = 'correct'
+            } else {
+                cssClasses[mappings['GRE']]['GRE'][i].source_ip = 'error';
+                isCorrect = false;
+            }
+        }
 
+        if (checkIP(inputParams[mappings['GRE']]['GRE'][i].destination)) {
+            cssClasses[mappings['GRE']]['GRE'][i].destination = 'correct'
+        } else {
+            cssClasses[mappings['GRE']]['GRE'][i].destination = 'error';
+            isCorrect = false;
+        }
+
+
+        if (checkIP(inputParams[mappings['GRE']]['GRE'][i].ip)) {
+            cssClasses[mappings['GRE']]['GRE'][i].ip = 'correct'
+        } else {
+            cssClasses[mappings['GRE']]['GRE'][i].ip = 'error';
+            isCorrect = false;
+        }
+
+
+        if (checkIP(inputParams[mappings['GRE']]['GRE'][i].subnetmask)) {
+            cssClasses[mappings['GRE']]['GRE'][i].subnetmask = 'correct'
+        } else {
+            cssClasses[mappings['GRE']]['GRE'][i].subnetmask = 'error';
+            isCorrect = false;
+        }
 
     }
 
 
+    /* HSRP validation */
+    console.log(cssClasses[mappings['HSRP']]['HSRP'])
 
+    for(let i = 0; i < cssClasses[mappings['HSRP']]['HSRP'].length; i ++ ){
+        if (inputParams[mappings['HSRP']]['HSRP'][i].group.match(/\d+$/)) {
+            cssClasses[mappings['HSRP']]['HSRP'][i].group = 'correct'
+        } else {
+            cssClasses[mappings['HSRP']]['HSRP'][i].group = 'error';
+            isCorrect = false;
+        }
+
+
+        if (checkInterfaceName(inputParams[mappings['HSRP']]['HSRP'][i].interface)){
+             cssClasses[mappings['HSRP']]['HSRP'][i].interface = 'correct'
+        }else{
+            cssClasses[mappings['HSRP']]['HSRP'][i].interface = 'error'
+            isCorrect = false;
+        }
+
+
+        if (checkIP(inputParams[mappings['HSRP']]['HSRP'][i].ip)){
+            cssClasses[mappings['HSRP']]['HSRP'][i].ip = 'correct'
+        }else{
+            cssClasses[mappings['HSRP']]['HSRP'][i].ip = 'error'
+            isCorrect = false;
+        
+        }
+
+        if (inputParams[mappings['HSRP']]['HSRP'][i].priority.match(/\d+$/) &&
+            (parseInt(inputParams[mappings['HSRP']]['HSRP'][i].priority) >= 0) &&
+            parseInt(inputParams[mappings['HSRP']]['HSRP'][i].priority) <= 255) {
+            cssClasses[mappings['HSRP']]['HSRP'][i].priority = 'correct'
+        } else {
+            cssClasses[mappings['HSRP']]['HSRP'][i].priority = 'error';
+            isCorrect = false;
+        }
+
+
+        if (inputParams[mappings['HSRP']]['HSRP'][i].timers.hello.match(/\d+$/) &&
+            (parseInt(inputParams[mappings['HSRP']]['HSRP'][i].timers.hello) >= 0) &&
+            parseInt(inputParams[mappings['HSRP']]['HSRP'][i].timers.hello) <= 255) {
+            cssClasses[mappings['HSRP']]['HSRP'][i].timers.hello = 'correct'
+        } else {
+            cssClasses[mappings['HSRP']]['HSRP'][i].timers.hello = 'error';
+            isCorrect = false;
+        }
+
+
+        if (inputParams[mappings['HSRP']]['HSRP'][i].timers.hold.match(/\d+$/) &&
+            (parseInt(inputParams[mappings['HSRP']]['HSRP'][i].timers.hold) >= 0) &&
+            parseInt(inputParams[mappings['HSRP']]['HSRP'][i].timers.hold) <= 255) {
+            cssClasses[mappings['HSRP']]['HSRP'][i].timers.hold = 'correct'
+        } else {
+            cssClasses[mappings['HSRP']]['HSRP'][i].timers.hold = 'error';
+            isCorrect = false;
+        }
+
+    
+    }
+
+    /* DHCP verification */
+    
+
+    for (let i = 0; i < inputParams[mappings['DHCP']]['DHCP'][0].exclude.length; i++ ){
+        if(checkIP(inputParams[mappings['DHCP']]['DHCP'][0].exclude[i])){
+            cssClasses[mappings['DHCP']]['DHCP'][0].exclude[i] = 'correct';
+
+        }else{
+            isCorrect = false;
+            cssClasses[mappings['DHCP']]['DHCP'][0].exclude[i] = 'error';
+        }
+    }
+
+
+    for (let i = 0; i < inputParams[mappings.DHCP].DHCP[0]['exclude-range'].length; i++ ){
+        
+        if(checkIP(inputParams[mappings['DHCP']]['DHCP'][0]['exclude-range'][i].start)){
+            cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][0].start =  'correct';
+        }else{
+            isCorrect = false;
+            cssClasses[mappings['DHCP']]['DHCP'][0]['exclude-range'][i].start  = 'error';
+        }
+
+
+        if(checkIP(inputParams[mappings['DHCP']]['DHCP'][0]['exclude-range'][i].end)){
+            cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][0].end =  'correct';
+        }else{
+            isCorrect = false;
+            cssClasses[mappings['DHCP']]['DHCP'][0]['exclude-range'][i].end  = 'error';
+        }
+        
+    }
+
+    console.log(inputParams[mappings.DHCP].DHCP)
+    for (let i = 1; i < inputParams[mappings.DHCP].DHCP.length; i++){
+        if (inputParams[mappings.DHCP].DHCP[i].pool != ''){
+            cssClasses[mappings.DHCP].DHCP[i].pool = 'correct';
+        }else{
+            cssClasses[mappings.DHCP].DHCP[i].pool = 'error';
+            isCorrect = false;
+        }
+
+
+        if (checkIP(inputParams[mappings.DHCP].DHCP[i].network)){
+            cssClasses[mappings.DHCP].DHCP[i].network = 'correct';
+        }else{
+            cssClasses[mappings.DHCP].DHCP[i].network = 'error';
+            isCorrect = false;
+        }
+
+        if (checkSubnetMask(inputParams[mappings.DHCP].DHCP[i].subnetmask)){
+            cssClasses[mappings.DHCP].DHCP[i].subnetmask = 'correct';
+        }else{
+            cssClasses[mappings.DHCP].DHCP[i].subnetmask = 'error';
+            isCorrect = false;
+        }
+
+        if (checkSubnetMask(inputParams[mappings.DHCP].DHCP[i].default_router) ||inputParams[mappings.DHCP].DHCP[i].default_router == '' ){
+            cssClasses[mappings.DHCP].DHCP[i].default_router = 'correct';
+        }else{
+            cssClasses[mappings.DHCP].DHCP[i].default_router = 'error';
+            isCorrect = false;
+        }
+
+
+        if (inputParams[mappings.DHCP].DHCP[i].lease.match(/^([0-9]|[1-9][0-9])(\s([0-9]|1[0-9]|2[0-3]))?(\s([0-9]|[1-9][0-9]))?$/) || inputParams[mappings.DHCP].DHCP[i].lease == ''){
+            cssClasses[mappings.DHCP].DHCP[i].lease = 'correct';
+        }else{
+            cssClasses[mappings.DHCP].DHCP[i].lease = 'error';
+            isCorrect = false;
+        }
+
+
+    }
 
 
 
