@@ -93,7 +93,7 @@ if __name__ == "__main__":
                     "end": "3.2.2.2"
                 }
             ],
-            "lease": 10
+            "lease": 0
         }
     ]
     dhcp_gen = DHCPGenerator(data)
