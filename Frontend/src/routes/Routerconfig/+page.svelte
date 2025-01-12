@@ -20,8 +20,9 @@
 	let enableBGP = false;
 	let enableConnectivityCheck = false;
 	let enableCheck = false;
+	let generate = false;
+	let showError = false;
 
-	/*
 	function saveToLocalStorage() {
 		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
 	}
@@ -36,7 +37,7 @@
 			userParameters = JSON.parse(savedParams);
 		}
 	});
-	*/
+
 	let userParameters = [
 		{
 			Interface: [
@@ -153,8 +154,93 @@
 			SSH: {}
 		}
 	];
-	$: console.log(userParameters);
-	$: console.log(userParameters);
+
+	function resetInputs() {
+		userParameters = [
+			{
+				Interface: [
+					{
+						interface: '',
+						ip_address: '',
+						subnetmask: '',
+						description: '',
+						shutdown: false
+					}
+				]
+			},
+			{
+				OSPF: []
+			},
+			{
+				'Key-Chain': []
+			},
+			{
+				RIP: {}
+			},
+			{
+				BGP: {}
+			},
+			{
+				'Static-Routes': []
+			},
+			{
+				GRE: []
+			},
+			{
+				HSRP: []
+			},
+			{
+				DHCP: []
+			},
+			{
+				SSH: {
+					ip: '',
+					username: '',
+					password: ''
+				}
+			}
+		];
+
+		cssClasses = [
+			{
+				Interface: [
+					{
+						interface: 'correct',
+						ip_address: 'correct',
+						subnetmask: 'correct',
+						description: 'correct'
+					}
+				]
+			},
+			{
+				OSPF: []
+			},
+			{
+				'Key-Chain': []
+			},
+			{
+				RIP: {}
+			},
+			{
+				BGP: {}
+			},
+			{
+				'Static-Routes': []
+			},
+			{
+				GRE: []
+			},
+			{
+				HSRP: []
+			},
+			{
+				DHCP: []
+			},
+			{
+				SSH: {}
+			}
+		];
+	}
 
 	function addInterface() {
 		userParameters[mappings['Interface']]['Interface'] = [
@@ -327,7 +413,7 @@
 			cssClasses[mappings.BGP].BGP = {};
 		}
 
-		if (enableDHCP || !enableDHCP) {
+		if (enableDHCP) {
 			userParameters[mappings.DHCP].DHCP = [
 				{
 					pool: '',
@@ -393,6 +479,12 @@
 					lease: 'correct'
 				}
 			];
+		}
+
+		if (!enableDHCP) {
+			userParameters[mappings.DHCP].DHCP = [];
+
+			cssClasses[mappings.DHCP].DHCP = [];
 		}
 	}
 
@@ -552,10 +644,12 @@
 	}
 
 	function removeDHCPPool() {
-		if(userParameters[mappings['DHCP']]['DHCP'].length > 1){
-		
-		userParameters[mappings['DHCP']]['DHCP'] = userParameters[mappings['DHCP']]['DHCP'].slice(0,-1);
-	}
+		if (userParameters[mappings['DHCP']]['DHCP'].length > 1) {
+			userParameters[mappings['DHCP']]['DHCP'] = userParameters[mappings['DHCP']]['DHCP'].slice(
+				0,
+				-1
+			);
+		}
 	}
 
 	function addExclusionRange() {
@@ -569,7 +663,9 @@
 	}
 
 	function removeExclusionRange() {
-		userParameters[mappings.DHCP].DHCP[0]['exclude-range'] = userParameters[mappings.DHCP].DHCP[0]['exclude-range'].slice(0,-1);
+		userParameters[mappings.DHCP].DHCP[0]['exclude-range'] = userParameters[mappings.DHCP].DHCP[0][
+			'exclude-range'
+		].slice(0, -1);
 	}
 
 	function addExcludedIP() {
@@ -626,11 +722,16 @@
 		});
 		let data = await response.json();
 		cssClasses = data.cssClasses;
-		/*
-		if(data.isCorrect && userParameters[mappings['SSH']].SSH){
-			sendData()
+		console.log(data.cssClasses);
+		if (data.isCorrect && userParameters[mappings['SSH']].SSH) {
+			generate = true;
+			showError = false;
+			sendData();
+		}else{
+
+			generate = false;
+			showError = true;
 		}
-		*/
 	}
 	async function sendData() {
 		console.log('sending data');
@@ -784,7 +885,7 @@
 				type="text"
 				fieldName="IP"
 				id="ExcludedDHCPAddress{number}"
-				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0].exclude[number] : 'correct' }
+				cssClass={enableCheck ? cssClasses[mappings.DHCP].DHCP[0].exclude[number] : 'correct'}
 			/>
 		{/each}
 
@@ -799,8 +900,9 @@
 				type="text"
 				fieldName="Start IP"
 				id="DHCPExcludedStart{number}"
-				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].start : 'correct' }
-
+				cssClass={enableCheck
+					? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].start
+					: 'correct'}
 			/>
 			<InputField
 				bind:value={userParameters[mappings.DHCP].DHCP[0]['exclude-range'][number].end}
@@ -808,7 +910,9 @@
 				type="text"
 				fieldName="End IP"
 				id="DHCPExcludedEnd{number}"
-				cssClass = {enableCheck ? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].end : 'correct' }
+				cssClass={enableCheck
+					? cssClasses[mappings.DHCP].DHCP[0]['exclude-range'][number].end
+					: 'correct'}
 			/>
 		{/each}
 
@@ -818,11 +922,15 @@
 
 		<h2 class="subHeading">DHCP Pools</h2>
 		{#each range(1, userParameters[mappings.DHCP].DHCP.length - 1) as number}
-		<h2 class="subSubHeading">Pool {number}</h2>
-			<DHCPPool check={enableCheck} cssClasses={cssClasses[mappings.DHCP].DHCP[number]} id={number} bind:params={userParameters[mappings.DHCP].DHCP[number]}></DHCPPool> 
+			<h2 class="subSubHeading">Pool {number}</h2>
+			<DHCPPool
+				check={enableCheck}
+				cssClasses={cssClasses[mappings.DHCP].DHCP[number]}
+				id={number}
+				bind:params={userParameters[mappings.DHCP].DHCP[number]}
+			></DHCPPool>
 		{/each}
 
-		
 		<button class="leftButton" on:click={addDHCPPool}>Add DHCP-Pool</button>
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 		<br />
@@ -830,4 +938,18 @@
 
 	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
 	<button class="generateSkriptButton" on:click={checkUserParameter}> Show Script</button>
+	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
+
+{#if generate}
+<div id="textAreaDiv">
+	<h1>Generating...</h1>
+</div>
+{/if}
+
+{#if showError}
+<div id="textAreaDiv">
+	<h1 style="color: red">Es sind noch nicht alle Felder korrekt ausgefüllt!</h1>
+	<p>Bitte überprüfen Sie die rot markierten Felder und füllen Sie diese korrekt aus!</p>
+</div>
+{/if}

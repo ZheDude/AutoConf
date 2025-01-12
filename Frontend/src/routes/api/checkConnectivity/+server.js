@@ -5,7 +5,7 @@ export async function POST({ request }) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 
-    let apiReturn = {ip: 'correct', username: 'correct', password: 'correct', isReachable: false}
+    let apiReturn = {ip: 'correct', username: 'correct', password: 'correct', isReachable: true}
 
 
     if (!inputParams.userParameter.ip.match(

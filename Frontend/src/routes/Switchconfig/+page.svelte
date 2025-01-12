@@ -19,6 +19,10 @@
 	let enableCheck; /* set to True if the submit button is pressed*/
 	let enableConnectivityCheck = false; /* set to True when a connectivity check is performed */
 	let enableVTP = false; /* set to true when VTP is enabled */
+	let generate = false;
+	let showError = false;
+
+
 
 	function resetInputs() {
 		enableConnectivityCheck = false;
@@ -403,7 +407,13 @@
 		cssClasses = data.cssClasses;
 		console.log(cssClasses.SSH.isReachable)
 		if(data.isCorrect && cssClasses.SSH.isReachable){
+			 showError = false;
+			 generate = true;
 			sendData()
+		}else{
+			showError = true;
+
+			generate = false;
 		}
 
 
@@ -546,3 +556,16 @@
 	<button class="generateSkriptButton" on:click={sendData}> Show Script</button>
 	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
+
+{#if generate}
+<div id="textAreaDiv">
+	<h1>Generating...</h1>
+</div>
+{/if}
+
+{#if showError}
+<div id="textAreaDiv">
+	<h1 style="color: red">Es sind noch nicht alle Felder korrekt ausgefüllt!</h1>
+	<p>Bitte überprüfen Sie die rot markierten Felder und füllen Sie diese korrekt aus!</p>
+</div>
+{/if}
