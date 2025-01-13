@@ -695,6 +695,8 @@
 	};
 
 	async function checkConnectivity() {
+		generate = false;
+		showError = false;
 		enableConnectivityCheck = true;
 		let postData = { userParameter: userParameters[mappings['SSH']].SSH };
 		const response = await fetch('/api/checkConnectivity/', {
@@ -706,11 +708,17 @@
 		});
 		let data = await response.json();
 		cssClasses[mappings['SSH']].SSH = data;
+
+		return new Response("", {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 	}
 
 	async function checkUserParameter() {
 		enableCheck = true;
-		checkConnectivity();
+		await checkConnectivity();
 
 		let postData = { userParameter: userParameters, cssClasses: cssClasses };
 		const response = await fetch('/api/parameterChecks/Routerconfig', {

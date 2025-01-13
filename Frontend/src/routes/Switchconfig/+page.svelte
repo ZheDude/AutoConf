@@ -11,6 +11,7 @@
 	import PortSecurityInterface from '../../lib/components/Switch/Port-Security-Interface.svelte';
 	import { onMount } from 'svelte';
 	import { beforeNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
 	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 
@@ -24,7 +25,10 @@
 
 
 
+
 	function resetInputs() {
+		generate = false;
+		showError = false;
 		enableConnectivityCheck = false;
 		cssClasses = {
 			SSH: {},
@@ -73,7 +77,6 @@
 		};
 	}
 
-
 	function saveToLocalStorage() {
 		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
 	}
@@ -84,12 +87,19 @@
 	
 	});
 
+	afterNavigate(() => {
+		const savedParams = localStorage.getItem('SwitchParams');
+		if (savedParams) {
+			userParameter = JSON.parse(savedParams);
+		}
+	})
 	onMount(() => {
 		const savedParams = localStorage.getItem('SwitchParams');
 		if (savedParams) {
 			userParameter = JSON.parse(savedParams);
 		}
 	});
+
 
 	let userParameter = {
 		SSH: {
@@ -141,7 +151,9 @@
 		return [
 			{
 				SSH: {
-					ip: data.SSH.ip || ''
+					ip: data.SSH.ip || '',
+					username: data.SSH.username || '',
+					password: data.SSH.password || ''
 				}
 			},
 			{
@@ -378,6 +390,8 @@
 	}
 
 	async function checkConectivity() {
+		generate = false;
+		showError = false;
 		enableConnectivityCheck = true;
 		let postData = { userParameter: userParameter['SSH'] };
 		const response = await fetch('/api/checkConnectivity/', {
@@ -389,11 +403,18 @@
 		});
 		let data = await response.json();
 		cssClasses.SSH = data;
+
+
+		return new Response("", {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 	}
 
 	async function checkUserParameter() {
 		enableCheck = true;
-		checkConectivity();
+		await checkConectivity();
 
 		let postData = { userParameter: userParameter, cssClasses: cssClasses };
 		const response = await fetch('/api/parameterChecks/Switchconfig', {
@@ -411,8 +432,8 @@
 			 generate = true;
 			sendData()
 		}else{
+			console.log("soos")
 			showError = true;
-
 			generate = false;
 		}
 
