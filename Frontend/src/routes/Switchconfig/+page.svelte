@@ -78,7 +78,9 @@
 	}
 
 	function saveToLocalStorage() {
+		localStorage.setItem('enableVTP', JSON.stringify(enableVTP))
 		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
+		localStorage.setItem("savedCssClasses", JSON.stringify(cssClasses))
 	}
 
 
@@ -88,10 +90,20 @@
 	});
 
 	afterNavigate(() => {
-		const savedParams = localStorage.getItem('SwitchParams');
-		if (savedParams) {
-			userParameter = JSON.parse(savedParams);
+		const switchParams = localStorage.getItem('SwitchParams');
+		const savedcssClasses = localStorage.getItem("savedCssClasses")
+		const vtpParam = localStorage.getItem('enableVTP')
+		if (switchParams) {
+			userParameter = JSON.parse(switchParams);
 		}
+
+		if(vtpParam){
+			enableVTP = JSON.parse(vtpParam);
+		}
+		if(savedcssClasses){
+			cssClasses = JSON.parse(savedcssClasses)
+		}
+
 	})
 	onMount(() => {
 		const savedParams = localStorage.getItem('SwitchParams');
@@ -127,7 +139,14 @@
 	};
 
 	let cssClasses = {
-		SSH: {},
+		SSH: {
+			SSH: {
+			ip: '',
+			username: '',
+			password: '',
+			isReachable: ''
+		}
+		},
 		VTP: [],
 		VLAN: [],
 		STP: [],
@@ -366,7 +385,12 @@
 
 	$: {
 		if (enableVTP) {
-			userParameter.VTP = [
+
+			if (userParameter.VTP.length == 0){
+
+
+
+				userParameter.VTP = [
 				{
 					enabled: false,
 					mode: 'Server',
@@ -376,6 +400,9 @@
 					is_primary: false
 				}
 			];
+			}
+
+			
 
 			cssClasses.VTP = [
 				{
@@ -426,7 +453,7 @@
 		});
 		let data = await response.json();
 		cssClasses = data.cssClasses;
-		console.log(cssClasses.SSH.isReachable)
+		console.log(data, "saas")
 		if(data.isCorrect && cssClasses.SSH.isReachable){
 			 showError = false;
 			 generate = true;

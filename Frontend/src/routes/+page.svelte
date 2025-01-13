@@ -133,7 +133,7 @@
 
 	async function checkUserInputs() {
 		let postData = {userInputs: inputParams};
-
+		showError = false;
 		const response = await fetch('/api/parameterChecks/Grundkonfig/', {
 			method: 'POST',
 			headers: {

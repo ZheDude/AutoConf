@@ -24,17 +24,56 @@
 	let showError = false;
 
 	function saveToLocalStorage() {
+		localStorage.setItem('enableOSPF', JSON.stringify(enableOSPF));
+		localStorage.setItem('enableHSRP', JSON.stringify(enableHSRP));
+		localStorage.setItem('enableDHCP', JSON.stringify(enableDHCP));
+		localStorage.setItem('enableRIP', JSON.stringify(enableRIP));
+		localStorage.setItem('enableBGP', JSON.stringify(enableBGP));
 		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
+		localStorage.setItem('CssClasses', JSON.stringify(cssClasses))
 	}
 
 	beforeNavigate(() => {
+		enableCheck = false;
 		saveToLocalStorage();
 	});
 
 	onMount(() => {
+		enableCheck = false;
+		const savedCssClasses = localStorage.getItem('CssClasses')
 		const savedParams = localStorage.getItem('RouterParams');
+		const savedOSPF = localStorage.getItem('enableOSPF');
+		const savedHSRP = localStorage.getItem('enableHSRP');
+		const savedDHCP = localStorage.getItem('enableDHCP');
+		const savedRIP = localStorage.getItem('enableRIP');
+		const savedBGP = localStorage.getItem('enableBGP');
 		if (savedParams) {
 			userParameters = JSON.parse(savedParams);
+		}
+
+		if(savedOSPF){
+			enableOSPF = JSON.parse(savedOSPF);
+		}
+
+		if(savedCssClasses){
+			cssClasses = JSON.parse(savedCssClasses);
+		}
+
+
+		if(savedHSRP){
+			enableHSRP = JSON.parse(savedHSRP);
+		}
+
+		if(savedDHCP){
+			enableDHCP = JSON.parse(savedDHCP);
+		}
+
+		if(savedRIP){
+			enableRIP = JSON.parse(savedRIP);
+		}
+
+		if(savedBGP){
+			enableBGP = JSON.parse(savedBGP);
 		}
 	});
 
@@ -151,7 +190,13 @@
 			]
 		},
 		{
-			SSH: {}
+			SSH: 
+				{
+				ip: '',
+				username: '',
+				password: ''
+			}
+			
 		}
 	];
 
@@ -327,7 +372,7 @@
 	}
 
 	$: {
-		if (enableOSPF) {
+		if (enableOSPF && !JSON.parse(localStorage.getItem('enableOSPF'))) {
 			addOspfProcess();
 		}
 
@@ -335,7 +380,7 @@
 			removeOspfProcess();
 		}
 
-		if (enableRIP) {
+		if (enableRIP && !JSON.parse(localStorage.getItem('enableRIP'))) {
 			userParameters[mappings.RIP].RIP = {
 				version: 2,
 				'auto-summary': true,
@@ -365,7 +410,7 @@
 			cssClasses[mappings.RIP].RIP = {};
 		}
 
-		if (enableBGP) {
+		if (enableBGP && !JSON.parse(localStorage.getItem('enableBGP'))) {
 			userParameters[mappings.BGP].BGP = {
 				neighbor: [
 					{
@@ -413,7 +458,7 @@
 			cssClasses[mappings.BGP].BGP = {};
 		}
 
-		if (enableDHCP) {
+		if (enableDHCP && !JSON.parse(localStorage.getItem('enableDHCP'))) {
 			userParameters[mappings.DHCP].DHCP = [
 				{
 					pool: '',
