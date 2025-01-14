@@ -787,7 +787,6 @@
 		}
 	}
 	async function sendData() {
-		console.log('sending data');
 		let postData = JSON.stringify(userParameters);
 		const response = await fetch('/api/', {
 			method: 'POST',

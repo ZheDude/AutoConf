@@ -3,7 +3,12 @@ class switch_meta_vars():
     
     def __init__(self, ip, username, password):
         self.device = SSHConnection(ip, username, password)
-        self.device.send_command_imprvd("configure terminal\n    ")
+        result = self.device.send_command_imprvd("configure terminal\n    ")
+        print(result)
+
+    def close(self):
+        print("MADAM I WANT THIS CLOSED")
+        self.device.close()
 
     def extract_interfaces(self):
         input: str = self.device.send_command_imprvd("do-exec show ip interface brief\n    ")

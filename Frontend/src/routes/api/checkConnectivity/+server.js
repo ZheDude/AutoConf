@@ -1,11 +1,30 @@
 export async function POST({ request }) {
     let inputParams = await request.json();
 
+
+    let apiReturn = {ip: 'correct', username: 'correct', password: 'correct', isReachable: true}
+
+
+
+    const response = await fetch('http://127.0.0.1:8000/metadata/switch?ip=' + inputParams.userParameter.ip+ '&username='
+         +inputParams.userParameter.username + '&password=' + inputParams.userParameter.password , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
+    
+    let returnOfCheck = await response.json();
+    console.log(returnOfCheck)
+    console.log(returnOfCheck[0] == 'Connection successfull', "saas")
+
+
+
     function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 	}
 
-    let apiReturn = {ip: 'correct', username: 'correct', password: 'correct', isReachable: true}
+
 
 
     if (!inputParams.userParameter.ip.match(

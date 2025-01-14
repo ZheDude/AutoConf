@@ -1,7 +1,7 @@
 
 import socket
 import time
-
+import traceback
 
 import paramiko
 # import asyncio_telnet as Telnet
@@ -17,16 +17,19 @@ class SSHConnection:
             self.client.connect(self.ip, username=self.username, password=self.password)
             self.channel = self.client.invoke_shell()
             time.sleep(0.1)
-        except paramiko.ssh_exception.AuthenticationException:
-            raise Exception("Authentication failed")
-        except socket.gaierror:
-            raise Exception("Invalid IP address")
-        except paramiko.ssh_exception.NoValidConnectionsError:
-            raise Exception("Connection failed NoValidConnectionsError")
-        except paramiko.ssh_exception.BadHostKeyException:
-            raise Exception("Connection failed BadHostKeyException")
-        except paramiko.ssh_exception.SSHException:
-            raise Exception("Connection failed SSHException")
+        except Exception as e:
+            print(traceback.print_exc())
+        #except paramiko.ssh_exception.AuthenticationException:
+        #    print(paramiko.ssh_exception.AuthenticationException)
+        #    raise Exception("Authentication failed")
+        #except socket.gaierror:
+        #    raise Exception("Invalid IP address")
+        #except paramiko.ssh_exception.NoValidConnectionsError:
+        #    raise Exception("Connection failed NoValidConnectionsError")
+        #except paramiko.ssh_exception.BadHostKeyException:
+        #    raise Exception("Connection failed BadHostKeyException")
+        #except paramiko.ssh_exception.SSHException:
+        #    raise Exception("Connection failed SSHException")
 
     def send_command(self, command, prompt="(config)#", timeout=10):
         if not self.channel:

@@ -137,9 +137,11 @@ async def get_metadata_switch(ip: str, username: str, password: str):
     import switch_meta_vars as swmv
     try:
         switch = swmv.switch_meta_vars(ip, username, password)
+        print("CLOSING INITIATED MADAM")
+        switch.close()
     except Exception as e:
-        return {"error": str(e)}
-    return {"Interfaces": switch.extract_interfaces(), "Neighbors": switch.extract_neighbors()}
+        return  {str(e)}
+    return {"Connection successfull"}
 
 @app.get("/metadata/router")
 async def get_metadata_router():
