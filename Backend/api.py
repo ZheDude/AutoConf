@@ -90,7 +90,7 @@ def process_data_testing(data: dict):
         raise HTTPException(status_code=404, detail="No Valid Configuration")
     return None
 
-@app.post("/configuration/")
+@app.post("/configuration/") 
 async def receive_json(request: Request):
     if request.headers.get("Content-Type") != "application/json":
         raise HTTPException(
@@ -133,10 +133,10 @@ async def receive_json(
     return result
 
 @app.get("/metadata/switch")
-async def get_metadata_switch():
+async def get_metadata_switch(ip: str, username: str, password: str):
     import switch_meta_vars as swmv
     try:
-        switch = swmv.switch_meta_vars("172.16.2.127", "cisco", "cisco")
+        switch = swmv.switch_meta_vars(ip, username, password)
     except Exception as e:
         return {"error": str(e)}
     return {"Interfaces": switch.extract_interfaces(), "Neighbors": switch.extract_neighbors()}
