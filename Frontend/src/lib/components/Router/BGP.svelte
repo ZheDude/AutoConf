@@ -1,8 +1,8 @@
 <script>
 	import InputField from '../inputField.svelte';
 	import Checkbox from '../checkbox.svelte';
+	export let check = false;
 	export let id;
-    let isEnabled = false;
 	export let params = {
 		neighbor: [
 			{
@@ -16,15 +16,37 @@
 		],
 		networks: [
 			{
-				network: '10.0.0.0',
-				subnetmask: '0.0.0.255'
+				network: '',
+				subnetmask: ''
 			},
 
 		],
-		timer_bgp: 30,
-		hold_time: 180,
-		local_as: 696969
+		timer_bgp: '30',
+		hold_time: '180',
+		local_as: '696969'
 	};
+
+
+	export let cssClasses = {
+		neighbor: [
+			{
+                ip_of_neighbor: 'correct',
+				as: 'correct',
+				update_source: 'correct',
+
+			}
+		],
+		networks: [
+			{
+				network: 'correct',
+				subnetmask: 'correct'
+			},
+
+		],
+		timer_bgp: 'correct',
+		hold_time: 'correct',
+		local_as: 'correct'
+	}
 
 	function addNeighbor() {
 		params.neighbor = [
@@ -38,10 +60,18 @@
 				default_originate: false
 			}
 		];
+
+		cssClasses.neighbor = [ ...cssClasses.neighbor,{
+                ip_of_neighbor: 'correct',
+				as: 'correct',
+				update_source: '',
+				next_hop_self: false
+			} ]
 	}
 
 	function removeNeighbor() {
 		params.neighbor = params.neighbor.slice(0, -1);
+		cssClasses.neighbor = cssClasses.neighbor.slice(0, -1);
 	}
 
 
@@ -53,10 +83,12 @@
 				subnetmask: ''
 			}
 		];
+		cssClasses.networks = [ ...cssClasses.networks, {network: 'correct', subnetmask: 'correct'}]
 	}
 
 	function removeNetwork() {
 		params.networks = params.networks.slice(0, -1);
+		cssClasses.networks = cssClasses.networks.slice(0,-1);
 	}
 
     function range(start, end) {
@@ -65,13 +97,24 @@
 
 </script>
 
-<Checkbox
-name="enableBGP{id}"
-Heading="Enable BGP"
-bind:isChecked={isEnabled}
-/>
 
-{#if isEnabled}
+
+<InputField
+		id="AS-Num"
+		placeholder="100"
+		fieldName="AS Number"
+		bind:value={params.local_as}
+		cssClass={check ? cssClasses.local_as : 'correct'}
+	/>
+
+
+<InputField
+	id="AS-Num"
+	placeholder="20"
+	fieldName="Holddown Timer"
+	bind:value={params.hold_time}
+	cssClass={check ? cssClasses.hold_time : 'correct'}
+/>
 
 <h2 class="subSubHeading">Neighbors</h2>
 
@@ -81,18 +124,21 @@ bind:isChecked={isEnabled}
 		placeholder="192.168.10.10"
 		fieldName="IP of Neighbor"
 		bind:value={params.neighbor[number].ip_of_neighbor}
+		cssClass={check ? cssClasses.neighbor[number].ip_of_neighbor : 'correct'}
 	/>
 	<InputField
 		id="BGPNeighborAS{id}.{number}"
 		placeholder="100"
 		fieldName="Autonomes System"
 		bind:value={params.neighbor[number].as}
+		cssClass={check ? cssClasses.neighbor[number].as : 'correct'}
 	/>
 	<InputField
 		id="BGPNeighborUpdateSource{id}.{number}"
 		placeholder="Loopback1"
 		fieldName="Update Source"
 		bind:value={params.neighbor[number].update_source}
+		cssClass={check ? cssClasses.neighbor[number].update_source : 'correct'}
 	/>
 	<Checkbox
 		name="BGPNextHopSelf{id}.{number}"
@@ -123,17 +169,18 @@ bind:isChecked={isEnabled}
 		placeholder="1.1.1.0"
 		fieldName="Network"
 		bind:value={params.networks[number].network}
+		cssClass={check ? cssClasses.networks[number].network : 'correct'}
 	/>
 
 	<InputField
 	id="BGPSubnetmask{id}.{number}"
-	placeholder="1.1.1.0"
+	placeholder="255.255.255.0"
 	fieldName="Subentmask"
 	bind:value={params.networks[number].subnetmask}
+	cssClass={check ? cssClasses.networks[number].subnetmask : 'correct'}
 />
 {/each}
 
 
 <button class="leftButton" on:click={addNetwork}>Add Network</button>
 <button class="rightButton" on:click={removeNetwork}>Remove Network</button>
-{/if}

@@ -10,14 +10,142 @@
 	import StpProcess from '../../lib/components/Switch/stp-process.svelte';
 	import PortSecurityInterface from '../../lib/components/Switch/Port-Security-Interface.svelte';
 	import { onMount } from 'svelte';
+	import { beforeNavigate } from '$app/navigation';
+	import { afterNavigate } from '$app/navigation';
 	import EdgeInterfaces from '../../lib/components/Switch/edgeInterfaces.svelte';
+	import SshCredentials from '../../lib/components/sshCredentials.svelte';
 
-	let enableVTP = false;
+	/* Flags*/
 
-	onMount(() => {});
+	let enableCheck; /* set to True if the submit button is pressed*/
+	let enableConnectivityCheck = false; /* set to True when a connectivity check is performed */
+	let enableVTP = false; /* set to true when VTP is enabled */
+	let generate = false;
+	let showError = false;
+
+
+
+
+	function resetInputs() {
+		generate = false;
+		showError = false;
+		enableConnectivityCheck = false;
+		cssClasses = {
+			SSH: {},
+			VTP: [],
+			VLAN: [],
+			STP: [],
+			EdgePorts: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			Trunks: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			AccessInterfaces: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			Portsecurity: [],
+			EtherChannels: []
+		};
+
+		userParameter = {
+			SSH: {
+				ip: '',
+				username: '',
+				password: ''
+			},
+			VTP: [],
+			VLAN: [],
+			STP: [],
+			EdgePorts: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			Trunks: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			AccessInterfaces: {
+				Interfaces: [],
+				InterfaceRanges: []
+			},
+			Portsecurity: [],
+			EtherChannels: []
+		};
+	}
+
+	function saveToLocalStorage() {
+		localStorage.setItem('enableVTP', JSON.stringify(enableVTP))
+		localStorage.setItem('SwitchParams', JSON.stringify(userParameter));
+		localStorage.setItem("savedCssClasses", JSON.stringify(cssClasses))
+	}
+
+
+	beforeNavigate(() => {
+		saveToLocalStorage();
+	
+	});
+
+	afterNavigate(() => {
+		const switchParams = localStorage.getItem('SwitchParams');
+		const savedcssClasses = localStorage.getItem("savedCssClasses")
+		const vtpParam = localStorage.getItem('enableVTP')
+		if (switchParams) {
+			userParameter = JSON.parse(switchParams);
+		}
+
+		if(vtpParam){
+			enableVTP = JSON.parse(vtpParam);
+		}
+		if(savedcssClasses){
+			cssClasses = JSON.parse(savedcssClasses)
+		}
+
+	})
+	onMount(() => {
+		const savedParams = localStorage.getItem('SwitchParams');
+		if (savedParams) {
+			userParameter = JSON.parse(savedParams);
+		}
+	});
+
+
 	let userParameter = {
 		SSH: {
-			ip: ''
+			ip: '',
+			username: '',
+			password: ''
+		},
+		VTP: [],
+		VLAN: [],
+		STP: [],
+		EdgePorts: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Trunks: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		AccessInterfaces: {
+			Interfaces: [],
+			InterfaceRanges: []
+		},
+		Portsecurity: [],
+		EtherChannels: []
+	};
+
+	let cssClasses = {
+		SSH: {
+			SSH: {
+			ip: '',
+			username: '',
+			password: '',
+			isReachable: ''
+		}
 		},
 		VTP: [],
 		VLAN: [],
@@ -42,7 +170,9 @@
 		return [
 			{
 				SSH: {
-					ip: data.SSH.ip || ''
+					ip: data.SSH.ip || '',
+					username: data.SSH.username || '',
+					password: data.SSH.password || ''
 				}
 			},
 			{
@@ -161,24 +291,45 @@
 
 	function addVLAN() {
 		userParameter.VLAN = [...userParameter.VLAN, { name: '', number: '' }];
+		cssClasses.VLAN = [...cssClasses.VLAN, { name: 'correct', number: 'correct' }];
 	}
 
 	function removeVLAN() {
 		if (userParameter.VLAN.length != 0) {
 			userParameter.VLAN = userParameter.VLAN.slice(0, -1);
+			cssClasses.VLAN = cssClasses.VLAN.slice(0, -1);
 		}
 	}
 
 	function addSTPProcess() {
 		userParameter.STP = [
 			...userParameter.STP,
-			{ mode: '', priority: '', hello_timer: '', forward_timer: '', max_age: '', vlan: '' }
+			{
+				mode: 'Rapid-PVST',
+				priority: '32768',
+				hello_timer: '2',
+				forward_timer: '15',
+				max_age: '20',
+				vlan: ''
+			}
+		];
+
+		cssClasses.STP = [
+			...cssClasses.STP,
+			{
+				priority: 'correct',
+				hello_timer: 'correct',
+				forward_timer: 'correct',
+				max_age: 'correct',
+				vlan: 'correct'
+			}
 		];
 	}
 
 	function removeSTPProcess() {
 		if (userParameter.STP.length != 0) {
 			userParameter.STP = userParameter.STP.slice(0, -1);
+			cssClasses.STP = cssClasses.STP.slice(0, -1);
 		}
 	}
 
@@ -188,28 +339,42 @@
 			{
 				interface: '',
 				maximum: '',
-				violation: '',
+				violation: 'Shutdown',
 				mac_address: ''
+			}
+		];
+
+		cssClasses.Portsecurity = [
+			...cssClasses.Portsecurity,
+			{
+				interface: 'correct',
+				maximum: 'correct',
+				mac_address: 'correct'
 			}
 		];
 	}
 
 	function removePortSecurityInterface() {
-		if (userParameter.Portsecurity.length != 0) {
-			userParameter.Portsecurity = userParameter.Portsecurity.slice(0, -1);
-		}
+		userParameter.Portsecurity = userParameter.Portsecurity.slice(0, -1);
+		cssClasses.Portsecurity = cssClasses.Portsecurity.slice(0, -1);
 	}
 
 	function addEtherChannel() {
 		userParameter.EtherChannels = [
 			...userParameter.EtherChannels,
 			{
-				Interfaces: [{ name: '' }],
-				InterfaceRanges: [{ startInterface: '', endInterface: '' }],
-				mode: '',
+				Interfaces: [],
+				InterfaceRanges: [],
+				mode: 'on',
 				number: ''
 			}
 		];
+
+		cssClasses.EtherChannels = [ ...cssClasses.EtherChannels, {
+				Interfaces: [],
+				InterfaceRanges: [],
+				number: 'correct'
+			}]
 	}
 
 	function removeEtherChannel() {
@@ -220,7 +385,12 @@
 
 	$: {
 		if (enableVTP) {
-			userParameter.VTP = [
+
+			if (userParameter.VTP.length == 0){
+
+
+
+				userParameter.VTP = [
 				{
 					enabled: false,
 					mode: 'Server',
@@ -230,16 +400,75 @@
 					is_primary: false
 				}
 			];
+			}
+
+			
+
+			cssClasses.VTP = [
+				{
+					domain: 'correct',
+					password: 'correct'
+				}
+			];
 		} else {
+			cssClasses.VTP = [];
 			userParameter.VTP = [];
 		}
 	}
 
-	$: console.log(userParameter);
+	async function checkConectivity() {
+		generate = false;
+		showError = false;
+		enableConnectivityCheck = true;
+		let postData = { userParameter: userParameter['SSH'] };
+		const response = await fetch('/api/checkConnectivity/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses.SSH = data;
 
+
+		return new Response("", {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+	}
+
+	async function checkUserParameter() {
+		enableCheck = true;
+		await checkConectivity();
+
+		let postData = { userParameter: userParameter, cssClasses: cssClasses };
+		const response = await fetch('/api/parameterChecks/Switchconfig', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(postData)
+		});
+		let data = await response.json();
+		cssClasses = data.cssClasses;
+		console.log(data, "saas")
+		if(data.isCorrect && cssClasses.SSH.isReachable){
+			 showError = false;
+			 generate = true;
+			sendData()
+		}else{
+			console.log("soos")
+			showError = true;
+			generate = false;
+		}
+
+
+	}
 	async function sendData() {
+		console.log('sending data')
 		let postData = JSON.stringify(formatAPIData(userParameter));
-		console.log(postData);
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
@@ -248,6 +477,8 @@
 			body: postData
 		});
 		let ApiData = await response.json();
+
+
 		return true;
 	}
 </script>
@@ -256,14 +487,13 @@
 	<div class="mainHeading">
 		<h1>Switchconfig</h1>
 	</div>
-	<InputField
-		placeholder="192.168.10.10"
-		type="text"
-		bind:value={userParameter.SSH.ip}
-		fieldName="SSH-IP"
-		id="SSH-IP"
-	/>
-	<button class="generateSkriptButton" on:click={sendData}> Check Connectivity</button>
+
+	<SshCredentials
+		cssClasses={cssClasses.SSH}
+		connectivityCheck={enableConnectivityCheck}
+		bind:params={userParameter.SSH}
+	></SshCredentials>
+	<button class="generateSkriptButton" on:click={checkConectivity}> Check Connectivity</button>
 	<h2 class="subHeading" id="VTP">VTP</h2>
 	<Checkbox name="enableVTP" bind:isChecked={enableVTP} Heading="Enable VTP"></Checkbox>
 	{#if enableVTP}
@@ -280,6 +510,7 @@
 			bind:value={userParameter.VTP[0]['domain']}
 			fieldName="VTP-Domain"
 			id="VTP-Domain"
+			cssClass={enableCheck ? cssClasses.VTP[0].domain : 'correct'}
 		/>
 		<InputField
 			placeholder=""
@@ -287,6 +518,7 @@
 			bind:value={userParameter.VTP[0]['password']}
 			fieldName="VTP-Password"
 			id="VTP-Password"
+			cssClass={enableCheck ? cssClasses.VTP[0].password : 'correct'}
 		/>
 		<Checkbox
 			name="VTP-Pruning"
@@ -308,6 +540,8 @@
 		<h2 class="subHeading" id="VLANs">VLANs</h2>
 		{#each range(0, userParameter.VLAN.length - 1) as count}
 			<VLAN
+				cssClasses={cssClasses.VLAN[count]}
+				check={enableConnectivityCheck}
 				id={count}
 				bind:number={userParameter.VLAN[count]['number']}
 				bind:name={userParameter.VLAN[count]['name']}
@@ -320,23 +554,40 @@
 
 	<h2 class="subHeading" id="STP">STP</h2>
 	{#each range(0, userParameter.STP.length - 1) as count}
-		<StpProcess id={count + 1} parameters={userParameter.STP[count]}></StpProcess>
+		<StpProcess
+			cssClasses={cssClasses.STP[count]}
+			check={enableCheck}
+			id={count + 1}
+			parameters={userParameter.STP[count]}
+		></StpProcess>
 	{/each}
 	<button class="leftButton" on:click={addSTPProcess}>Add STP Process</button>
 	<button class="rightButton" on:click={removeSTPProcess}>Remove STP Process </button>
-	<EdgeInterfaces edgeInterfaces={userParameter.EdgePorts}></EdgeInterfaces>
+	<EdgeInterfaces
+		check={enableCheck}
+		bind:edgeInterfaces={userParameter.EdgePorts}
+		InterfaceCssClasses={cssClasses.EdgePorts}
+	></EdgeInterfaces>
 
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 	<h2 class="subSubHeading">Trunks</h2>
-	<TrunkInterface bind:trunks={userParameter.Trunks}></TrunkInterface>
+	<TrunkInterface
+		check={enableCheck}
+		cssClasses={cssClasses.Trunks}
+		bind:trunks={userParameter.Trunks}
+	></TrunkInterface>
 
 	<h2 class="subSubHeading">Access Interfaces</h2>
-	<AccessInterface bind:accessInterfaces={userParameter.AccessInterfaces}></AccessInterface>
+	<AccessInterface
+		check={enableCheck}
+		cssClasses={cssClasses.AccessInterfaces}
+		bind:accessInterfaces={userParameter.AccessInterfaces}
+	></AccessInterface>
 	<br />
 
 	<h2 class="subHeading" id="Port-Security">Port-Security</h2>
 	{#each range(0, userParameter.Portsecurity.length - 1) as count}
-		<PortSecurityInterface bind:parameters={userParameter.Portsecurity[count]} id={count}
+		<PortSecurityInterface check={enableCheck} cssClasses={cssClasses['Portsecurity'][count]} bind:parameters={userParameter.Portsecurity[count]} id={count}
 		></PortSecurityInterface>
 	{/each}
 	<button on:click={addPortSecurityInterface} class="leftButton">Add Interface</button>
@@ -344,11 +595,25 @@
 
 	<h2 class="subHeading" id="Etherchannels">Etherchannels</h2>
 	{#each range(0, userParameter.EtherChannels.length - 1) as count}
-		<Etherchannel bind:parameters={userParameter.EtherChannels[count]} id={count}></Etherchannel>
+		<Etherchannel  check={enableCheck} cssClasses={cssClasses.EtherChannels[count]} bind:parameters={userParameter.EtherChannels[count]} id={count}></Etherchannel>
 	{/each}
 	<button class="leftButton" on:click={addEtherChannel}>Add Etherchannel</button>
 	<button class="rightButton" on:click={removeEtherChannel}>Remove Etherchannel</button>
 	<br />
-	<button class="generateSkriptButton" id="Submit" on:click={sendData}> Submit</button>
+	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
 	<button class="generateSkriptButton" on:click={sendData}> Show Script</button>
+	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
+
+{#if generate}
+<div id="textAreaDiv">
+	<h1>Generating...</h1>
+</div>
+{/if}
+
+{#if showError}
+<div id="textAreaDiv">
+	<h1 style="color: red">Es sind noch nicht alle Felder korrekt ausgefüllt!</h1>
+	<p>Bitte überprüfen Sie die rot markierten Felder und füllen Sie diese korrekt aus!</p>
+</div>
+{/if}

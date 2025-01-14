@@ -11,7 +11,18 @@
 		vlan: ''
 	};
 
-	$: console.log(parameters['vlan']);
+	export let check = false;
+
+	export let cssClasses = {
+		priority: 'correct',
+		hello_timer: 'correct',
+		forward_timer: 'correct',
+		max_age: 'correct',
+		vlan: 'correct'
+	}
+
+
+	console.log(cssClasses)
 </script>
 
 <h2 class="subSubHeading">STP-Process {id}</h2>
@@ -27,6 +38,7 @@
 	bind:value={parameters.priority}
 	fieldName="Priority"
 	id="STP-Priority{id}"
+	cssClass={check ? cssClasses.priority : 'correct'}
 />
 <InputField
 	placeholder="10"
@@ -34,6 +46,7 @@
 	bind:value={parameters.hello_timer}
 	fieldName="Hello-Timer"
 	id="STP-Hello-Timer{id}"
+	cssClass={check ? cssClasses.hello_timer : 'correct'}
 />
 <InputField
 	placeholder="10"
@@ -41,6 +54,7 @@
 	bind:value={parameters.forward_timer}
 	fieldName="Forward-Timer"
 	id="STP-Forward-Timer{id}"
+	cssClass={check ? cssClasses.forward_timer : 'correct'}
 />
 <InputField
 	placeholder="10"
@@ -48,6 +62,7 @@
 	bind:value={parameters.max_age}
 	fieldName="Max-Age-Timer"
 	id="STP-Max-Age-Timer{id}"
+	cssClass={check ? cssClasses.max_age : 'correct'}
 />
 <InputField
 	placeholder="10,20,30"
@@ -55,4 +70,5 @@
 	bind:value={parameters.vlan}
 	fieldName="VLANs"
 	id="STP-VLANs{id}"
+	cssClass={check ?  cssClasses.vlan : 'correct'}
 />

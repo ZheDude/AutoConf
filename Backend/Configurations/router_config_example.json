@@ -223,10 +223,38 @@
         "subnetmask": "255.255.255.0",
         "default_router": "1.1.1.1",
         "dns": "as.dasd",
+        "exclude-range": [
+          {
+            "start": "1.1.1.1",
+            "end": "2.2.2.2"
+          },
+          {
+            "start": "1.1.1.1",
+            "end": "3.2.2.2"
+          }
+        ],
+        "lease": 10
+      },
+      {
+        "pool": "",
+        "network": "",
+        "subnetmask": "",
+        "default_router": "",
+        "dns": "",
         "exclude": [
           "1.1.1.1"
         ],
-        "lease": 10
+        "exclude-range": [
+          {
+            "start": "6.2.1.1",
+            "end": "2.2.2.2"
+          },
+          {
+            "start": "1.1.1.1",
+            "end": "3.2.2.2"
+          }
+        ],
+        "lease": 0
       }
     ]
   }

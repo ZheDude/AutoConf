@@ -4,8 +4,8 @@
 
 
     export let execTime = {
-		minutes: '',
-		seconds: ''
+		minutes: '0',
+		seconds: '0'
 	};
 
 	export let execMinuteClass = 'correct';
@@ -18,7 +18,7 @@
 <div class = execTimeoutDiv id="execTimeoutDiv{id}">
 <InputField
 	type="text"
-	placeholder="0 (default)"
+	placeholder="0 "
 	fieldName="Minutes"
 	id="execTimeoutMinutes{id}"
 	bind:value={execTime.minutes}
@@ -28,7 +28,7 @@
 
 <InputField
 	type="text"
-	placeholder="0 (default)"
+	placeholder="0 "
 	fieldName="Seconds"
 	id="execTimeoutSeconds{id}"
 	bind:value={execTime.seconds}

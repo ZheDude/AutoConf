@@ -3,7 +3,8 @@
 	import Checkbox from '../checkbox.svelte';
 	import Dropdown from '../dropdown.svelte';
 	export let id;
-	let isEnabled = false;
+	export let check = false;
+
 	export let params = {
 		version: 2,
 		'auto-summary': true,
@@ -12,9 +13,18 @@
 				network: ''
 			}
 		],
-		timer_update: 30,
-		passive_interface: ['GigabitEthernet0/1']
+		timer_update: '30',
 	};
+
+	export let cssClasses = {
+		networks: [
+			{
+				network: 'correct'
+			}
+		],
+		timer_update: 'correct',
+
+		}
 
 	function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -23,18 +33,6 @@
 
 
 
-    function addPassiveInterface(){
-	
-	params.passive_interface =  [...params.passive_interface, ""]
-
-}
-
-
-function removePassiveInterface(){
-	
-	params.passive_interface =  params.passive_interface.slice(0, -1)
-
-}
 
 
 function addNetwork() {
@@ -44,24 +42,23 @@ function addNetwork() {
 				network: ''
 			}
 		];
+
+		cssClasses['networks'] = [... cssClasses['networks'], { network: 'correct'}]
 	}
 
 
 	function removeNetwork() {
 		params.networks =  params.networks.slice(0, -1)
+		cssClasses.networks = cssClasses.networks.slice(0,-1)
 	}
 
 </script>
 
-<Checkbox
-name="enableRIP{id}"
-Heading="Enable RIP"
-bind:isChecked={isEnabled}
-/>
 
-{#if isEnabled}
 
-<Dropdown options={[1, 2]} fieldName="RIP-Version" Heading="RIP-Version" bind:value={params.version}
+
+
+<Dropdown options={[2, 1]} fieldName="RIP-Version" Heading="RIP-Version" bind:value={params.version}
 ></Dropdown>
 
 <Checkbox
@@ -77,6 +74,7 @@ bind:isChecked={isEnabled}
     fieldName="Update-Timer"
     id="RIPUpdateTimer{id}"
     bind:value={params.timer_update}
+	cssClass={check ? cssClasses['timer_update'] : 'correct'}
 />  
 
 <h2 class="subHeading">Networks</h2>
@@ -88,27 +86,10 @@ bind:isChecked={isEnabled}
 		fieldName="Network"
 		id="RIPNetwork{id}{number}"
 		bind:value={params['networks'][number].network}
+		cssClass={check ? cssClasses['networks'][number].network : 'correct'}
 	/>
 {/each}
 
 <button class="leftButton" on:click={addNetwork}>Add Network</button>
 <button class="rightButton" on:click={removeNetwork}>Remove Network</button>
 
-
-<h2 class="subSubHeading">Passive Interfaces</h2>
-
-{#each range(0, params.passive_interface.length-1) as number}
-
-<InputField
-placeholder="Gig0/0"
-type="text"
-fieldName=""
-id="RIP-passiveInterface{number}"
-bind:value={params['passive_interface'][number]}
-/>
-
-{/each}
-
-<button class="leftButton" on:click={addPassiveInterface}>Add Interface</button>
-<button class="rightButton" on:click={removePassiveInterface}>Remove Interface</button>
-{/if}

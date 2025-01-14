@@ -3,22 +3,34 @@
 	import Dropdown from '../dropdown.svelte';
     import Checkbox from '../checkbox.svelte';
 	export let id;
+	export let check = false;
 
 	export let params = {
-		group: 10,
-		version: 2,
-		interface: 'GigabitEthernet0/0.1',
-		ip: '1.1.1.1',
-		priority: 10,
+		group: '',
+		version: '2',
+		interface: '',
+		ip: '',
+		priority: '',
 		preempt: true,
 		timers: {
-			hello: 10,
-			hold: 30
+			hello: '',
+			hold: ''
+		}
+	};
+
+	export let cssClasses = {
+		group: 'correct',
+		interface: 'correct',
+		ip: 'correct',
+		priority: 'correct',
+		timers: {
+			hello: 'correct',
+			hold: 'correct'
 		}
 	};
 </script>
 
-<InputField id="HSRPGroupID{id}" placeholder="10" fieldName="Group-ID" bind:value={params.group}
+<InputField id="HSRPGroupID{id}" placeholder="10" fieldName="Group-ID" bind:value={params.group} cssClass={ check ? cssClasses.group : 'correct'}
 ></InputField>
 
 <Dropdown bind:value={params.version} options={[1, 2]} fieldName="Version{id}" Heading="Version"
@@ -29,6 +41,7 @@
 	placeholder="GigabitEthernet0/0.1"
 	fieldName="Interface"
 	bind:value={params.interface}
+	cssClass={ check ? cssClasses.interface : 'correct'}
 ></InputField>
 
 
@@ -38,6 +51,7 @@
 	placeholder="192.168.10.254"
 	fieldName="IP-Address"
 	bind:value={params.ip}
+	cssClass={ check ? cssClasses.ip : 'correct'}
 ></InputField>
 
 <InputField
@@ -45,6 +59,7 @@
 	placeholder="10"
 	fieldName="Priority"
 	bind:value={params.priority}
+	cssClass={ check ? cssClasses.priority : 'correct'}
 ></InputField>
 
 <Checkbox
@@ -60,6 +75,7 @@ Heading="Preempt"
 	placeholder="10"
 	fieldName="Hello-Timer"
 	bind:value={params.timers.hello}
+	cssClass={ check ? cssClasses.timers.hello : 'correct'}
 ></InputField>
 
 
@@ -69,4 +85,5 @@ Heading="Preempt"
 	placeholder="30"
 	fieldName="Holdown-Timer"
 	bind:value={params.timers.hold}
+	cssClass={ check ? cssClasses.timers.hold : 'correct'}
 ></InputField>
