@@ -50,17 +50,18 @@ def process_data(data: dict):
 
     configuration_processer_tuple = get_list_of_konfigurations(json_string)
     konfig_liste = configuration_processer_tuple[1]
-    ssh_ip = configuration_processer_tuple[0]
-    logger.info("SSH IP: %s", ssh_ip)
+    ssh_config = configuration_processer_tuple[0]
+    logger.info("SSH IP: %s", ssh_config)
     logger.info("Configurations: %s", konfig_liste)
 
-    if ssh_ip:
+    if ssh_config:
+        print(ssh_config)
         from connections import SSHConnection
-        dev1 = SSHConnection(ssh_ip, "cisco", "cisco")
+        dev1 = SSHConnection(ssh_config[0], ssh_config[1], ssh_config[2])
         result = dev1.send_command_imprvd("configure terminal\n    ")
         print(result)
-        result = dev1.send_command_imprvd("do-exec show running\n    ")
-        print(result)
+        #result = dev1.send_command_imprvd("do-exec show running\n    ")
+        #print(result)
         for element in konfig_liste:
             result = dev1.send_command_imprvd(element)
             print(element)
@@ -78,15 +79,15 @@ def process_data_testing(data: dict):
     json_string = json.dumps(data)
 
     configuration_processer_tuple = get_list_of_konfigurations(json_string)
-    ssh_ip = configuration_processer_tuple[0]
+    ssh_config = configuration_processer_tuple[0]
     
-    if ssh_ip:
+    if ssh_config:
         from connections import SSHConnection
         print("Configurations applied successfully.")
     else:
         print("No SSH data found.")
 
-    if len(ssh_ip) == 0:
+    if len(ssh_config) == 0:
         raise HTTPException(status_code=404, detail="No Valid Configuration")
     return None
 

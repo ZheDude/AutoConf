@@ -30,6 +30,11 @@ class ConfigProcessor:
         json_outputs = []
 
         for item in self.config_data:
+            print("----------------------------------")
+            print(self.config_data)
+            print(self.config_data[2])
+            print("----------------------------------")
+            print(item, "THIS IS WHERE I AM YOU STUPID NIBBA")
             for key, value in item.items():
                 json_str = json.dumps({key: value}, indent=4)
                 json_outputs.append(json_str)
@@ -256,10 +261,12 @@ def get_list_of_konfigurations(json_content: str) -> tuple[str, list[Any]]:
                 if not ssh_data:
                     continue
                 ssh_ip = ssh_data['ip']
+                ssh_username = ssh_data['username']
+                ssh_password = ssh_data['password']
             except Exception as e:
                 print(e)
 
-    return ssh_ip, konfigurations_liste
+    return (ssh_ip, ssh_username, ssh_password), konfigurations_liste
 
 
 if __name__ == '__main__':

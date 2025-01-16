@@ -41,6 +41,7 @@ class VTPGenerator:
         print(self.vtp['is_primary'])
 
     def generate_script(self):
+        print(self.vtp)
         fin_str = (f"vtp mode {self.vtp['mode']}\n" +
                    f"vtp domain {self.vtp['domain']}\n" +
                    f"vtp password {self.vtp['password']}\n" +
@@ -53,6 +54,7 @@ class VTPGenerator:
                 fin_str += f"do-exec vtp primary vlan {self.vtp['vlan']}\n"
             else:
                 fin_str += "do-exec vtp primary\n"
+        print(fin_str)
         return fin_str
 
 
