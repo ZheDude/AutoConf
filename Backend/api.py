@@ -56,13 +56,13 @@ def process_data(data: dict):
 
     if ssh_ip:
         from connections import SSHConnection
-        #dev1 = SSHConnection(ssh_ip, "cisco", "cisco")
-        #result = dev1.send_command_imprvd("configure terminal\n    ")
-        #print(result)
-        #result = dev1.send_command_imprvd("do-exec show running\n    ")
-        #print(result)
+        dev1 = SSHConnection(ssh_ip, "cisco", "cisco")
+        result = dev1.send_command_imprvd("configure terminal\n    ")
+        print(result)
+        result = dev1.send_command_imprvd("do-exec show running\n    ")
+        print(result)
         for element in konfig_liste:
-            #result = dev1.send_command_imprvd(element)
+            result = dev1.send_command_imprvd(element)
             print(element)
         print("Configurations applied successfully.")
     else:
