@@ -16,9 +16,9 @@ export async function POST({ request }) {
     
     let returnOfCheck = await response.json();
     console.log(returnOfCheck)
-    console.log(returnOfCheck[0] == 'Connection successfull', "saas")
+    console.log(returnOfCheck[0] == 'Connection successfull', "soos")
 
-
+    apiReturn.isReachable = returnOfCheck[0] == 'Connection successfull';
 
     function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
