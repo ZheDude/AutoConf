@@ -54,7 +54,7 @@ def process_data(data: dict):
     logger.info("SSH IP: %s", ssh_config)
     logger.info("Configurations: %s", konfig_liste)
 
-    if ssh_config:
+    if ssh_config[0] and ssh_config[1] and ssh_config[2]:
         print(ssh_config)
         from connections import SSHConnection
         dev1 = SSHConnection(ssh_config[0], ssh_config[1], ssh_config[2])
@@ -68,8 +68,12 @@ def process_data(data: dict):
         print("Configurations applied successfully.")
     else:
         print("No SSH data found.")
+        print("---------------------Configuration-----------------------")
         for element in konfig_liste:
             print(element)
+
+        print("---------------------END OF Configuration-----------------------")
+
 
     if len(konfig_liste) == 0:
         raise HTTPException(status_code=404, detail="No Valid Configuration")

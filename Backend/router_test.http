@@ -1,0 +1,67 @@
+### POST Request with Json body to test the configuration of a Router
+POST http://127.0.0.1:8000/configuration/
+Content-Type: application/json
+Origin: http://example.com
+
+[
+   {
+      "Interface":[
+         {
+            "interface":"Gig0/2",
+            "ip_address":"192.168.50.100",
+            "subnetmask":"255.255.255.0",
+            "description":"test",
+            "shutdown":false
+         }
+      ]
+   },
+   {
+      "OSPF":[
+
+      ]
+   },
+   {
+      "Key-Chain":[
+
+      ]
+   },
+   {
+      "RIP":{
+
+      }
+   },
+   {
+      "BGP":{
+
+      }
+   },
+   {
+      "Static-Routes":[
+
+      ]
+   },
+   {
+      "GRE":[
+
+      ]
+   },
+   {
+      "HSRP":[
+
+      ]
+   },
+   {
+      "DHCP":[
+
+      ]
+   },
+   {
+      "SSH":{
+         "ip":"192.168.30.20",
+         "username":"",
+         "password":"!Admin!"
+      }
+   }
+]
+
+###
