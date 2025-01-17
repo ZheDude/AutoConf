@@ -23,6 +23,8 @@
 	let generate = false;
 	let showError = false;
 
+	let script;
+
 	function saveToLocalStorage() {
 		localStorage.setItem('enableOSPF', JSON.stringify(enableOSPF));
 		localStorage.setItem('enableHSRP', JSON.stringify(enableHSRP));
@@ -333,8 +335,6 @@
 					}
 				],
 				router_id: '',
-				timer_dead: '30',
-				timer_hello: '10',
 				passive_interfaces: ['']
 			}
 		];
@@ -351,8 +351,6 @@
 					}
 				],
 				router_id: 'correct',
-				timer_dead: 'correct',
-				timer_hello: 'correct',
 				passive_interfaces: ['correct']
 			}
 		];
@@ -761,9 +759,11 @@
     });
 	}
 
-	async function checkUserParameter() {
+	async function checkUserParameter(send) {
 		enableCheck = true;
 		await checkConnectivity();
+	
+
 
 		let postData = { userParameter: userParameters, cssClasses: cssClasses };
 		const response = await fetch('/api/parameterChecks/Routerconfig', {
@@ -780,25 +780,38 @@
 			generate = true;
 			showError = false;
 			sendData();
-		}else{
-
+		}
+		else{
 			generate = false;
 			showError = true;
 		}
 	}
 	async function sendData() {
 		let postData = JSON.stringify(userParameters);
+		console.log(postData);
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: postData
+			body: JSON.stringify(postData)
 		});
 		let ApiData = await response.json();
+		console.log(ApiData)
+		script = ApiData.split("\\n")
+		script[0] = script[0].slice(2)
+
+		script = script.filter(item => /[a-zA-Z]/.test(item)) .map(item => item.replace(/","/g, ''));
 
 		return true;
 	}
+
+
+	function getScript(){
+		
+	}
+
+
 </script>
 
 <div id="parameterDivGrundkonfig">
@@ -989,13 +1002,18 @@
 	{/if}
 
 	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
-	<button class="generateSkriptButton" on:click={checkUserParameter}> Show Script</button>
+	<button class="generateSkriptButton" on:click={getScript}> Show Script</button>
 	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}
 <div id="textAreaDiv">
 	<h1>Generating...</h1>
+	{#if script}
+	{#each script as line }
+		<p>{line}</p>
+	{/each}
+{/if}
 </div>
 {/if}
 
