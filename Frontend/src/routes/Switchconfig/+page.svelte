@@ -23,6 +23,8 @@
 	let generate = false;
 	let showError = false;
 
+	let script;
+
 
 
 
@@ -177,7 +179,7 @@
 			},
 			{
 				VTP: data.VTP.map((vtp) => ({
-					version: vtp.version || '',
+					version: '3',
 					mode: vtp.mode || '',
 					domain: vtp.domain || '',
 					password: vtp.password || '',
@@ -284,6 +286,8 @@
 			}
 		];
 	}
+
+	$: console.log(userParameter)
 
 	function range(start, end) {
 		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -397,10 +401,11 @@
 					domain: '',
 					password: '',
 					pruning: true,
-					is_primary: false
+					is_primary: true
 				}
 			];
 			}
+			console.log(userParameter.VTP)
 
 			
 
@@ -453,13 +458,11 @@
 		});
 		let data = await response.json();
 		cssClasses = data.cssClasses;
-		console.log(data, "saas")
 		if(data.isCorrect && cssClasses.SSH.isReachable){
 			 showError = false;
 			 generate = true;
 			sendData()
 		}else{
-			console.log("soos")
 			showError = true;
 			generate = false;
 		}
@@ -467,18 +470,22 @@
 
 	}
 	async function sendData() {
-		console.log('sending data')
+		
 		let postData = JSON.stringify(formatAPIData(userParameter));
+		/*console.log(postData)*/
 		const response = await fetch('/api/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: postData
+			body: JSON.stringify(postData)
 		});
 		let ApiData = await response.json();
+		console.log(ApiData)
+		script = ApiData.split("\\n")
+		script[0] = script[0].slice(2)
 
-
+		script = script.filter(item => /[a-zA-Z]/.test(item)) .map(item => item.replace(/","/g, ''));;
 		return true;
 	}
 </script>
@@ -522,15 +529,13 @@
 		/>
 		<Checkbox
 			name="VTP-Pruning"
-			bind:value={userParameter.VTP[0]['pruning']}
-			isChecked="true"
+			bind:isChecked={userParameter.VTP[0]['pruning']}
 			Heading="Enable VTP-Pruning"
 		></Checkbox>
 		{#if userParameter.VTP[0]['mode'] == 'Server'}
 			<Checkbox
 				name="VTP-Primary"
-				bind:value={userParameter.VTP[0]['is_primary']}
-				isChecked="true"
+				bind:isChecked={userParameter.VTP[0]['is_primary']}
 				Heading="VTP Primary"
 			></Checkbox>
 		{/if}
@@ -608,6 +613,11 @@
 {#if generate}
 <div id="textAreaDiv">
 	<h1>Generating...</h1>
+	{#if script}
+		{#each script as line }
+			<p>{line}</p>
+		{/each}
+	{/if}
 </div>
 {/if}
 
