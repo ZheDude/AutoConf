@@ -9,9 +9,9 @@ class RIPGenerator:
         self.auto_summary = rip_data["RIP"]["auto-summary"]
         self.networks = rip_data["RIP"]["networks"]
         self.neighbor = rip_data["RIP"]["neighbor"]
-        self.timer_update = rip_data["RIP"]["timer_update"]
+        self.timer_update = str(rip_data["RIP"]["timer_update"])  + " 180 180 240"
         self.passive_interface = rip_data["RIP"]["passive_interface"]
-        self.redistribute = rip_data["RIP"]["redistribute"]
+        # self.redistribute = rip_data["RIP"]["redistribute"]
 
         self.template_file = template_file
 
@@ -25,7 +25,7 @@ class RIPGenerator:
 
             passive_if_str = "\n".join([f"passive-interface {iface}" for iface in self.passive_interface])
 
-            redistribute_str = "\n".join([f"redistribute {protocol}" for protocol in self.redistribute])
+            # redistribute_str = "\n".join([f"redistribute {protocol}" for protocol in self.redistribute])
 
             networks_str = "\n".join([f"network {network['network']}" for network in self.networks])
 
@@ -35,7 +35,7 @@ class RIPGenerator:
                 .replace("${neighbor}", self.neighbor) \
                 .replace("${timer_update}", str(self.timer_update)) \
                 .replace("${passive_interface}", passive_if_str) \
-                .replace("${redistribute}", redistribute_str)
+                #.replace("${redistribute}", redistribute_str)
 
             return rip_script
 
@@ -61,10 +61,7 @@ rip_data = {
             "GigabitEthernet0/1",
             "GigabitEthernet0/2"
         ],
-        "redistribute": [
-            "bgp",
-            "ospf"
-        ]
+
     }
 }
 
