@@ -23,6 +23,10 @@
 	let generate = false;
 	let showError = false;
 
+	let isInConnectivityCheck = false;
+	let buttonClass = 'SSHDivDefault';
+	let showScriptLoading = false;
+
 	let script;
 
 	function saveToLocalStorage() {
@@ -735,6 +739,7 @@
 	};
 
 	async function checkConnectivity() {
+		isInConnectivityCheck = true;
 		showError = false;
 		enableConnectivityCheck = true;
 		let postData = { userParameter: userParameters[mappings['SSH']].SSH };
@@ -747,7 +752,7 @@
 		});
 		let data = await response.json();
 		cssClasses[mappings['SSH']].SSH = data;
-
+		isInConnectivityCheck = false;
 		return new Response('', {
 			headers: {
 				'Content-Type': 'application/json'
@@ -756,10 +761,12 @@
 	}
 
 	async function generateScript(send) {
+		showScriptLoading = true;
+		script = '';
 		enableCheck = true;
-		if (send){
-		await checkConnectivity();
-	}
+		if (send) {
+			await checkConnectivity();
+		}
 
 		let checkData = { userParameter: userParameters, cssClasses: cssClasses };
 		const response = await fetch('/api/parameterChecks/Routerconfig', {
@@ -775,15 +782,13 @@
 		if (data.isCorrect && ((cssClasses[mappings['SSH']].SSH.isReachable && send) || !send)) {
 			generate = true;
 			showError = false;
-			let temp  =  structuredClone(userParameters);
-			if (!send){
-				
-				temp[mappings['SSH']].SSH = {username: "", ip: "", password: ""}
+			let temp = structuredClone(userParameters);
+			if (!send) {
+				temp[mappings['SSH']].SSH = { username: '', ip: '', password: '' };
 			}
-			
-			let postData = JSON.stringify(temp);	
-			console.log(postData, send);		
-			
+
+			let postData = JSON.stringify(temp);
+			console.log(postData, send);
 
 			const sendResponse = await fetch('/api/', {
 				method: 'POST',
@@ -792,7 +797,7 @@
 				},
 				body: JSON.stringify(postData)
 			});
-			
+
 			let ApiData = await sendResponse.json();
 			script = ApiData.split('\\n');
 			script[0] = script[0].slice(2);
@@ -800,18 +805,11 @@
 			script = script
 				.filter((item) => /[a-zA-Z]/.test(item))
 				.map((item) => item.replace(/","/g, ''));
-
 		} else {
 			generate = false;
 			showError = true;
 		}
-	}
-	async function sendData() {
-		return true;
-	}
-
-	async function getScript() {
-		return true;
+		showScriptLoading = false;
 	}
 </script>
 
@@ -824,9 +822,13 @@
 		cssClasses={cssClasses[mappings['SSH']].SSH}
 		connectivityCheck={enableConnectivityCheck}
 		bind:params={userParameters[mappings['SSH']].SSH}
+		showLoadingAnimation={isInConnectivityCheck}
+		bind:divClass={buttonClass}
 	></SshCredentials>
 
-	<button class="generateSkriptButton" on:click={checkConnectivity}> Check Connectivity</button>
+	<button class="generateSkriptButton {buttonClass}" on:click={checkConnectivity}>
+		Check Connectivity</button
+	>
 
 	<h2 class="subHeading" id="Interfaces">Interfaces</h2>
 
@@ -1001,14 +1003,43 @@
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 		<br />
 	{/if}
-	<button class="generateSkriptButton" id="Submit" on:click={() => generateScript(true)}> Submit</button>
+	<button class="generateSkriptButton" id="Submit" on:click={() => generateScript(true)}>
+		Submit</button
+	>
 	<button class="generateSkriptButton" on:click={() => generateScript(false)}> Show Script</button>
 	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}
 	<div id="textAreaDiv">
-		<h1>Generating...</h1>
+		{#if showScriptLoading}
+			<br />
+
+			<button
+				disabled
+				type="button"
+				class="btn-loading text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center"
+			>
+				<svg
+					aria-hidden="true"
+					role="status"
+					class="spinner inline w-4 h-4 mr-3 text-white animate-spin"
+					viewBox="0 0 100 101"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+						fill="#E5E7EB"
+					></path>
+					<path
+						d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+						fill="currentColor"
+					></path>
+				</svg>
+				Generating Script...
+			</button>
+		{/if}
 		{#if script}
 			{#each script as line}
 				<p>{line}</p>

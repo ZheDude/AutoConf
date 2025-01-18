@@ -63,13 +63,8 @@ export async function POST({ request }) {
             cssClasses[mappings['Interface']]['Interface'][i].subnetmask = 'error'
             isCorrect = false;
         }
-
-        if (inputParams[mappings['Interface']]['Interface'][i].description != '') {
             cssClasses[mappings['Interface']]['Interface'][i].description = 'correct';
-        } else {
-            cssClasses[mappings['Interface']]['Interface'][i].description = 'error'
-            isCorrect = false;
-        }
+       
 
 
         if (inputParams[mappings['Interface']]['Interface'][i].ospf != undefined) {
