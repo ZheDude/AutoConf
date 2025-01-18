@@ -157,20 +157,6 @@ export async function POST({ request }) {
         }
 
 
-        if (inputParams[mappings['OSPF']]['OSPF'][i]['timer_dead'].match(/\d+$/)) {
-            cssClasses[mappings['OSPF']]['OSPF'][i].timer_dead = 'correct';
-        } else {
-            cssClasses[mappings['OSPF']]['OSPF'][i].timer_dead = 'error';
-            isCorrect = false;
-        }
-
-        if (inputParams[mappings['OSPF']]['OSPF'][i]['timer_hello'].match(/\d+$/)) {
-            cssClasses[mappings['OSPF']]['OSPF'][i].timer_hello = 'correct';
-        } else {
-            cssClasses[mappings['OSPF']]['OSPF'][i].timer_hello = 'error';
-            isCorrect = false;
-        }
-
         for (let j = 0; j < inputParams[mappings['OSPF']]['OSPF'][i]['passive_interfaces'].length; j++) {
             if (checkInterfaceName(inputParams[mappings['OSPF']]['OSPF'][i].passive_interfaces[j])) {
                 cssClasses[mappings['OSPF']]['OSPF'][i].passive_interfaces[j] = 'correct'

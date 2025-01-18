@@ -470,7 +470,7 @@
 
 	}
 	async function sendData() {
-		
+		script = ""
 		let postData = JSON.stringify(formatAPIData(userParameter));
 		/*console.log(postData)*/
 		const response = await fetch('/api/', {
@@ -485,7 +485,7 @@
 		script = ApiData.split("\\n")
 		script[0] = script[0].slice(2)
 
-		script = script.filter(item => /[a-zA-Z]/.test(item)) .map(item => item.replace(/","/g, ''));;
+		script = script.filter(item => /[a-zA-Z]/.test(item)) .map(item => item.replace(/","/g, ''));
 		return true;
 	}
 </script>
