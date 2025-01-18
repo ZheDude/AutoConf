@@ -32,7 +32,7 @@
 		localStorage.setItem('enableRIP', JSON.stringify(enableRIP));
 		localStorage.setItem('enableBGP', JSON.stringify(enableBGP));
 		localStorage.setItem('RouterParams', JSON.stringify(userParameters));
-		localStorage.setItem('CssClasses', JSON.stringify(cssClasses))
+		localStorage.setItem('CssClasses', JSON.stringify(cssClasses));
 	}
 
 	beforeNavigate(() => {
@@ -42,7 +42,7 @@
 
 	onMount(() => {
 		enableCheck = false;
-		const savedCssClasses = localStorage.getItem('CssClasses')
+		const savedCssClasses = localStorage.getItem('CssClasses');
 		const savedParams = localStorage.getItem('RouterParams');
 		const savedOSPF = localStorage.getItem('enableOSPF');
 		const savedHSRP = localStorage.getItem('enableHSRP');
@@ -53,28 +53,27 @@
 			userParameters = JSON.parse(savedParams);
 		}
 
-		if(savedOSPF){
+		if (savedOSPF) {
 			enableOSPF = JSON.parse(savedOSPF);
 		}
 
-		if(savedCssClasses){
+		if (savedCssClasses) {
 			cssClasses = JSON.parse(savedCssClasses);
 		}
 
-
-		if(savedHSRP){
+		if (savedHSRP) {
 			enableHSRP = JSON.parse(savedHSRP);
 		}
 
-		if(savedDHCP){
+		if (savedDHCP) {
 			enableDHCP = JSON.parse(savedDHCP);
 		}
 
-		if(savedRIP){
+		if (savedRIP) {
 			enableRIP = JSON.parse(savedRIP);
 		}
 
-		if(savedBGP){
+		if (savedBGP) {
 			enableBGP = JSON.parse(savedBGP);
 		}
 	});
@@ -192,13 +191,11 @@
 			]
 		},
 		{
-			SSH: 
-				{
+			SSH: {
 				ip: '',
 				username: '',
 				password: ''
 			}
-			
 		}
 	];
 
@@ -738,7 +735,6 @@
 	};
 
 	async function checkConnectivity() {
-		generate = false;
 		showError = false;
 		enableConnectivityCheck = true;
 		let postData = { userParameter: userParameters[mappings['SSH']].SSH };
@@ -752,66 +748,71 @@
 		let data = await response.json();
 		cssClasses[mappings['SSH']].SSH = data;
 
-		return new Response("", {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
+		return new Response('', {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 	}
 
-	async function checkUserParameter(send) {
+	async function generateScript(send) {
 		enableCheck = true;
+		if (send){
 		await checkConnectivity();
-	
+	}
 
-
-		let postData = { userParameter: userParameters, cssClasses: cssClasses };
+		let checkData = { userParameter: userParameters, cssClasses: cssClasses };
 		const response = await fetch('/api/parameterChecks/Routerconfig', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(postData)
+			body: JSON.stringify(checkData)
 		});
 		let data = await response.json();
 		cssClasses = data.cssClasses;
 		console.log(data.cssClasses);
-		if (data.isCorrect && userParameters[mappings['SSH']].SSH) {
+		if (data.isCorrect && ((cssClasses[mappings['SSH']].SSH.isReachable && send) || !send)) {
 			generate = true;
 			showError = false;
-			sendData();
-		}
-		else{
+			let temp  =  structuredClone(userParameters);
+			if (!send){
+				
+				temp[mappings['SSH']].SSH = {username: "", ip: "", password: ""}
+			}
+			
+			let postData = JSON.stringify(temp);	
+			console.log(postData, send);		
+			
+
+			const sendResponse = await fetch('/api/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(postData)
+			});
+			
+			let ApiData = await sendResponse.json();
+			script = ApiData.split('\\n');
+			script[0] = script[0].slice(2);
+
+			script = script
+				.filter((item) => /[a-zA-Z]/.test(item))
+				.map((item) => item.replace(/","/g, ''));
+
+		} else {
 			generate = false;
 			showError = true;
 		}
 	}
 	async function sendData() {
-		let postData = JSON.stringify(userParameters);
-		console.log(postData);
-		const response = await fetch('/api/', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(postData)
-		});
-		let ApiData = await response.json();
-		console.log(ApiData)
-		script = ApiData.split("\\n")
-		script[0] = script[0].slice(2)
-
-		script = script.filter(item => /[a-zA-Z]/.test(item)) .map(item => item.replace(/","/g, ''));
-
 		return true;
 	}
 
-
-	function getScript(){
-		
+	async function getScript() {
+		return true;
 	}
-
-
 </script>
 
 <div id="parameterDivGrundkonfig">
@@ -1000,26 +1001,25 @@
 		<button class="rightButton" on:click={removeDHCPPool}>Remove DHCP-Pool</button>
 		<br />
 	{/if}
-
-	<button class="generateSkriptButton" id="Submit" on:click={checkUserParameter}> Submit</button>
-	<button class="generateSkriptButton" on:click={getScript}> Show Script</button>
+	<button class="generateSkriptButton" id="Submit" on:click={() => generateScript(true)}> Submit</button>
+	<button class="generateSkriptButton" on:click={() => generateScript(false)}> Show Script</button>
 	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}
-<div id="textAreaDiv">
-	<h1>Generating...</h1>
-	{#if script}
-	{#each script as line }
-		<p>{line}</p>
-	{/each}
-{/if}
-</div>
+	<div id="textAreaDiv">
+		<h1>Generating...</h1>
+		{#if script}
+			{#each script as line}
+				<p>{line}</p>
+			{/each}
+		{/if}
+	</div>
 {/if}
 
 {#if showError}
-<div id="textAreaDiv">
-	<h1 style="color: red">Es sind noch nicht alle Felder korrekt ausgefüllt!</h1>
-	<p>Bitte überprüfen Sie die rot markierten Felder und füllen Sie diese korrekt aus!</p>
-</div>
+	<div id="textAreaDiv">
+		<h1 style="color: red">Es sind noch nicht alle Felder korrekt ausgefüllt!</h1>
+		<p>Bitte überprüfen Sie die rot markierten Felder und füllen Sie diese korrekt aus!</p>
+	</div>
 {/if}
