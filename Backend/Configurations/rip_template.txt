@@ -5,4 +5,4 @@ network ${network}
 neighbor ${neighbor}
 timers basic ${timer_update}
 ${passive_interface}
-${redistribute}
+
