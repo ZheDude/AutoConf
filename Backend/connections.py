@@ -87,7 +87,7 @@ class SSHConnection:
                 break
 
             # Add a small delay to allow the buffer to fill up
-            time.sleep(0.2)
+            time.sleep(0.1)
 
         return output
     
