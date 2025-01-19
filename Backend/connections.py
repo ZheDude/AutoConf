@@ -59,6 +59,10 @@ class SSHConnection:
         if not self.channel:  # Ensure the channel is open
             raise Exception("SSH session not active")
 
+        if command.strip() == "":
+            print("No command provided to send")
+            return
+        
         # Clear any existing output in the channel
         if self.channel.recv_ready():
             print("Clearing this output", self.channel.recv(2048).decode("utf-8"))
@@ -79,11 +83,11 @@ class SSHConnection:
 
             # Check for timeout to avoid infinite loop
             if time.time() - start_time > timeout:
-                print("Timeout reached while waiting for command output.")
+                print("Timeout reached while waiting for command output.", command)
                 break
 
             # Add a small delay to allow the buffer to fill up
-            time.sleep(0.5)
+            time.sleep(0.2)
 
         return output
     

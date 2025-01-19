@@ -136,7 +136,7 @@ class TrunkGenerator:
                         f"switchport trunk native vlan {interface['native_vlan']}\n" +
                         f"switchport trunk encapsulation {interface['encapsulation']}\n" +
                         f"switchport mode {interface['mode']}\n" +
-                        f"no shutdown\n")
+                        f"no shutdown\nexit\n")
         for interface_range in self.trunk['interface_ranges']:
             fin_str += (
                         f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
@@ -144,7 +144,7 @@ class TrunkGenerator:
                         f"switchport trunk native vlan {interface_range['native_vlan']}\n" +
                         f"switchport trunk encapsulation {interface_range['encapsulation']}\n" +
                         f"switchport mode {interface_range['mode']}\n" +
-                        f"no shutdown\n")
+                        f"no shutdown\nexit\n")
         return fin_str
 
 
@@ -172,12 +172,12 @@ class Etherchannelgenerator:
         for interface in self.etherchannel['interfaces']:
             fin_str += (f"interface {interface['name']}\n" +
                         f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
-                        f"no  shutdown\n")
+                        f"no  shutdown\nexit\n")
         for interface_range in self.etherchannel['interface_ranges']:
             fin_str += (
                         f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
                         f"channel-group {self.etherchannel['number']} mode {self.etherchannel['mode']}\n" +
-                        f"no shutdown\n")
+                        f"no shutdown\nexit\n")
         return fin_str
 
 
@@ -204,6 +204,7 @@ class EdgePortGenerator:
                 fin_str += "spanning-tree portfast edge\n"
             if interface['bpduguard']:
                 fin_str += "spanning-tree bpduguard enable\n"
+            fin_str += "exit\n"
         for interface_range in self.edgeport['interface_ranges']:
             fin_str += (
                 f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n")
@@ -211,6 +212,7 @@ class EdgePortGenerator:
                 fin_str += "spanning-tree portfast edge\n"
             if interface['bpduguard']:
                 fin_str += "spanning-tree bpduguard enable\n"
+            fin_str += "exit\n"
 
         return fin_str
 
@@ -236,13 +238,13 @@ class AccessInterfacesGenerator:
             fin_str += (f"interface {interface['name']}\n" +
                         f"switchport mode access\n" +
                         f"switchport access vlan {interface['vlan']}\n" +
-                        f"no shutdown\n")
+                        f"no shutdown\nexit\n")
         for interface_range in self.access_interfaces['interface_ranges']:
             fin_str += (
                         f"interface range {interface_range['startInterface']} - {interface_range['endInterface'][-1]}\n" +
                         f"switchport mode access\n" +
                         f"switchport access vlan {interface_range['vlan']}\n" +
-                        f"no shutdown\n")
+                        f"no shutdown\nexit\n")
         return fin_str
 
 
