@@ -58,7 +58,7 @@ def process_data(data: dict):
         print(ssh_config)
         from connections import SSHConnection
         dev1 = SSHConnection(ssh_config[0], ssh_config[1], ssh_config[2])
-        result = dev1.send_command_imprvd("configure terminal\n    ")
+        result = dev1.send_command_imprvd("enable\n configure terminal\n    ")
         print(result)
         #result = dev1.send_command_imprvd("do-exec show running\n    ")
         #print(result)
