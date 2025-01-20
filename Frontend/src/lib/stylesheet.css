@@ -142,6 +142,12 @@ a:hover {
 	color: #a9dfd8;
 }
 
+a:has(svg) {
+    margin-top: 0 !important; /* Remove margin */
+    color: inherit; /* Remove color change */
+}
+
+
 #navbar {
 	display: flex;
 	flex-direction: column;
