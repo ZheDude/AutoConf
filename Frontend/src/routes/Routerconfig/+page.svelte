@@ -1006,8 +1006,8 @@
 	<button class="generateSkriptButton" id="Submit" on:click={() => generateScript(true)}>
 		Submit</button
 	>
-	<button class="generateSkriptButton" on:click={() => generateScript(false)}> Show Script</button>
-	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
+	<button class="generateRightButton" on:click={() => generateScript(false)}> Show Script</button>
+	<button class="generateRightButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}
