@@ -7,6 +7,11 @@ body {
 	background-color: #30313a;
 }
 
+a {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
 
 
 
@@ -133,11 +138,14 @@ a {
 }
 
 .aDefault {
+	margin-top: 8px;
+
 	color: #87888c;
 }
 
 .aSelected,
 a:hover {
+	margin-top: 8px; 
 	color: #a9dfd8;
 }
 
