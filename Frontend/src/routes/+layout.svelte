@@ -24,6 +24,7 @@
 		<div id="NavbarContent">
 			<GrundkonfigIcon {url}></GrundkonfigIcon>
 			{#if url == '/'}
+				<br />
 				<ul><a href="#ConsoleInterface">Console Interface</a></ul>
 				<br />
 				<ul><a href="#ManagementInterface">Management Interface</a></ul>
@@ -33,6 +34,7 @@
 
 			<SwitchIcon {url}></SwitchIcon>
 			{#if url == '/Switchconfig'}
+				<br />
 				<ul><a href="#VTP">VTP</a></ul>
 				<br />
 				<ul><a href="#VLANs">VLANs</a></ul>
@@ -49,6 +51,7 @@
 			{/if}
 			<RouterIcon {url}></RouterIcon>
 			{#if url == '/Routerconfig'}
+				<br />
 				<ul><a href="#Interfaces">Interfaces</a></ul>
 				<br />
 				<ul><a href="#Key-Chains">Key-Chains</a></ul>
@@ -67,7 +70,7 @@
 				<br />
 				<ul><a href="#DHCP">DHCP</a></ul>
 				<br />
-				<ul><a href="#SubmitR"><strong>Submit</strong></a></ul>
+				<ul><a href="#Submit"><strong>Submit</strong></a></ul>
 			{/if}
 
 			<SubnetCalculatorIcon {url}> </SubnetCalculatorIcon>

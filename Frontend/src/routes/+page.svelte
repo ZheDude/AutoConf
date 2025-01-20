@@ -333,7 +333,7 @@
 	<button class="rightButton" on:click={removeVtyRange}>Remove VTY Range</button>
 	<br />
 	<button class="generateSkriptButton" on:click={generateSkript}>Generate Script</button>
-	<button class="generateSkriptButton" on:click={resetInputs}>Reset Inputs</button>
+	<button class="generateRightButton" on:click={resetInputs}>Reset Inputs</button>
 </div>
 
 {#if generate}

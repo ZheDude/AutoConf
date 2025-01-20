@@ -1,6 +1,7 @@
 <script>
 	
 	import InputField from './inputField.svelte';
+	import InputFieldRight from './inputFieldRight.svelte';
 
 
     export let execTime = {
@@ -26,14 +27,13 @@
 ></InputField>
 
 
-<InputField
+<InputFieldRight
 	type="text"
 	placeholder="0 "
 	fieldName="Seconds"
 	id="execTimeoutSeconds{id}"
 	bind:value={execTime.seconds}
 	cssClass={execSecondsClass}
-
-></InputField>
+></InputFieldRight>
 
 </div>
