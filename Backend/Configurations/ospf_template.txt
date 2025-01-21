@@ -2,5 +2,4 @@ router ospf ${process_id}
 router-id ${router_id}
 ${passive_interfaces}
 network ${network} ${wildcard} area ${area_id}
-timers basic ${timer_hello} ${timer_dead}
 log-adjacency-changes

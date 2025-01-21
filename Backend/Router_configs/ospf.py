@@ -41,12 +41,8 @@ class OSPFgenerator:
                 .replace("${router_id}", self.router_id) \
                 .replace("${passive_interfaces}", passive_if_str) \
                 .replace("network ${network} ${wildcard} area ${area_id}", networks_str) \
-                .replace("${timer_hello}", str(self.timer_hello)) \
-                .replace("${timer_dead}", str(self.timer_dead))
-            
-            # append "exit" to the end
+
             ospf_script += "\nexit\n"
-            
             return ospf_script
 
         except FileNotFoundError:
