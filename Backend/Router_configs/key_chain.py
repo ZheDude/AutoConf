@@ -19,7 +19,7 @@ class KEYCHAINgenerator:
             commands.append(f"key {number}")
             commands.append(f"key-string {password}")
             commands.append(f"cryptographic-algorithm {algo}")
-            commands.append("")
+            commands.append("exit\nexit")
 
         return "\n".join(commands)
 

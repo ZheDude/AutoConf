@@ -27,6 +27,7 @@ class BGPgenerator:
         if neighbor.get("default_originate"):
             config += f"neighbor {neighbor['ip_of_neighbor']} default-originate\n"
 
+        config += f"exit\n"
         return config
 
     def generate_script(self):

@@ -37,6 +37,8 @@ class RIPGenerator:
                 .replace("${passive_interface}", passive_if_str) \
                 #.replace("${redistribute}", redistribute_str)
 
+            rip_script += "\nexit\n"
+            
             return rip_script
 
         except FileNotFoundError:

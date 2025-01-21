@@ -28,7 +28,7 @@ class HSRPGenerator:
                 commands.append(
                     f"standby {group} timers {timers['hello']} {timers['hold']}"
                 )
-            commands.append("")  # Add a blank line for separation
+            commands.append("exit")  # Add a blank line for separation
 
         return "\n".join(commands)
 

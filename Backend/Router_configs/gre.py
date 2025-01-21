@@ -29,7 +29,7 @@ class GRETunnelGenerator:
             commands.append(f"tunnel destination {destination}")
             commands.append(f"ip address {ip_address} {subnet_mask}")
             commands.append("no shut")
-            commands.append("")
+            commands.append("exit")
 
         return "\n".join(commands)
 

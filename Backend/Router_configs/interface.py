@@ -51,7 +51,7 @@ class InterfaceGenerator:
                     if message_digest:
                         commands.append("ip ospf authentication message-digest")
 
-            commands.append("")
+            commands.append("exit")
 
         return "\n".join(commands)
 

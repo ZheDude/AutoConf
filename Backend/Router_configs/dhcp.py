@@ -39,7 +39,7 @@ class DHCPGenerator:
                 commands.append(f"dns-server {dns}")
             if lease:
                 commands.append(f"lease {lease}")
-            commands.append("")
+            commands.append("exit")
 
         return "\n".join(commands)
 
