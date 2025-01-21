@@ -141,7 +141,7 @@
         cssClass={showError ? 'error' : 'correct'}
 	/>
     {#if showError}
-        <p style="color: red">Please provide a Valid IP-Address</p>
+        <p class="errormessage">Please provide a Valid IP-Address</p>
     {/if}
 
 	<Dropdown options={subnetMasks} fieldName="subnetMask" Heading="Subnet:" bind:value={subnetmask}

@@ -47,7 +47,7 @@
 
 
 {#if check && params.source == '' && params.source_ip == ''}
-<p style='color: red'>Error you must either specify an source interface or source IP-Address or both!</p>
+<p class="errormessage">Error you must either specify an source interface or source IP-Address or both!</p>
 {/if}
 
 <InputField

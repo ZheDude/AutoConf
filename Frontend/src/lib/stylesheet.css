@@ -143,10 +143,9 @@ a:hover {
 }
 
 a:has(svg) {
-    margin-top: 0 !important; /* Remove margin */
-    color: inherit; /* Remove color change */
+	margin-top: 0 !important; /* Remove margin */
+	color: inherit; /* Remove color change */
 }
-
 
 #navbar {
 	display: flex;
@@ -237,6 +236,13 @@ a:has(svg) {
 	color: #fff;
 	font-size: 16px;
 	font-family: Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+}
+
+.errormessage {
+	color: red;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-left: 15%;
 	margin-top: 2%;
 }
 
